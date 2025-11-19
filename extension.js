@@ -1,13 +1,23 @@
 const vscode = require("vscode");
 const path = require("path");
 
-// Recursively create folder/file tree from object structure
+function stripComments(text) {
+    // Remove /* block comments */
+    text = text.replace(/\/\*[\s\S]*?\*\//g, "");
+
+    // Remove // line comments
+    text = text.replace(/\/\/.*$/gm, "");
+
+    return text;
+}
+
+// Recursively generate folders & files
 async function createTree(baseUri, node) {
     for (const key of Object.keys(node)) {
         const value = node[key];
         const targetUri = vscode.Uri.joinPath(baseUri, key);
 
-        // CASE: file (string content)
+        // File
         if (typeof value === "string") {
             await vscode.workspace.fs.writeFile(
                 targetUri,
@@ -15,7 +25,7 @@ async function createTree(baseUri, node) {
             );
         }
 
-        // CASE: folder (object)
+        // Folder
         else if (typeof value === "object") {
             await vscode.workspace.fs.createDirectory(targetUri);
             await createTree(targetUri, value);
@@ -25,9 +35,13 @@ async function createTree(baseUri, node) {
 
 async function generateFromSgmtr(uri) {
     try {
-        // Read file text
         const raw = await vscode.workspace.fs.readFile(uri);
-        const json = JSON.parse(raw.toString());
+        let text = raw.toString();
+
+        // Strip comments BEFORE parsing
+        text = stripComments(text);
+
+        const data = JSON.parse(text);
 
         const workspace = vscode.workspace.workspaceFolders?.[0];
         if (!workspace) {
@@ -35,22 +49,22 @@ async function generateFromSgmtr(uri) {
             return;
         }
 
-        // Generate recursively
-        await createTree(workspace.uri, json);
+        await createTree(workspace.uri, data);
 
-        vscode.window.showInformationMessage("Folder structure generated successfully.");
+        vscode.window.showInformationMessage("Structure generated successfully.");
     } catch (err) {
         vscode.window.showErrorMessage("Error: " + err.message);
+        console.error(err);
     }
 }
 
 function activate(context) {
-    const command = vscode.commands.registerCommand(
+    const cmd = vscode.commands.registerCommand(
         "folderStructureGenerator.generateFromSgmtr",
         (uri) => generateFromSgmtr(uri)
     );
 
-    context.subscriptions.push(command);
+    context.subscriptions.push(cmd);
 }
 
 function deactivate() {}
