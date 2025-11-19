@@ -1,0 +1,17 @@
+{
+  "scopeName": "source.sgmtr",
+  "patterns": [
+    {
+      "include": "source.json"
+    },
+    {
+      "name": "comment.line.double-slash.sgmtr",
+      "match": "//.*$"
+    },
+    {
+      "name": "comment.block.sgmtr",
+      "begin": "/\\*",
+      "end": "\\*/"
+    }
+  ]
+}

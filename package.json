@@ -1,0 +1,63 @@
+{
+  "name": "folder-structure-generator",
+  "displayName": "Folder Structure Generator",
+  "description": "Generates folders & files from a .sgmtr specification file.",
+  "version": "1.0.0",
+  "publisher": "LeoConan",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:folderStructureGenerator.generateFromSgmtr",
+    "onLanguage:sgmtr-language",
+    "workspaceContains:*.sgmtr"
+],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sgmtr",
+        "aliases": ["SGMTR File", "sgmtr"],
+        "extensions": [".sgmtr"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sgmtr",
+        "scopeName": "source.sgmtr",
+        "path": "./syntaxes/sgmtr.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "folderStructureGenerator.generateFromSgmtr",
+        "title": "Folder Gen: Generate from .sgmtr file"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "folderStructureGenerator.generateFromSgmtr",
+          "when": "resourceExtname == '.sgmtr'",
+          "group": "navigation"
+        }
+      ]
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": ["*.sgmtr"],
+        "url": "./schema/sgmtr-schema.json"
+      }
+    ]
+  },
+  "main": "./extension.js",
+  "scripts": {
+    "compile": "echo No build required",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {}
+}
