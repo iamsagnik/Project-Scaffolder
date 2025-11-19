@@ -2,7 +2,7 @@
   "name": "folder-structure-generator",
   "displayName": "Folder Structure Generator",
   "description": "Generates folders & files from a .sgmtr specification file.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "LeoConan",
   "engines": {
     "vscode": "^1.75.0"
@@ -12,15 +12,21 @@
   ],
   "activationEvents": [
     "onCommand:folderStructureGenerator.generateFromSgmtr",
+    "onCommand:folderStructureGenerator.previewStructure",
     "onLanguage:sgmtr-language",
     "workspaceContains:*.sgmtr"
-],
+  ],
   "contributes": {
     "languages": [
       {
         "id": "sgmtr",
-        "aliases": ["SGMTR File", "sgmtr"],
-        "extensions": [".sgmtr"],
+        "aliases": [
+          "SGMTR File",
+          "sgmtr"
+        ],
+        "extensions": [
+          ".sgmtr"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -35,6 +41,10 @@
       {
         "command": "folderStructureGenerator.generateFromSgmtr",
         "title": "Folder Gen: Generate from .sgmtr file"
+      },
+      {
+        "command": "folderStructureGenerator.previewStructure",
+        "title": "Folder Gen: Preview Structure"
       }
     ],
     "menus": {
@@ -43,12 +53,19 @@
           "command": "folderStructureGenerator.generateFromSgmtr",
           "when": "resourceExtname == '.sgmtr'",
           "group": "navigation"
+        },
+        {
+          "command": "folderStructureGenerator.previewStructure",
+          "when": "resourceExtname == '.sgmtr'",
+          "group": "navigation"
         }
       ]
     },
     "jsonValidation": [
       {
-        "fileMatch": ["*.sgmtr"],
+        "fileMatch": [
+          "*.sgmtr"
+        ],
         "url": "./schema/sgmtr-schema.json"
       }
     ]
@@ -59,5 +76,7 @@
     "package": "vsce package",
     "publish": "vsce publish"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  }
 }
