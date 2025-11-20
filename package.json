@@ -1,32 +1,27 @@
 {
   "name": "folder-structure-generator",
   "displayName": "Folder Structure Generator",
-  "description": "Generates folders & files from a .sgmtr specification file.",
-  "version": "1.1.0",
+  "description": "Generate folders & files from a .sgmtr structure file.",
+  "version": "1.0.0",
   "publisher": "LeoConan",
   "engines": {
     "vscode": "^1.75.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "categories": ["Other"],
+
   "activationEvents": [
     "onCommand:folderStructureGenerator.generateFromSgmtr",
-    "onCommand:folderStructureGenerator.previewStructure",
-    "onLanguage:sgmtr-language",
+    "onCommand:folderStructureGenerator.previewSgmtr",
+    "onLanguage:sgmtr",
     "workspaceContains:*.sgmtr"
   ],
+
   "contributes": {
     "languages": [
       {
         "id": "sgmtr",
-        "aliases": [
-          "SGMTR File",
-          "sgmtr"
-        ],
-        "extensions": [
-          ".sgmtr"
-        ],
+        "aliases": ["SGMTR File", "sgmtr"],
+        "extensions": [".sgmtr"],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -43,7 +38,7 @@
         "title": "Folder Gen: Generate from .sgmtr file"
       },
       {
-        "command": "folderStructureGenerator.previewStructure",
+        "command": "folderStructureGenerator.previewSgmtr",
         "title": "Folder Gen: Preview Structure"
       }
     ],
@@ -55,7 +50,7 @@
           "group": "navigation"
         },
         {
-          "command": "folderStructureGenerator.previewStructure",
+          "command": "folderStructureGenerator.previewSgmtr",
           "when": "resourceExtname == '.sgmtr'",
           "group": "navigation"
         }
@@ -63,20 +58,16 @@
     },
     "jsonValidation": [
       {
-        "fileMatch": [
-          "*.sgmtr"
-        ],
+        "fileMatch": ["*.sgmtr"],
         "url": "./schema/sgmtr-schema.json"
       }
     ]
   },
+
   "main": "./extension.js",
   "scripts": {
-    "compile": "echo No build required",
     "package": "vsce package",
     "publish": "vsce publish"
   },
-  "dependencies": {
-    "jsonc-parser": "^3.3.1"
-  }
+  "dependencies": {}
 }
