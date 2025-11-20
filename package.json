@@ -3,10 +3,14 @@
   "displayName": "Folder Structure Generator",
   "description": "Generate folders & files from a .sgmtr structure file.",
   "version": "1.0.0",
-
+  "icon": "assets/folder.png",
+  "galleryBanner.Color": {
+    "color" : "#1b1b40",
+    "theme" : "dark"
+  },
   "type": "module",
+  "publisher": "Waynis",
 
-  "publisher": "LeoConan",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -99,5 +103,9 @@
   },
   "dependencies": {
     "minimatch": "^10.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamsagnik/Folder_Structure_generator.git"
   }
 }
