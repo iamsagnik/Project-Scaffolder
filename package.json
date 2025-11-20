@@ -43,15 +43,15 @@
     "commands": [
       {
         "command": "folderStructureGenerator.generateFromSgmtr",
-        "title": "Folder Gen: Generate from .sgmtr file"
+        "title": "Generate from .sgmtr file"
       },
       {
         "command": "folderStructureGenerator.previewSgmtr",
-        "title": "Folder Gen: Preview Structure"
+        "title": "Preview Structure"
       },
       {
         "command": "folderGen.reverseGenerate",
-        "title": "Folder Gen: Create .sgmtr from Folder"
+        "title": "Create .sgmtr from Folder"
       }
     ],
     "menus": {
