@@ -2,29 +2,28 @@
   "name": "project-scaffolder",
   "displayName": "Project Scaffolder",
   "description": "Generate folders & files from a .sgmtr structure file and vice versa.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icon": "assets/folder.png",
   "galleryBanner.Color": {
-    "color" : "#1b1b40",
-    "theme" : "dark"
+    "color": "#1b1b40",
+    "theme": "dark"
   },
   "type": "module",
   "publisher": "sagnikMitra12",
-
   "keywords": [
-  "template",
-  "scaffold",
-  "folder generator",
-  "project structure",
-  "workspace templates",
-  "react",
-  "generator",
-  "dsl"
+    "template",
+    "scaffold",
+    "folder generator",
+    "project structure",
+    "workspace templates",
+    "react",
+    "generator",
+    "dsl"
   ],
   "categories": [
-    "Other", 
-    "Programming Languages", 
-    "Snippets", 
+    "Other",
+    "Programming Languages",
+    "Snippets",
     "Linters"
   ],
   "engines": {
@@ -96,7 +95,7 @@
         {
           "command": "folderStructureGenerator.generateFromWorkspaceTemplate",
           "when": "explorerResourceIsFolder",
-          "group": "navigation" 
+          "group": "navigation"
         }
       ]
     },
