@@ -11,12 +11,25 @@
   "type": "module",
   "publisher": "sagnikMitra12",
 
+  "keywords": [
+  "template",
+  "scaffold",
+  "folder generator",
+  "project structure",
+  "workspace templates",
+  "react",
+  "generator",
+  "dsl"
+  ],
+  "categories": [
+    "Other", 
+    "Programming Languages", 
+    "Snippets", 
+    "Linters"
+  ],
   "engines": {
     "vscode": "^1.75.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "onCommand:folderStructureGenerator.generateFromSgmtr",
     "onCommand:folderStructureGenerator.previewSgmtr",
