@@ -1,6 +1,6 @@
-# Folder Structure Generator
+# Project Scaffolder
 
-Folder Structure Generator is a VS Code extension that generates entire folder and file structures from declarative `.sgmtr` template files. It supports static and dynamic generation, live previews, reusable workspace templates, React snippet expansion, ignore rules, grammar-based validation, and reverse generation.
+Project Scaffolder is a VS Code extension that generates entire folder and file structures from declarative `.sgmtr` template files. It supports static and dynamic generation, live previews, reusable workspace templates, React snippet expansion, ignore rules, grammar-based validation, and reverse generation.
 
 This extension enables consistent and reusable project scaffolding for individuals and teams.
 
