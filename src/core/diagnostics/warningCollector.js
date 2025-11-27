@@ -15,7 +15,7 @@ function createWarningResponse(type, code, message, options = {}) {
   };
 }
 
-function recordWarnings(warning) {
+function recordWarning(warning) {
   warnings.push(warning);
 
   if (warning.severity === "info") {
@@ -35,7 +35,7 @@ function clearWarnings() {
 
 module.exports = {
   createWarningResponse,
-  recordWarnings,
+  recordWarning,
   getAllWarnings,
   clearWarnings
 };

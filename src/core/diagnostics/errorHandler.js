@@ -2,6 +2,7 @@ const logger = require("./logger");
 
 function buildErrorResponse(type, code, message, options = {}) {
   return {
+    status: "error",
     type,
     code,
     message,
@@ -14,35 +15,56 @@ function buildErrorResponse(type, code, message, options = {}) {
 }
 
 function normalizeErrorResponse(rawError, context = {}) {
-  if (rawError && rawError.type && rawError.message) {
-    return rawError;
+  if (rawError && rawError.code && rawError.message && rawError.severity) {
+    return {
+      ...rawError,
+      filePath: rawError.filePath || context.filePath || null,
+      module: rawError.module || context.module || null,
+      time: rawError.time || new Date().toISOString()
+    };
   }
-
-  let message = "Unknown system error";
-  let details = null;
 
   if (rawError instanceof Error) {
-    message = rawError.message;
-    details = rawError.stack;
-  } else if (typeof rawError === "string") {
-    message = rawError;
-  } else if (typeof rawError === "object") {
-    message = rawError.message || message;
-    details = rawError.details || rawError.stack || null;
+    return buildErrorResponse({
+      code: "UNHANDLED_EXCEPTION",
+      message: rawError.message,
+      severity: "critical",
+      filePath: context.filePath,
+      module: context.module,
+      stack: rawError.stack
+    });
   }
 
-  return buildErrorResponse(
-    "SystemError",
-    "UNKNOWN_ERROR",
-    message,
-    {
-      details,
+  if (typeof rawError === "string") {
+    return buildErrorResponse({
+      code: "STRING_ERROR",
+      message: rawError,
+      severity: "error",
       filePath: context.filePath,
-      suggestion: "Enable debug mode for full trace",
-      severity: "critical"
-    }
-  );
+      module: context.module
+    });
+  }
+
+  if (typeof rawError === "object") {
+    return buildErrorResponse({
+      code: rawError.code || "OBJECT_ERROR",
+      message: rawError.message || "Unknown object error",
+      severity: rawError.severity || "error",
+      filePath: rawError.filePath || context.filePath || null,
+      module: rawError.module || context.module || null,
+      stack: rawError.stack
+    });
+  }
+
+  return buildErrorResponse({
+    code: "UNKNOWN_THROWABLE",
+    message: "Unknown throwable encountered",
+    severity: "critical",
+    filePath: context.filePath,
+    module: context.module
+  });
 }
+
 
 async function wrap(fn, context = {}) {
   try {

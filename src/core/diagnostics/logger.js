@@ -1,3 +1,7 @@
+// NOTE:
+// `module` is a logical diagnostic tag (e.g., "ReversePipeline", "FileScanner"),
+// NOT a filesystem path. File paths must be passed via diagnostics context objects.
+
 const vscode = require("vscode");
 
 let currentLevel = "warn";
@@ -15,25 +19,28 @@ function shouldLog(level) {
   return LEVEL_PRIORITY[level] <= LEVEL_PRIORITY[currentLevel];
 }
 
-function logCreate(level, message, data = null, module = "unknown") {
-  if (!shouldLog(level)) return;
+function logCreate(level) {
+  return (module, message, data = {}) => {
+    if (module?.includes?.("/") || module?.includes?.("\\")) {
+      console.warn("[SGMTR] Logger module tag looks like a file path:", module);
+    }
 
-  const payload = {
-    level,
-    message,
-    data,
-    module,
-    timestamp: new Date().toISOString()
+    if (!shouldLog(level)) return;
+
+    const timestamp = new Date().toISOString();
+    const logEntry = `[${timestamp}] [${level.toUpperCase()}] [${module}] ${message}`;
+
+    outputChannel.appendLine(logEntry);
+    if (data && Object.keys(data).length) {
+      outputChannel.appendLine(JSON.stringify(data, null, 2));
+    }
+
+    if (process.env.NODE_ENV === "development") {
+      console[level === "error" ? "error" : "log"](logEntry, data);
+    }
   };
-
-  const formatted = `[${payload.timestamp}] [${level.toUpperCase()}] [${module}] ${message}`;
-
-  debugChannel.appendLine(formatted);
-
-  if (process.env.NODE_ENV === "development") {
-    console[level === "error" ? "error" : "log"](formatted, data || "");
-  }
 }
+
 
 function setLevel(level) {
   currentLevel = level;
