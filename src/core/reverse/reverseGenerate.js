@@ -1,33 +1,82 @@
+const path = require("path");
 
-async function reverseGenerate(uri) {
+const { loadSgmtrIgnore } = require("../ignore/loadSgmtrIgnore");
+const { buildIgnoreMatchers } = require("../ignore/buildIgnoreMatchers");
+const { readFolder } = require("../parser/readFolder");
+const { processFileMetadata } = require("./processFileMetadata");
+const { folderToSgmtr } = require("./folderToSgmtr");
+const { validateSgmtr } = require("./validationSgmtr");
+const { mergeSgmtr } = require("./mergeSgmtr");
+const { writeSgmtr } = require("../generator/fileWriter");
 
-    vscode.window.showInformationMessage("reverseGenerate triggered");
-    if (!uri) {
-        vscode.window.showErrorMessage("No folder selected.");
-        return;
+async function reverseGenerate(rootPath) {
+  const report = {
+    filesProcessed: 0,
+    skipped: [],
+    errors: [],
+    conflicts: [],
+    outputPath: null
+  };
+
+  // 1) load ignore
+  const patterns = await loadSgmtrIgnore(rootPath);
+  const ign = buildIgnoreMatchers(patterns);
+
+  // 2) read folder
+  const folderRes = await readFolder(rootPath, ign);
+  report.skipped = folderRes.skipped;
+  report.errors.push(...folderRes.errors);
+
+  // 3) process files
+  const metas = [];
+
+  for (const f of folderRes.files) {
+    const m = await processFileMetadata(f);
+    if (!m.ok) {
+      report.errors.push({
+        type: "processError",
+        path: f.relPath,
+        message: m.error?.message
+      });
+      continue;
     }
+    report.filesProcessed++;
+    metas.push(m.meta);
+  }
 
-    try {
-        const folderPath = uri.fsPath;
-        const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || folderPath;
+  // 4) build DSL
+  const tree = folderToSgmtr(rootPath, metas);
 
-        const patterns = await loadSgmtrIgnore(workspaceRoot);
-        const matchers = buildIgnoreMatchers(patterns);
+  // 5) validate
+  const val = await validateSgmtr(tree, rootPath);
+  if (!val.ok) {
+    return {
+      ok: false,
+      report,
+      error: val.error
+    };
+  }
 
-        const tree = await readFolder(folderPath, folderPath, matchers);
+  // 6) merge with existing (optional)
+  // user must load existing before calling this (not included)
+  const mergeRes = mergeSgmtr(null, tree, "preferNewer");
+  report.conflicts = mergeRes.conflicts;
+  const finalTree = mergeRes.merged;
 
-        const json = JSON.stringify(tree, null, 2);
-        const fileName = path.basename(folderPath) + ".sgmtr";
-        const outPath = vscode.Uri.file(path.join(folderPath, fileName));
+  // 7) write final
+  const w = await writeSgmtr(rootPath, finalTree);
+  if (!w.ok) {
+    return {
+      ok: false,
+      report,
+      error: { type: "writeError", message: w.error }
+    };
+  }
 
-        await vscode.workspace.fs.writeFile(outPath, Buffer.from(json, "utf8"));
+  report.outputPath = w.path;
 
-        vscode.window.showInformationMessage(`Generated: ${fileName}`);
-    } catch (err) {
-        vscode.window.showErrorMessage("Reverse Generation Error: " + err.message);
-    }
+  // done
+  return { ok: true, report, sgmtr: finalTree };
 }
 
-module.exports = { 
-  reverseGenerate 
-};
+module.exports = { reverseGenerate };
