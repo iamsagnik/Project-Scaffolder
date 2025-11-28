@@ -1,30 +1,106 @@
-const vscode = require("vscode");
+const { Minimatch } = require("minimatch");
+const path = require("path");
 
-function buildIgnoreMatchers(patterns) {
-    const includes = [];
-    const excludes = [];
+const logger = require("../diagnostics/logger");
+const stats = require("../diagnostics/statsCollector");
+const warnings = require("../diagnostics/warningsCollector");
 
-    for (let p of patterns) {
-
-        // AUTO-EXPAND: "folder/**" → ["folder", "folder/**"]
-        if (p.endsWith("/**")) {
-            const base = p.slice(0, -3); // remove "/**"
-            excludes.push(new Minimatch(base, { matchBase: true }));
-            excludes.push(new Minimatch(p, { matchBase: true }));
-            continue;
-        }
-
-        // Negation (!pattern)
-        if (p.startsWith("!")) {
-            includes.push(new Minimatch(p.slice(1), { matchBase: true }));
-        } else {
-            excludes.push(new Minimatch(p, { matchBase: true }));
-        }
-    }
-
-    return { includes, excludes };
+function normalizeRelPath(relPath) {
+  if (!relPath) return "";
+  return relPath.split(path.sep).join("/");
 }
 
-module.exports = {
-  buildIgnoreMatchers 
-};
+function buildIgnoreMatchers(patterns = []) {
+  const includes = [];
+  const excludes = [];
+
+  logger.debug("ignore", "Building ignore matchers", { patternCount: patterns.length });
+
+  for (let raw of patterns) {
+    if (!raw || typeof raw !== "string") {
+      warnings.recordWarning({
+        code: "INVALID_IGNORE_PATTERN",
+        message: "Non-string ignore pattern skipped",
+        severity: "info",
+        filePath: null,
+        module: "ignore"
+      });
+      continue;
+    }
+
+    const p = raw.trim();
+    if (!p) continue;
+
+    try {
+      // negation
+      if (p.startsWith("!")) {
+        const body = p.slice(1);
+
+        if (body.endsWith("/**")) {
+          const base = body.slice(0, -3);
+          includes.push({ raw: "!" + base, mm: new Minimatch(base, { dot: true, matchBase: true }) });
+          includes.push({ raw: p, mm: new Minimatch(body, { dot: true, matchBase: true }) });
+        } else {
+          includes.push({ raw: p, mm: new Minimatch(body, { dot: true, matchBase: true }) });
+        }
+        continue;
+      }
+
+      // auto-expansion
+      if (p.endsWith("/**")) {
+        const base = p.slice(0, -3);
+        excludes.push({ raw: base, mm: new Minimatch(base, { dot: true, matchBase: true }) });
+        excludes.push({ raw: p, mm: new Minimatch(p, { dot: true, matchBase: true }) });
+        continue;
+      }
+
+      excludes.push({ raw: p, mm: new Minimatch(p, { dot: true, matchBase: true }) });
+
+    } catch (err) {
+      warnings.recordWarning({
+        code: "INVALID_MINIMATCH_PATTERN",
+        message: "Failed to compile ignore pattern",
+        severity: "warn",
+        filePath: p,
+        module: "ignore",
+        meta: { error: err?.message }
+      });
+    }
+  }
+
+  function shouldIgnore(relPath) {
+    const norm = normalizeRelPath(relPath);
+    let ignored = false;
+    let rule = null;
+
+    for (const ex of excludes) {
+      try {
+        if (ex.mm.match(norm)) {
+          ignored = true;
+          rule = ex.raw;
+        }
+      } catch {}
+    }
+
+    for (const inc of includes) {
+      try {
+        if (inc.mm.match(norm)) {
+          ignored = false;
+          rule = inc.raw;
+          break;
+        }
+      } catch {}
+    }
+
+    if (ignored) {
+      stats.increment("totalFilesSkipped");
+      logger.debug("ignore", "Path ignored", { relPath: norm, rule });
+    }
+
+    return { ignored, rule, relPath: norm };
+  }
+
+  return { includes, excludes, shouldIgnore };
+}
+
+module.exports = { buildIgnoreMatchers };
