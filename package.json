@@ -29,10 +29,8 @@
     "vscode": "^1.75.0"
   },
   "activationEvents": [
-    "onCommand:folderStructureGenerator.generateFromSgmtr",
-    "onCommand:folderStructureGenerator.previewSgmtr",
-    "onCommand:folderGen.reverseGenerate",
-    "onCommand:folderStructureGenerator.generateFromWorkspaceTemplate",
+    "onCommand:sgmtr.reverseGenerate",
+    "onCommand:sgmtr.preview",
     "onLanguage:sgmtr",
     "workspaceContains:**/*.sgmtr"
   ],
@@ -59,41 +57,23 @@
     ],
     "commands": [
       {
-        "command": "folderStructureGenerator.generateFromSgmtr",
-        "title": "Generate from .sgmtr file"
+        "command": "sgmtr.preview",
+        "title": "SGMTR: Preview"
       },
       {
-        "command": "folderStructureGenerator.previewSgmtr",
-        "title": "Preview Structure"
-      },
-      {
-        "command": "folderGen.reverseGenerate",
-        "title": "Create .sgmtr from Folder"
-      },
-      {
-        "command": "folderStructureGenerator.generateFromWorkspaceTemplate",
-        "title": "Generate From Workspace Template"
+        "command": "sgmtr.reverseGenerate",
+        "title": "SGMTR: Create .sgmtr from Folder"
       }
     ],
     "menus": {
       "explorer/context": [
         {
-          "command": "folderStructureGenerator.generateFromSgmtr",
+          "command": "sgmtr.preview",
           "when": "resourceExtname == '.sgmtr'",
           "group": "navigation"
         },
         {
-          "command": "folderStructureGenerator.previewSgmtr",
-          "when": "resourceExtname == '.sgmtr'",
-          "group": "navigation"
-        },
-        {
-          "command": "folderGen.reverseGenerate",
-          "when": "explorerResourceIsFolder",
-          "group": "navigation"
-        },
-        {
-          "command": "folderStructureGenerator.generateFromWorkspaceTemplate",
+          "command": "sgmtr.reverseGenerate",
           "when": "explorerResourceIsFolder",
           "group": "navigation"
         }
@@ -114,6 +94,7 @@
     "publish": "vsce publish"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "minimatch": "^10.1.1"
   },
   "repository": {
