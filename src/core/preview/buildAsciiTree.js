@@ -1,74 +1,77 @@
-const { isReactSnippetKeyword } = require("./snippets/reactSnippets.js");
-const path = require("path");
+// Build an ASCII box-drawing tree from a plain object.
+// Input shape:
+// - Folder  -> { name: { ... } }
+// - File    -> "(file)" OR { imports: [], exports: [] }
 
-/**
- * Build an ASCII box-drawing tree from a JSON object.
- *
- * @param {Object} node - Parsed .sgmtr structure
- * @param {string} prefix - Prefix for indentation (internal use)
- * @returns {string} Formatted ASCII tree
- */
 function buildAsciiTree(node, prefix = "") {
-    const entries = Object.keys(node);
+  if (!node || typeof node !== "object") return "";
 
-    const folders = entries.filter(
-        k => typeof node[k] === "object" && !Array.isArray(node[k])
-    ).sort();
+  const entries = Object.keys(node).sort();
 
-    const files = entries.filter(
-        k => typeof node[k] === "string" || Array.isArray(node[k])
-    ).sort();
+  const folders = entries.filter(
+    k => typeof node[k] === "object" && !Array.isArray(node[k]) &&
+         node[k] !== null && !(node[k].imports || node[k].exports)
+  );
 
-    const all = [...folders, ...files];
+  const files = entries.filter(
+    k => typeof node[k] === "string" ||
+         (typeof node[k] === "object" && node[k] !== null &&
+          (node[k].imports || node[k].exports))
+  );
 
-    let output = "";
+  const all = [...folders, ...files];
 
-    all.forEach((name, index) => {
-        const value = node[name];
-        const isLast = index === all.length - 1;
+  let output = "";
 
-        const branch = isLast ? "└── " : "├── ";
-        const nextPrefix = prefix + (isLast ? "    " : "│   ");
+  all.forEach((name, index) => {
+    const value = node[name];
+    const isLast = index === all.length - 1;
 
-        // ARRAY SUPPORT (imports/exports)
-        if (Array.isArray(value)) {
-            output += `${prefix}${branch}${name}/\n`;
+    const branch = isLast ? "└── " : "├── ";
+    const nextPrefix = prefix + (isLast ? "    " : "│   ");
 
-            value.forEach((line, i) => {
-                const isLastLine = i === value.length - 1;
-                const subBranch = isLastLine ? "└── " : "├── ";
-                output += `${nextPrefix}${subBranch}${line}\n`;
-            });
+    // FILE WITH IMPORTS/EXPORTS
+    if (typeof value === "object" && value !== null &&
+        (value.imports || value.exports)) {
 
-            return;
-        }
+      output += `${prefix}${branch}${name}\n`;
 
+      const imports = Array.isArray(value.imports) ? value.imports : [];
+      const exports = Array.isArray(value.exports) ? value.exports : [];
 
-        // FOLDER
-        if (typeof value === "object") {
-            output += `${prefix}${branch}${name}/\n`;
-            output += buildAsciiTree(value, nextPrefix);
-        }
+      if (imports.length > 0) {
+        imports.forEach((line, i) => {
+          const isLastLine = exports.length === 0 && i === imports.length - 1;
+          const subBranch = isLastLine ? "└── " : "├── ";
+          output += `${nextPrefix}${subBranch}import: ${line}\n`;
+        });
+      }
 
-        // FILE (PATCHED)
-        else {
-            const ext = path.extname(name);
-            let note = "";
+      if (exports.length > 0) {
+        exports.forEach((line, i) => {
+          const isLastLine = i === exports.length - 1;
+          const subBranch = isLastLine ? "└── " : "├── ";
+          output += `${nextPrefix}${subBranch}export: ${line}\n`;
+        });
+      }
 
-            if ((ext === ".jsx" || ext === ".tsx") && isReactSnippetKeyword(value)) {
-                note = `  [expands: ${value}]`;
-            } else if (isReactSnippetKeyword(value)) {
-                note = `  [warning: ${value} ignored]`;
-            }
+      return;
+    }
 
-            output += `${prefix}${branch}${name}${note}\n`;
-        }
-    });
+    // FOLDER
+    if (typeof value === "object" && value !== null) {
+      output += `${prefix}${branch}${name}/\n`;
+      output += buildAsciiTree(value, nextPrefix);
+      return;
+    }
 
-    return output;
+    // SIMPLE FILE
+    output += `${prefix}${branch}${name}\n`;
+  });
+
+  return output;
 }
 
-
 module.exports = {
-    buildAsciiTree
+  buildAsciiTree
 };
