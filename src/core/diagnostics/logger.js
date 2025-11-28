@@ -4,8 +4,8 @@
 
 const vscode = require("vscode");
 
-let currentLevel = "warn";
-let debugChannel = vscode.window.createOutputChannel("SGMTR Debug");
+let currentLevel = "info";
+let outputChannel = vscode.window.createOutputChannel("SGMTR Debug");
 
 const LEVEL_PRIORITY = {
   silent: 0,
@@ -16,19 +16,24 @@ const LEVEL_PRIORITY = {
 };
 
 function shouldLog(level) {
-  return LEVEL_PRIORITY[level] <= LEVEL_PRIORITY[currentLevel];
+  const currentPriority = LEVEL_PRIORITY[currentLevel];
+  const targetPriority = LEVEL_PRIORITY[level];
+  if (currentPriority == null || targetPriority == null) {
+    return false;
+  }
+  return targetPriority <= currentPriority;
 }
 
 function logCreate(level) {
-  return (module, message, data = {}) => {
-    if (module?.includes?.("/") || module?.includes?.("\\")) {
-      console.warn("[SGMTR] Logger module tag looks like a file path:", module);
+  return (moduleTag, message, data = {}) => {
+    if (moduleTag && (moduleTag.includes("/") || moduleTag.includes("\\"))) {
+      console.warn("[SGMTR] Logger module tag looks like a file path:", moduleTag);
     }
 
     if (!shouldLog(level)) return;
 
     const timestamp = new Date().toISOString();
-    const logEntry = `[${timestamp}] [${level.toUpperCase()}] [${module}] ${message}`;
+    const logEntry = `[${timestamp}] [${level.toUpperCase()}] [${moduleTag}] ${message}`;
 
     outputChannel.appendLine(logEntry);
     if (data && Object.keys(data).length) {
@@ -41,31 +46,22 @@ function logCreate(level) {
   };
 }
 
-
 function setLevel(level) {
+  if (!LEVEL_PRIORITY.hasOwnProperty(level)) {
+    console.warn("[SGMTR] Invalid log level:", level);
+    return;
+  }
   currentLevel = level;
 }
 
-function error(message, data, module) {
-  logCreate("error", message, data, module);
-}
-
-function warn(message, data, module) {
-  logCreate("warn", message, data, module);
-}
-
-function info(message, data, module) {
-  logCreate("info", message, data, module);
-}
-
-function debug(message, data, module) {
-  logCreate("debug", message, data, module);
-}
+const logger = {
+  setLevel,
+  error: logCreate("error"),
+  warn: logCreate("warn"),
+  info: logCreate("info"),
+  debug: logCreate("debug"),
+};
 
 module.exports = {
-  setLevel,
-  error,
-  warn,
-  info,
-  debug
+  logger
 };
