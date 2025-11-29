@@ -6,11 +6,11 @@ function buildErrorResponse(type, code, message, options = {}) {
     type,
     code,
     message,
-    details: options.details || null,
     filePath: options.filePath || null,
-    suggestion: options.suggestion || null,
     severity: options.severity || "error",
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    stack: options.stack || null,
+    module: options.module || null    
   };
 }
 
@@ -25,9 +25,11 @@ function normalizeErrorResponse(rawError, context = {}) {
   }
 
   if (rawError instanceof Error) {
-    return buildErrorResponse({
-      code: "UNHANDLED_EXCEPTION",
-      message: rawError.message,
+    return buildErrorResponse(
+      "exception",
+      "UNHANDLED_EXCEPTION",
+      rawError.message,      
+      {
       severity: "critical",
       filePath: context.filePath,
       module: context.module,
@@ -36,51 +38,60 @@ function normalizeErrorResponse(rawError, context = {}) {
   }
 
   if (typeof rawError === "string") {
-    return buildErrorResponse({
-      code: "STRING_ERROR",
-      message: rawError,
+    return buildErrorResponse(
+      "string",
+      "STRING_ERROR",
+      rawError,      
+      {
       severity: "error",
       filePath: context.filePath,
+      module: context.module,
+    });
+  }
+
+  if (typeof rawError === "object" && rawError !== null) {
+    return buildErrorResponse(
+      "object",
+      rawError.code || "OBJECT_ERROR",
+      rawError.message || "Unknown object error",
+      {
+        severity: rawError.severity || "error",
+        filePath: rawError.filePath || context.filePath || null,
+        module: rawError.module || context.module || null,
+        stack: rawError.stack
+      }
+    );
+  }
+
+  return buildErrorResponse(
+    "unknown",
+    "UNKNOWN_THROWABLE",
+    "Unknown throwable encountered",
+    {
+      severity: "critical",
+      filePath: context.filePath,
       module: context.module
-    });
-  }
-
-  if (typeof rawError === "object") {
-    return buildErrorResponse({
-      code: rawError.code || "OBJECT_ERROR",
-      message: rawError.message || "Unknown object error",
-      severity: rawError.severity || "error",
-      filePath: rawError.filePath || context.filePath || null,
-      module: rawError.module || context.module || null,
-      stack: rawError.stack
-    });
-  }
-
-  return buildErrorResponse({
-    code: "UNKNOWN_THROWABLE",
-    message: "Unknown throwable encountered",
-    severity: "critical",
-    filePath: context.filePath,
-    module: context.module
-  });
+    }
+  );
 }
 
 
 async function wrap(fn, context = {}) {
   try {
-    return await fn();
+    const value = await fn();
+    return { ok: true, value };
   } catch (err) {
-    const normalized = normalizeErrorResponse(err, context);
-    logger.error(normalized.message, normalized, context.module || "unknown");
-    throw normalized;
+    const structured = normalizeErrorResponse(err, context);
+    logger.error(context.module || "unknown", structured.message, structured);
+    return { ok: false, error: structured };
   }
 }
 
 function throwError(errorObject) {
   logger.error(
+    errorObject.module || "unknown",
     errorObject.message,
-    errorObject,
-    errorObject.type || "unknown"
+    errorObject
   );
   throw errorObject;
 }

@@ -10,7 +10,7 @@ function createWarningResponse(type, code, message, options = {}) {
     message,
     filePath: options.filePath || null,
     meta: options.meta || null,
-    severity: options.severity || "warning",
+    severity: options.severity || "warn",
     timestamp: new Date().toISOString()
   };
 }

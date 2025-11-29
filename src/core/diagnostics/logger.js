@@ -62,6 +62,4 @@ const logger = {
   debug: logCreate("debug"),
 };
 
-module.exports = {
-  logger
-};
+module.exports = logger;
