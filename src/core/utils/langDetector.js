@@ -3,7 +3,7 @@ const { extname } = require("./pathUtils");
 const logger = require("../diagnostics/logger");
 const warnings = require("../diagnostics/warningsCollector");
 
-function detect(relPath, content) {
+function detectLang(relPath, content) {
   const ext = extname(relPath);
 
   switch (ext) {
@@ -24,13 +24,17 @@ function detect(relPath, content) {
         return "javascript";
       }
 
-      warnings.recordWarning({
-        code: "UNKNOWN_LANGUAGE",
-        message: "Unable to detect language from extension or content",
-        severity: "info",
-        filePath: relPath,
-        module: "langDetector"
-      });
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "langDetector",
+          "UNKNOWN_LANGUAGE",
+          "Unable to detect language from extension or content",
+          {
+            severity: "info",
+            filePath: relPath,
+          }
+        )
+      );
 
       logger.debug("langDetector", "Unknown language detected", { relPath });
 
@@ -38,4 +42,4 @@ function detect(relPath, content) {
   }
 }
 
-module.exports = { detect };
+module.exports = detectLang;

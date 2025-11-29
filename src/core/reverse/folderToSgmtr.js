@@ -4,7 +4,7 @@ const logger = require("../diagnostics/logger");
 const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 
-function folderToSgmtr(rootPath, fileMetas) {
+function folderToSgmtr(fileMetas) {
   const tree = {};
   const seen = new Set();
 
@@ -18,27 +18,36 @@ function folderToSgmtr(rootPath, fileMetas) {
   }
 
   for (const meta of fileMetas) {
+
     if (!meta || typeof meta.path !== "string") {
-      warnings.recordWarning({
-        code: "INVALID_METADATA_ENTRY",
-        message: "Invalid metadata entry skipped",
-        severity: "warn",
-        filePath: null,
-        module: "folderToSgmtr"
-      });
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "folderToSgmtr",
+          "INVALID_METADATA_ENTRY",
+          "Invalid metadata entry skipped",
+          {
+            severity: "warn",
+            filePath: null,
+          }
+        )
+      );
       continue;
     }
 
     const rel = toPosix(meta.path);
 
     if (seen.has(rel)) {
-      warnings.recordWarning({
-        code: "DUPLICATE_METADATA_PATH",
-        message: "Duplicate metadata path skipped",
-        severity: "warn",
-        filePath: rel,
-        module: "folderToSgmtr"
-      });
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "folderToSgmtr",
+          "DUPLICATE_METADATA_PATH",
+          "Duplicate metadata path skipped",
+          {
+            severity: "warn",
+            filePath: rel,
+          }
+        )
+      );
       continue;
     }
 
@@ -59,8 +68,6 @@ function folderToSgmtr(rootPath, fileMetas) {
         exports: Array.isArray(meta.exports) ? meta.exports : []
       }
     };
-
-    stats.increment("sgmtrNodesCreated");
   }
 
   logger.info("folderToSgmtr", "SGMTR tree constructed", {
@@ -70,4 +77,4 @@ function folderToSgmtr(rootPath, fileMetas) {
   return tree;
 }
 
-module.exports = { folderToSgmtr };
+module.exports = folderToSgmtr;

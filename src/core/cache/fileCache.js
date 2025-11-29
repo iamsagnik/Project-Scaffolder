@@ -19,13 +19,17 @@ class FileCache {
     const firstKey = this.map.keys().next().value;
     this.map.delete(firstKey);
 
-    warnings.recordWarning({
-      code: "FILE_CACHE_EVICTED",
-      message: "Oldest cache entry evicted due to size limit",
-      severity: "info",
-      filePath: null,
-      module: "fileCache"
-    });
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "fileCache",
+        "FILE_CACHE_EVICTED",
+        "Oldest cache entry evicted due to size limit",
+        {
+          severity: "info",
+          filePath: null,
+        }
+      )
+    );
 
     logger.debug("fileCache", "Cache entry evicted", {
       currentSize: this.map.size
@@ -49,7 +53,7 @@ class FileCache {
     const key = this.makeKey(workspaceRoot, relPath, mtime, size);
 
     if (!this.map.has(key)) {
-      stats.increment("cacheEntries");
+      stats.incrementCacheEntries();
     }
 
     this.map.set(key, value);

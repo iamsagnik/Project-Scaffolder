@@ -2,11 +2,11 @@ const path = require("path");
 
 const loadSgmtrIgnore = require("../ignore/loadSgmtrIgnore");
 const buildIgnoreMatchers = require("../ignore/buildIgnoreMatchers");
-const { readFolder } = require("../parser/readFolder");
-const { processFileMetadata } = require("./processFileMetadata");
-const { folderToSgmtr } = require("./folderToSgmtr");
-const { validateSgmtr } = require("./validationSgmtr");
-const { mergeSgmtr } = require("./mergeSgmtr");
+const readFolder = require("../parser/readFolder");
+const processFileMetadata = require("./processFileMetadata");
+const folderToSgmtr = require("./folderToSgmtr");
+const validateSgmtr = require("./validationSgmtr");
+const mergeSgmtr = require("./mergeSgmtr");
 const { writeSgmtr } = require("../generator/fileWriter");
 
 const stats = require("../diagnostics/statsCollector");
@@ -21,7 +21,7 @@ async function reverseGenerate(rootPath) {
     outputPath: null
   };
 
-  // iniating traversal phase
+  // initiating traversal phase
   stats.startPhase("traversal");  
 
   const patterns = await loadSgmtrIgnore(rootPath);
@@ -30,7 +30,6 @@ async function reverseGenerate(rootPath) {
   const folderRes = await readFolder(rootPath, ign);
   const { files, skipped } = folderRes;
   report.skipped = skipped;
-  stats.incrementFoldersVisited();
 
   // ending of traversal phase
   stats.endPhase("traversal");
@@ -40,8 +39,8 @@ async function reverseGenerate(rootPath) {
 
   const metas = [];
 
-  for (const f of folderRes.files) {
-    const m = await processFileMetadata(f);
+  for (const file of files) {
+    const m = await processFileMetadata(file);
     if (!m.ok) continue;
     report.filesProcessed++;
     metas.push(m.meta);
@@ -53,16 +52,15 @@ async function reverseGenerate(rootPath) {
   // iniating generation phase
   stats.startPhase("generation");
 
-  const tree = folderToSgmtr(rootPath, metas);
+  const tree = folderToSgmtr(metas);
 
   // ending of generation phase
   stats.endPhase("generation");
 
-
   // initiating validation phase
   stats.startPhase("validation"); 
 
-  const val = await validateSgmtr(tree, rootPath);
+  const val = await validateSgmtr(tree);
   if (!val.ok) {
     return {
       ok: false,
@@ -88,14 +86,6 @@ async function reverseGenerate(rootPath) {
   stats.startPhase("writing");
 
   const w = await writeSgmtr(rootPath, finalTree);
-  if (!w.ok) {
-    return {
-      ok: false,
-      report,
-      error: { type: "writeError", message: w.error }
-    };
-  }
-
   report.outputPath = w.path;
 
   stats.endPhase("writing");

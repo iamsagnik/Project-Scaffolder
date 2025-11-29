@@ -103,4 +103,4 @@ function mergeSgmtr(existing, generated, mode = "preferNewer") {
   return { ok: true, merged, conflicts };
 }
 
-module.exports = { mergeSgmtr };
+module.exports = mergeSgmtr;

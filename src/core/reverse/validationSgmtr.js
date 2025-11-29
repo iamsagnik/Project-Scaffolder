@@ -43,6 +43,7 @@ async function validateSgmtr(sgmtrObject, schemaUriOverride = null) {
       module: "validateSgmtr",
       stack: err?.stack
     });
+    return { ok: false, error: "SCHEMA_READ_FAILED" };
   }
 
   let schema;
@@ -57,6 +58,7 @@ async function validateSgmtr(sgmtrObject, schemaUriOverride = null) {
       module: "validateSgmtr",
       stack: err?.stack
     });
+    return { ok: false, error: "SCHEMA_PARSE_FAILED" };
   }
 
   let validateFn;
@@ -71,6 +73,7 @@ async function validateSgmtr(sgmtrObject, schemaUriOverride = null) {
       module: "validateSgmtr",
       stack: err?.stack
     });
+    return { ok: false, error: "SCHEMA_COMPILE_FAILED" };
   }
 
   const valid = validateFn(sgmtrObject);
@@ -84,13 +87,16 @@ async function validateSgmtr(sgmtrObject, schemaUriOverride = null) {
       module: "validateSgmtr",
       meta: validateFn.errors
     });
+    return {
+      ok: false,
+      error: "SCHEMA_VALIDATION_FAILED",
+      details: validateFn.errors
+    };
   }
-
-  stats.increment("schemaValidations");
 
   logger.info("validateSgmtr", "SGMTR schema validation passed");
 
   return { ok: true };
 }
 
-module.exports = { validateSgmtr };
+module.exports = validateSgmtr;

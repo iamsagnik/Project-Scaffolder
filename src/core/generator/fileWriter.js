@@ -26,8 +26,6 @@ async function writeSgmtr(rootPath, sgmtrObject) {
   try {
     await writeFile(targetPath, serialized);
 
-    stats.increment("sgmtrFilesWritten");
-
     successes.recordSuccess({
       code: "SGMTR_WRITTEN",
       message: "SGMTR file written successfully",

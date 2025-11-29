@@ -29,36 +29,42 @@ async function safeStat(filePath) {
     const uri = vscode.Uri.file(filePath);
     return await vscode.workspace.fs.stat(uri);
   } catch (err) {
-    stats.increment("totalFilesSkipped");
-    warnings.recordWarning({
-      code: "STAT_FAILED",
-      message: "Failed to stat path",
-      severity: "warn",
-      filePath,
-      module: "fsUtils"
-    });
+    stats.incrementFilesSkipped();
+    const warning = warnings.createWarningResponse(
+      "fsUtils",
+      "STAT_FAILED",
+      "Failed to stat path",
+      {
+        severity: "warn",
+        filePath,
+      }
+    );
+    warnings.recordWarning(warning);
     logger.warn("fsUtils", "stat failed", { filePath, err });
     return null;
   }
 }
 
 async function readFile(filePath) {
-  const stat = await safeStat(filePath);
-  if (!stat) {
+  const content = await safeStat(filePath);
+  if (!content) {
     return { ok: false, reason: "STAT_FAILED" };
   }
 
-  if (stat.size > MAX_FILE_SIZE_BYTES) {
-    stats.increment("totalFilesSkipped");
-    warnings.recordWarning({
-      code: "FILE_TOO_LARGE",
-      message: "File exceeds size limit",
-      severity: "warn",
-      filePath,
-      meta: { size: stat.size },
-      module: "fsUtils"
-    });
-    return { ok: false, reason: "FILE_TOO_LARGE", size: stat.size };
+  if (content.size > MAX_FILE_SIZE_BYTES) {
+    stats.incrementFilesSkipped();
+    const warning = warnings.createWarningResponse(
+      "fsUtils",
+      "FILE_TOO_LARGE",
+      "File exceeds size limit",
+      {
+        severity: "warn",
+        filePath,
+        meta: { size: stat.size },
+      }
+    );
+    warnings.recordWarning(warning);
+    return { ok: false, reason: "FILE_TOO_LARGE", size: content.size };
   }
 
   try {
@@ -67,17 +73,20 @@ async function readFile(filePath) {
 
     if (looksBinary(data)) {
       stats.increment("binaryFilesSkipped");
-      warnings.recordWarning({
-        code: "BINARY_FILE",
-        message: "Binary file skipped",
-        severity: "warn",
-        filePath,
-        module: "fsUtils"
-      });
+      const warning = warnings.createWarningResponse(
+        "fsUtils module",
+        "BINARY_FILE",
+        "Binary file skipped",
+        {
+          severity: "warn",
+          filePath,
+        }
+      );
+      warnings.recordWarning(warning);
       return { ok: false, reason: "BINARY_FILE" };
     }
 
-    stats.increment("totalFilesProcessed");
+    stats.incrementFilesProcessed();
     return { ok: true, content: uint8ToString(data) };
 
   } catch (err) {
@@ -97,19 +106,25 @@ async function readDir(dirPath) {
     const uri = vscode.Uri.file(dirPath);
     return await vscode.workspace.fs.readDirectory(uri);
   } catch (err) {
-    throwError({
-      code: "READ_DIR_FAILED",
-      message: "Failed to read directory",
-      severity: "critical",
-      filePath: dirPath,
-      module: "fsUtils",
-      stack: err?.stack
-    });
-  }
-}
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "fsUtils",
+        "READ_DIR_FAILED",
+        "Failed to read directory",
+        {
+          severity: "warn",
+          filePath: dirPath,
+          meta: { stack: err?.stack }
+        }
+      )
+    );
 
-async function stat(filePath) {
-  return safeStat(filePath);
+    logger.warn("fsUtils", "readDirectory failed", {
+      dirPath,
+      err
+    });
+    return [];
+  }
 }
 
 async function isFile(filePath) {
@@ -200,9 +215,9 @@ async function readDirRecursive(dirPath) {
 module.exports = {
   readFile,
   readDir,
-  stat,
   isFile,
   isDirectory,
   writeFile,
-  readDirRecursive
+  readDirRecursive,
+  safeStat
 };

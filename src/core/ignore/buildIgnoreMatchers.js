@@ -5,110 +5,143 @@ const logger = require("../diagnostics/logger");
 const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 
-function normalizeRelPath(relPath) {
+function normalize(relPath) {
   if (!relPath) return "";
-  return relPath.split(path.sep).join("/");
+
+  let norm = relPath.split(path.sep).join("/");
+
+  if (norm.startsWith("./")) norm = norm.slice(2);
+  if (norm.startsWith("/")) norm = norm.slice(1);
+
+  norm = norm.replace(/\/+/g, "/");
+  return norm;
 }
 
 function buildIgnoreMatchers(patterns = []) {
-  const includes = [];
-  const excludes = [];
+  const rules = [];
 
-  logger.debug("ignore", "Building ignore matchers", { patternCount: patterns.length });
+  logger.debug("ignore", "Building git-accurate ignore matchers", {
+    patternCount: Array.isArray(patterns) ? patterns.length : 0
+  });
 
-  for (let raw of patterns) {
-    if (!raw || typeof raw !== "string") {
-
-      const warning = warnings.createWarningResponse(
-        "non-string pattern",
-        "INVALID_IGNORE_PATTERN",
-        "Non-string ignore pattern skipped",
+  if (!Array.isArray(patterns)) {
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "ignore",
+        "INVALID_IGNORE_PATTERN_ARRAY",
+        "Ignore patterns must be an array",
         {
-          severity: "info",
+          severity: "warn",
           filePath: null,
-          meta: "Array object"
+          meta: { receivedType: typeof patterns }
         }
+      )
+    );
+    patterns = [];
+  }
+
+  for (let i = 0; i < patterns.length; i++) {
+    const raw = patterns[i];
+
+    if (typeof raw !== "string") {
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "ignore",
+          "INVALID_IGNORE_PATTERN",
+          "Non-string ignore pattern skipped",
+          {
+            severity: "info",
+            filePath: null,
+            meta: { index: i, type: typeof raw }
+          }
+        )
       );
-      warnings.recordWarning(warning);
       continue;
     }
 
-    const p = raw.trim();
-    if (!p) continue;
+    const trimmed = raw.trim();
+    if (!trimmed) continue;           // blank
+    if (trimmed.startsWith("#")) continue; // comment
+
+    let pattern = trimmed;
+    let isNegation = false;
+
+    if (pattern.startsWith("!")) {
+      isNegation = true;
+      pattern = pattern.slice(1);
+
+      if (!pattern) {
+        warnings.recordWarning(
+          warnings.createWarningResponse(
+            "ignore",
+            "INVALID_NEGATION_PATTERN",
+            "Bare '!' negation skipped",
+            {
+              severity: "info",
+              filePath: null,
+              meta: { index: i }
+            }
+          )
+        );
+        continue;
+      }
+    }
+
+    const normalized = normalize(pattern);
+    if (!normalized) continue;
 
     try {
-      // negation
-      if (p.startsWith("!")) {
-        const body = p.slice(1);
+      const mm = new Minimatch(normalized, {
+        dot: true,         // match dotfiles
+        matchBase: false,  // full relative-path only
+        nocomment: true,
+        nobrace: false,
+        noglobstar: false
+      });
 
-        if (body.endsWith("/**")) {
-          const base = body.slice(0, -3);
-          includes.push({ raw: "!" + base, mm: new Minimatch(base, { dot: true, matchBase: true }) });
-          includes.push({ raw: p, mm: new Minimatch(body, { dot: true, matchBase: true }) });
-        } else {
-          includes.push({ raw: p, mm: new Minimatch(body, { dot: true, matchBase: true }) });
-        }
-        continue;
-      }
-
-      // auto-expansion
-      if (p.endsWith("/**")) {
-        const base = p.slice(0, -3);
-        excludes.push({ raw: base, mm: new Minimatch(base, { dot: true, matchBase: true }) });
-        excludes.push({ raw: p, mm: new Minimatch(p, { dot: true, matchBase: true }) });
-        continue;
-      }
-
-      excludes.push({ raw: p, mm: new Minimatch(p, { dot: true, matchBase: true }) });
-
+      rules.push({
+        raw,
+        pattern: normalized,
+        isNegation,
+        mm
+      });
     } catch (err) {
-      const warning = warnings.createWarningResponse(
-        "ignore",
-        "INVALID_MINIMATCH_PATTERN",
-        "Failed to compile ignore pattern",
-        {
-          severity: "warn",
-          filePath: p,
-          meta: { error: err?.message }
-        }
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "ignore",
+          "INVALID_MINIMATCH_PATTERN",
+          "Failed to compile ignore pattern",
+          {
+            severity: "warn",
+            filePath: null,
+            meta: { pattern: raw, error: err?.message }
+          }
+        )
       );
-      warnings.recordWarning(warning);
     }
   }
 
   function shouldIgnore(relPath) {
     const norm = normalizeRelPath(relPath);
+
     let ignored = false;
     let rule = null;
 
-    for (const ex of excludes) {
+    // Git semantics: last matching rule wins
+    for (const r of rules) {
       try {
-        if (ex.mm.match(norm)) {
-          ignored = true;
-          rule = ex.raw;
-        }
-      } catch {}
-    }
-
-    for (const inc of includes) {
-      try {
-        if (inc.mm.match(norm)) {
-          ignored = false;
-          rule = inc.raw;
-          break;
-        }
-      } catch {}
-    }
-
-    if (ignored) {
-      stats.increment("totalFilesSkipped");
-      logger.debug("ignore", "Path ignored", { relPath: norm, rule });
+        if (!r.mm.match(norm)) continue;
+        ignored = !r.isNegation;
+        rule = r.raw;
+      } catch {
+        continue;
+      }
     }
 
     return { ignored, rule, relPath: norm };
   }
 
-  return { includes, excludes, shouldIgnore };
+  return { rules, shouldIgnore};
 }
 
 module.exports = buildIgnoreMatchers;

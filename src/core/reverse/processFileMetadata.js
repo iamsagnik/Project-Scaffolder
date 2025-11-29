@@ -1,53 +1,60 @@
-const { fileCache } = require("../cache/fileCache");
-const { readFileContent } = require("../parser/readFileContent");
+const fileCache = require("../cache/fileCache");
+const { readFile } = require("../utils/fsUtils");
 const { basename, dirname, toPosix } = require("../utils/pathUtils");
-const { detect } = require("../parser/langDetector");
-const { extract } = require("../parser/extractImportsExports");
+const detectLang = require("../utils/langDetector");
+const extractImportsExports = require("../parser/extractImportsExports");
 
 const logger = require("../diagnostics/logger");
 const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
-const { throwError } = require("../diagnostics/errorHandler");
 
 async function processFileMetadata(fileObj) {
   const { absPath, relPath, size, mtime, workspaceRoot } = fileObj;
 
   const cachedMeta = fileCache.get(relPath, mtime, size, workspaceRoot);
-  if (cachedMeta && cachedMeta.__type === "meta") {
+  if (cachedMeta) {
     logger.debug("processFileMetadata", "Metadata cache hit", { relPath });
-    return { ok: true, meta: cachedMeta.value, cached: true };
+    return { ok: true, meta: cachedMeta, cached: true };
   }
 
-  const readRes = await readFileContent(absPath, relPath, mtime, size);
+  const readRes = await readFile(absPath);
   if (!readRes.ok) {
-    warnings.recordWarning({
-      code: readRes.reason,
-      message: "File content unavailable for metadata",
-      severity: "info",
-      filePath: relPath,
-      module: "processFileMetadata"
-    });
-    return { ok: false, reason: readRes.reason };
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "processFileMetadata",
+        readRes.reason,
+        "File content unavailable for metadata",
+        {
+          severity: "info",
+          filePath: relPath,
+        }
+      )
+    );
+    return { ok: false, reason: readRes?.reason || "READ_FAILED" };
   }
 
   const content = readRes.content;
-  const lang = detect(relPath, content);
+  const lang = detectLang(relPath, content);
 
   let imports = [];
   let exports = [];
 
   try {
-    const extracted = extract(content, lang);
+    const extracted = extractImportsExports(content, lang);
     imports = extracted.imports || [];
     exports = extracted.exports || [];
   } catch (err) {
-    warnings.recordWarning({
-      code: "IMPORT_EXPORT_PARSE_FAILED",
-      message: "Import/export extraction failed",
-      severity: "warn",
-      filePath: relPath,
-      module: "processFileMetadata"
-    });
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "processFileMetadata",
+        "IMPORT_EXPORT_PARSE_FAILED",
+        "Import/export extraction failed",
+        {
+          severity: "warn",
+          filePath: relPath, 
+        }
+      )
+    );
   }
 
   const meta = {
@@ -58,18 +65,12 @@ async function processFileMetadata(fileObj) {
     size,
     mtime,
     fileName: basename(relPath),
-    dir: toPosix(dirname(relPath))
+    dir: dirname(relPath)
   };
 
-  fileCache.set(
-    relPath,
-    mtime,
-    size,
-    { __type: "meta", value: meta },
-    workspaceRoot
-  );
+  fileCache.set(relPath, mtime, size, meta, workspaceRoot);
 
-  stats.increment("totalFilesProcessed");
+  stats.incrementFilesProcessed();
 
   logger.debug("processFileMetadata", "Metadata generated", {
     relPath,
@@ -79,4 +80,4 @@ async function processFileMetadata(fileObj) {
   return { ok: true, meta, cached: false };
 }
 
-module.exports = { processFileMetadata };
+module.exports = processFileMetadata;

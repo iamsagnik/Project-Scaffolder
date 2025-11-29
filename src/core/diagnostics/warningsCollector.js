@@ -1,8 +1,10 @@
 const logger = require("./logger");
+const stats = require("./statsCollector");
 
 let warnings = [];
 
 function createWarningResponse(type, code, message, options = {}) {
+  stats.incrementWarnings();
   return {
     status: "warning",
     type,

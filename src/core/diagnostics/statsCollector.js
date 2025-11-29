@@ -11,7 +11,8 @@ function reset() {
     totalFilesSkipped: 0,
     binaryFilesSkipped: 0,
     symlinksSkipped: 0,
-    totalWarnings: 0
+    totalWarnings: 0,
+    cacheEntries: 0
   };
 
   timings = {
@@ -64,6 +65,10 @@ function incrementWarnings() {
   counters.totalWarnings++;
 }
 
+function incrementCacheEntries(){
+  counters.cacheEntries++;
+}
+
 function getStats() {
   timings.total =
     timings.traversal +
@@ -89,5 +94,6 @@ module.exports = {
   incrementBinarySkipped,
   incrementSymlinkSkipped,
   incrementWarnings,
+  incrementCacheEntries,
   getStats
 };

@@ -21,14 +21,18 @@ function extractImportsExports(content, lang) {
     return { imports, exports };
 
   } catch (err) {
-    warnings.recordWarning({
-      code: "IMPORT_EXPORT_EXTRACTION_FAILED",
-      message: "Parser threw during import/export extraction",
-      severity: "warn",
-      filePath: null,
-      module: "extractImportsExports",
-      meta: { lang }
-    });
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "extractImportsExports",
+        "IMPORT_EXPORT_EXTRACTION_FAILED",
+        "Parser threw during import/export extraction",
+        {
+          severity: "warn",
+          filePath: null,
+          meta: { lang }
+        }
+      )
+    );
 
     logger.warn("extractImportsExports", "Parser failure", {
       lang,
@@ -39,6 +43,4 @@ function extractImportsExports(content, lang) {
   }
 }
 
-module.exports = {
-  extractImportsExports
-};
+module.exports = extractImportsExports;
