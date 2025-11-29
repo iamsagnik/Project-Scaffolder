@@ -1,9 +1,9 @@
 const vscode = require("vscode");
 
-const { reverseGenerateCommand } = require("./src/commands/reverseGenerateCommand");
+const reverseGenerateCommand = require("./src/commands/reverseGenerateCommand");
 const { previewSgmtr } = require("./src/commands/previewSgmtr");
 
-const { logger } = require("./src/core/diagnostics/logger");
+const logger  = require("./src/core/diagnostics/logger");
 const { throwError } = require("./src/core/diagnostics/errorHandler");
 
 function activate(context) {
