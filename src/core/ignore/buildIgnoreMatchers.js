@@ -18,13 +18,18 @@ function buildIgnoreMatchers(patterns = []) {
 
   for (let raw of patterns) {
     if (!raw || typeof raw !== "string") {
-      warnings.recordWarning({
-        code: "INVALID_IGNORE_PATTERN",
-        message: "Non-string ignore pattern skipped",
-        severity: "info",
-        filePath: null,
-        module: "ignore"
-      });
+
+      const warning = warnings.createWarningResponse(
+        "non-string pattern",
+        "INVALID_IGNORE_PATTERN",
+        "Non-string ignore pattern skipped",
+        {
+          severity: "info",
+          filePath: null,
+          meta: "Array object"
+        }
+      );
+      warnings.recordWarning(warning);
       continue;
     }
 
@@ -57,14 +62,17 @@ function buildIgnoreMatchers(patterns = []) {
       excludes.push({ raw: p, mm: new Minimatch(p, { dot: true, matchBase: true }) });
 
     } catch (err) {
-      warnings.recordWarning({
-        code: "INVALID_MINIMATCH_PATTERN",
-        message: "Failed to compile ignore pattern",
-        severity: "warn",
-        filePath: p,
-        module: "ignore",
-        meta: { error: err?.message }
-      });
+      const warning = warnings.createWarningResponse(
+        "ignore",
+        "INVALID_MINIMATCH_PATTERN",
+        "Failed to compile ignore pattern",
+        {
+          severity: "warn",
+          filePath: p,
+          meta: { error: err?.message }
+        }
+      );
+      warnings.recordWarning(warning);
     }
   }
 
@@ -103,4 +111,4 @@ function buildIgnoreMatchers(patterns = []) {
   return { includes, excludes, shouldIgnore };
 }
 
-module.exports = { buildIgnoreMatchers };
+module.exports = buildIgnoreMatchers;
