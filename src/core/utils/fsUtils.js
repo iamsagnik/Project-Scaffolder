@@ -60,7 +60,7 @@ async function readFile(filePath) {
       {
         severity: "warn",
         filePath,
-        meta: { size: stat.size },
+        meta: { size: content.size },
       }
     );
     warnings.recordWarning(warning);
@@ -98,6 +98,7 @@ async function readFile(filePath) {
       module: "fsUtils",
       stack: err?.stack
     });
+    return { ok: false, reason: "READ_FAILED" };
   }
 }
 

@@ -1,111 +1,75 @@
-const { buildPreviewTree } = require("./buildPreviewTree");
-const { enhancePreviewTree } = require("./enhancePreviewTree");
-const { previewTreeToPlain } = require("./previewTreeToPlain");
-const { renderPreviewPanel } = require("./renderPreviewPanel");
+const buildPreviewTree = require("./buildPreviewTree");
+const enhancePreviewTree = require("./enhancePreviewTree");
+const previewTreeToPlain = require("./previewTreeToPlain");
+const renderPreviewPanel = require("./renderPreviewPanel");
+const buildAsciiTree = require("./buildAsciiTree")
 
-const { loadSgmtrIgnore } = require("../ignore/loadSgmtrIgnore");
-const { buildIgnoreMatchers } = require("../ignore/buildIgnoreMatchers");
+const loadSgmtrIgnore = require("../ignore/loadSgmtrIgnore");
+const buildIgnoreMatchers = require("../ignore/buildIgnoreMatchers");
 
 const logger = require("../diagnostics/logger");
 const warnings = require("../diagnostics/warningsCollector");
 const stats = require("../diagnostics/statsCollector");
-const { throwError } = require("../diagnostics/errorHandler");
 
-async function runPreview({ uri, workspaceRoot, rawTree, showDetails }) {
-  try {
-    logger.info("previewPipeline", "Starting preview pipeline", {
-      filePath: uri?.fsPath,
-      showDetails
-    });
+async function runPreview({ uri, workspaceRootPath, rawTree, showDetails }) {
+  logger.info("previewPipeline", "Starting preview pipeline", {
+    filePath: uri?.fsPath,
+    showDetails
+  });
 
-    // -------------------------------
-    // PHASE: BUILD PREVIEW TREE
-    // -------------------------------
-    stats.startPhase?.("preview_build");
+  stats.startPhase("preview_build");
+  const previewRoot = buildPreviewTree(rawTree);
+  stats.endPhase("preview_build");
 
-    const previewRoot = buildPreviewTree(rawTree);
+  const patterns = await loadSgmtrIgnore(workspaceRootPath);
+  const matchers = buildIgnoreMatchers(patterns);
 
-    stats.endPhase?.("preview_build");
-
-    // -------------------------------
-    // PHASE: IGNORE INITIALIZATION
-    // -------------------------------
-    let matchers = null;
+  if (showDetails) {
+    stats.startPhase("preview_enhance");
 
     try {
-      const patterns = await loadSgmtrIgnore(workspaceRoot);
-      matchers = buildIgnoreMatchers(patterns);
+      await enhancePreviewTree(
+        previewRoot,
+        workspaceRootPath,
+        matchers
+      );
     } catch (err) {
-      warnings.recordWarning({
-        code: "PREVIEW_IGNORE_INIT_FAILED",
-        message: "Failed to initialize ignore system for preview",
-        severity: "warn",
-        filePath: workspaceRoot,
-        module: "previewPipeline"
-      });
-
-      // Fallback: no ignores
-      matchers = buildIgnoreMatchers([]);
+      // Enhancement must never break preview
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "previewPipeline",
+          "PREVIEW_ENHANCE_FAILED",
+          "Preview enhancement failed",
+          {
+            severity: "warn",
+            filePath: uri?.fsPath,
+            meta: { error: err?.message }            
+          }
+        )
+      );
     }
 
-    // -------------------------------
-    // PHASE: OPTIONAL ENHANCEMENT
-    // -------------------------------
-    if (showDetails) {
-      stats.startPhase?.("preview_enhance");
+    stats.endPhase("preview_enhance");
+  }
 
-      try {
-        await enhancePreviewTree(
-          previewRoot,
-          workspaceRoot,
-          matchers
-        );
-      } catch (err) {
-        // Enhancement must never break preview
-        warnings.recordWarning({
-          code: "PREVIEW_ENHANCE_FAILED",
-          message: "Preview enhancement failed",
-          severity: "warn",
-          filePath: uri?.fsPath,
-          module: "previewPipeline",
-          meta: { error: err?.message }
-        });
-      }
+  stats.startPhase("preview_render");
 
-      stats.endPhase?.("preview_enhance");
+  const plainTree = previewTreeToPlain(previewRoot);
+  const asciiOutput = buildAsciiTree(plainTree);
+  renderPreviewPanel(asciiOutput);
+
+  stats.endPhase("preview_render");
+
+  logger.info("previewPipeline", "Preview rendered successfully", {
+    filePath: uri?.fsPath
+  });
+
+  return {
+    ok: true,
+    report: {
+      nodes: plainTree?.length ?? 0,
+      detailed: showDetails === true
     }
-
-    // -------------------------------
-    // PHASE: RENDER
-    // -------------------------------
-    stats.startPhase?.("preview_render");
-
-    const plainTree = previewTreeToPlain(previewRoot);
-    const asciiOutput = require("./buildAsciiTree")
-      .buildAsciiTree(plainTree);
-
-    renderPreviewPanel(asciiOutput);
-
-    stats.endPhase?.("preview_render");
-
-    logger.info("previewPipeline", "Preview rendered successfully", {
-      filePath: uri?.fsPath
-    });
-
-  } catch (err) {
-    // Any fatal error in the pipeline comes here
-    throwError({
-      code: "PREVIEW_PIPELINE_FAILED",
-      message: "Preview pipeline failed",
-      severity: "critical",
-      filePath: uri?.fsPath,
-      module: "previewPipeline",
-      stack: err?.stack,
-      meta: { original: err?.message }
-    });
   }
 }
-
-module.exports = {
-  runPreview
-};
+module.exports = runPreview;

@@ -72,6 +72,4 @@ function buildAsciiTree(node, prefix = "") {
   return output;
 }
 
-module.exports = {
-  buildAsciiTree
-};
+module.exports = buildAsciiTree;

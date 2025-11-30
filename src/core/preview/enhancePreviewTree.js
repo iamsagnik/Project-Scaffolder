@@ -1,7 +1,7 @@
 const path = require("path");
 
-const { readFileContent } = require("../parser/readFileContent");
-const { extractImportsExports } = require("../parser/extractImportsExports");
+const { readFile } = require("../utils/fsUtils");
+const extractImportsExports = require("../parser/extractImportsExports");
 const langDetector = require("../utils/langDetector");
 const { isInside, toPosix } = require("../utils/pathUtils");
 
@@ -27,32 +27,78 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
     if (node.type !== "file") return;
 
     const relPath = toPosix(node.relPath || "");
+
+    if (path.isAbsolute(relPath)) {
+      node.isIgnored = true;
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "enhancePreviewTree",
+          "ABSOLUTE_PATH_PREVIEW",
+          "Absolute path detected in preview",
+          {
+            severity: "warn",
+            filePath: relPath,
+          }
+        )
+      );
+      return;
+    }
+
     const absPath = path.join(workspaceRoot, relPath);
 
     // Workspace escape guard
     if (!isInside(workspaceRoot, absPath)) {
       node.isIgnored = true;
 
-      warnings.recordWarning({
-        code: "PATH_ESCAPE_PREVIEW",
-        message: "File resolved outside workspace during preview",
-        severity: "warn",
-        filePath: relPath,
-        module: "enhancePreviewTree"
-      });
-
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "enhancePreviewTree",
+          "PATH_ESCAPE_PREVIEW",
+          "File resolved outside workspace during preview",
+          {
+            severity: "warn",
+            filePath: relPath,
+          }
+        )
+      );
       return;
     }
 
     // Ignore guard
-    const check = matchers.shouldIgnore(relPath);
-    if (check.ignored) {
+    let ignored = false;
+    try {
+      if (matchers?.shouldIgnore) {
+        const check = matchers.shouldIgnore(relPath);
+        ignored = check?.ignored === true;
+      }
+    } catch (err) {
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "enhancePreviewTree",
+          "IGNORE_MATCHER_FAILED",
+          "Ignore matcher failed during preview",
+          {
+            severity: "warn",
+          filePath: relPath,
+          meta: { error: err?.message }
+          }
+        )
+      );
+    }
+
+    if (ignored) {
       node.isIgnored = true;
       return;
     }
 
     // Safe file read
-    const result = await readFileContent(absPath, relPath);
+    let result;
+    try {
+      result = await readFile(absPath, relPath);
+    } catch (err) {
+      node.isIgnored = true;
+      return;
+    }
 
     if (!result || !result.ok) {
       node.isIgnored = true;
@@ -62,8 +108,23 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
     const content = result.content || "";
 
     // Language detection
-    const ext = path.extname(relPath);
-    const language = langDetector(ext, content);
+    let language = "unknown";
+    try {
+      language = langDetector(relPath, content);
+    } catch (err) {
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "enhancePreviewTree",
+          "LANG_DETECT_FAILED",
+          "Language detection failed",
+          {
+            severity: "warn",
+            filePath: relPath,
+            meta: { error: err?.message }
+          }
+        )
+      );
+    }
 
     node.language = language || "unknown";
 
@@ -75,7 +136,23 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
     }
 
     // Extract imports/exports (safe by contract)
-    const meta = extractImportsExports(content, language);
+    let meta = { imports: [], exports: [] };
+    try {
+      meta = extractImportsExports(content, language);
+    } catch (err) {
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "enhancePreviewTree",
+          "IMPORT_EXPORT_CRASH",
+          "Import/export extraction crashed",
+          {
+            severity: "warn",
+          filePath: relPath,
+          meta: { error: err?.message }
+          }
+        )
+      );
+    }
 
     node.imports = Array.isArray(meta.imports) ? meta.imports : [];
     node.exports = Array.isArray(meta.exports) ? meta.exports : [];
@@ -93,6 +170,4 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
   await walk(previewRoot);
 }
 
-module.exports = {
-  enhancePreviewTree
-};
+module.exports = enhancePreviewTree;

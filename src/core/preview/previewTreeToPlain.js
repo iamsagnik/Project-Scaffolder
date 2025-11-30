@@ -58,6 +58,4 @@ function previewTreeToPlain(previewRoot) {
   return single;
 }
 
-module.exports = {
-  previewTreeToPlain
-};
+module.exports = previewTreeToPlain;

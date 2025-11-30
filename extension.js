@@ -1,7 +1,7 @@
 const vscode = require("vscode");
 
 const reverseGenerateCommand = require("./src/commands/reverseGenerateCommand");
-const { previewSgmtr } = require("./src/commands/previewSgmtr");
+const previewSgmtrCommand = require("./src/commands/previewSgmtrCommand");
 
 const logger  = require("./src/core/diagnostics/logger");
 const { throwError } = require("./src/core/diagnostics/errorHandler");
@@ -19,7 +19,7 @@ function activate(context) {
     // Preview Command
     const previewDisposable = vscode.commands.registerCommand(
       "sgmtr.preview",
-      previewSgmtr
+      previewSgmtrCommand
     );
 
     context.subscriptions.push(reverseDisposable, previewDisposable);

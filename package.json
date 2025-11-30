@@ -58,7 +58,7 @@
     "commands": [
       {
         "command": "sgmtr.preview",
-        "title": "SGMTR: Preview"
+        "title": "SGMTR: Generate Preview"
       },
       {
         "command": "sgmtr.reverseGenerate",

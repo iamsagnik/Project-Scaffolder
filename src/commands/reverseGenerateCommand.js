@@ -55,7 +55,7 @@ async function reverseGenerateCommand() {
   logger.info("ReverseCommand", "Reverse generation completed", report);
 
   vscode.window.showInformationMessage(
-    "Generated .sgmtr at: " + res.value.report.outputPath
+    "Generated .sgmtr at: " + report.outputPath
   );
 
   const summary = stats.getStats();

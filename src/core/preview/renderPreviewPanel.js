@@ -76,7 +76,8 @@ function renderPreviewPanel(asciiOutput) {
 
   if (previewPanel) {
     previewPanel.webview.html = html;
-    previewPanel.reveal(vscode.ViewColumn.Beside);
+    try { previewPanel.reveal(vscode.ViewColumn.Beside); } catch {}
+
     return;
   }
 
@@ -97,6 +98,4 @@ function renderPreviewPanel(asciiOutput) {
   });
 }
 
-module.exports = {
-  renderPreviewPanel
-};
+module.exports = renderPreviewPanel;
