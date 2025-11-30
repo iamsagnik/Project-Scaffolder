@@ -19,14 +19,18 @@ const registry = {
 
 function getParser(lang) {
   if (!lang || !registry[lang]) {
-    warnings.recordWarning({
-      code: "PARSER_NOT_FOUND",
-      message: "No parser registered for detected language, falling back to base",
-      severity: "info",
-      filePath: null,
-      module: "languageRegistry",
-      meta: { lang }
-    });
+    warnings.recordWarning(
+      warnings.createWarningResponse(
+        "languageRegistry",
+        "PARSER_NOT_FOUND",
+        "No parser registered for detected language, falling back to base",
+        {
+          severity: "info",
+          filePath: null,
+          meta: { lang }
+        }
+      )
+    );
 
     logger.debug("languageRegistry", "Fallback to base parser", { lang });
     return base;

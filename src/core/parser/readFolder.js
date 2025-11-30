@@ -15,6 +15,8 @@ async function readFolder(rootPath, ignoreMatchers) {
 
     let entries = await readDir(currentAbsPath);
     stats.incrementFoldersVisited();
+
+    if (!Array.isArray(entries)) return;
  
     for (const [name, type] of entries) {
       const abs = path.join(currentAbsPath, name);
@@ -54,8 +56,6 @@ async function readFolder(rootPath, ignoreMatchers) {
           size: s.size,
           mtime: s.mtime
         });
-
-        stats.incrementFilesProcessed();
       }
     }
   }
