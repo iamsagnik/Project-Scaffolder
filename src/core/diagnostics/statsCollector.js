@@ -30,7 +30,7 @@ function reset() {
 
 function startPhase(phase) {
   phaseTimes[phase] = Date.now();
-  logger.debug(`Phase ${phase} started`, null, "statsCollector");
+  logger.debug("statsCollector", `Phase ${phase} started`, { phase });
 }
 
 function endPhase(phase) {
@@ -38,7 +38,7 @@ function endPhase(phase) {
 
   const duration = Date.now() - phaseTimes[phase];
   timings[phase] = duration;
-  logger.debug(`Phase ${phase} ended`, { duration }, "statsCollector");
+  logger.debug("statsCollector", `Phase ${phase} ended`, { phase, duration });
 }
 
 function incrementFilesProcessed() {

@@ -20,7 +20,7 @@ function normalizeErrorResponse(rawError, context = {}) {
       ...rawError,
       filePath: rawError.filePath || context.filePath || null,
       module: rawError.module || context.module || null,
-      time: rawError.time || new Date().toISOString()
+      timestamp: rawError.timestamp || new Date().toISOString()
     };
   }
 

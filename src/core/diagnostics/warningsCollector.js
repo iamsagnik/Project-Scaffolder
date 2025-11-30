@@ -21,9 +21,9 @@ function recordWarning(warning) {
   warnings.push(warning);
 
   if (warning.severity === "info") {
-    logger.info(warning.message, warning, warning.type);
+    logger.info("warningsCollector", warning.message, { warning });
   } else {
-    logger.warn(warning.message, warning, warning.type);
+    logger.warn("warningsCollector", warning.message, { warning });
   }
 }
 

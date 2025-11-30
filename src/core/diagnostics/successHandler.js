@@ -16,8 +16,13 @@ function createSuccessResponse(type, code, message, options = {}) {
 
 function recordSuccessEvents(successEvent) {
   successEvents.push(successEvent);
-  logger.info(successEvent.message, successEvent, successEvent.type);
+  logger.info(
+    "successHandler",
+    successEvent.message,
+    { event: successEvent }
+  );
 }
+
 
 function getAllSuccessEvents() {
   return successEvents;
