@@ -10,9 +10,7 @@ const ajv = new Ajv({ allErrors: true, strict: false });
 
 function getDefaultSchemaUri() {
   try {
-    const ext = vscode.extensions.all.find(e =>
-      e.packageJSON?.name?.includes("sgmtr")
-    );
+    const ext = vscode.extensions.getExtension("sagnikMitra12.project-scaffolder");
 
     if (ext && ext.extensionUri) {
       return vscode.Uri.joinPath(
@@ -24,7 +22,7 @@ function getDefaultSchemaUri() {
   } catch {}
 
   return vscode.Uri.file(
-    path.join(__dirname, "../../../schema/sgmtr-schema.json")
+    path.join(__dirname, "../../../../schema/sgmtr-schema.json")
   );
 }
 

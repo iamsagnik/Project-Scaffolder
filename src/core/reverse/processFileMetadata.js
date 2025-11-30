@@ -1,6 +1,6 @@
 const fileCache = require("../cache/fileCache");
 const { readFile } = require("../utils/fsUtils");
-const { basename, dirname, toPosix } = require("../utils/pathUtils");
+const { basename, dirname } = require("../utils/pathUtils");
 const detectLang = require("../utils/langDetector");
 const extractImportsExports = require("../parser/extractImportsExports");
 
@@ -14,7 +14,7 @@ async function processFileMetadata(fileObj) {
   const cachedMeta = fileCache.get(relPath, mtime, size, workspaceRoot);
   if (cachedMeta) {
     logger.debug("processFileMetadata", "Metadata cache hit", { relPath });
-    return { ok: true, meta: cachedMeta, cached: true };
+    return { ok: true, value: cachedMeta, cached: true };
   }
 
   const readRes = await readFile(absPath);
@@ -57,7 +57,7 @@ async function processFileMetadata(fileObj) {
     );
   }
 
-  const meta = {
+  const value = {
     path: relPath,
     lang,
     imports,
@@ -68,7 +68,7 @@ async function processFileMetadata(fileObj) {
     dir: dirname(relPath)
   };
 
-  fileCache.set(relPath, mtime, size, meta, workspaceRoot);
+  fileCache.set(relPath, mtime, size, value, workspaceRoot);
 
   stats.incrementFilesProcessed();
 
@@ -77,7 +77,7 @@ async function processFileMetadata(fileObj) {
     lang
   });
 
-  return { ok: true, meta, cached: false };
+  return { ok: true, value, cached: false };
 }
 
 module.exports = processFileMetadata;

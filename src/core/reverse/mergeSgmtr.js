@@ -1,5 +1,4 @@
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 
 function isPlainObject(v) {
@@ -97,8 +96,6 @@ function mergeSgmtr(existing, generated, mode = "preferNewer") {
   logger.info("mergeSgmtr", "SGMTR merge completed", {
     conflictCount: conflicts.length
   });
-
-  stats.increment("mergeOperations");
 
   return { ok: true, merged, conflicts };
 }

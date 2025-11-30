@@ -43,7 +43,7 @@ async function reverseGenerate(rootPath) {
     const m = await processFileMetadata(file);
     if (!m.ok) continue;
     report.filesProcessed++;
-    metas.push(m.meta);
+    metas.push(m.value);
   }
 
   // ending of parsing phase
@@ -86,6 +86,9 @@ async function reverseGenerate(rootPath) {
   stats.startPhase("writing");
 
   const w = await writeSgmtr(rootPath, finalTree);
+  if (!w?.ok) {
+    return { ok: false, report, error: { message: "Write failed" } };
+  }
   report.outputPath = w.path;
 
   stats.endPhase("writing");
