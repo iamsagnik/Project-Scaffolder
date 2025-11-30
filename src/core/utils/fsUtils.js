@@ -72,7 +72,7 @@ async function readFile(filePath) {
     const data = await vscode.workspace.fs.readFile(uri);
 
     if (looksBinary(data)) {
-      stats.increment("binaryFilesSkipped");
+      stats.incrementBinarySkipped();
       const warning = warnings.createWarningResponse(
         "fsUtils module",
         "BINARY_FILE",
@@ -152,6 +152,7 @@ async function writeFile(filePath, text) {
       module: "fsUtils",
       stack: err?.stack
     });
+    throw err;
   }
 }
 
@@ -168,7 +169,7 @@ async function readDirRecursive(dirPath) {
     if (!currentStat) return;
 
     if ((currentStat.type & vscode.FileType.SymbolicLink) !== 0) {
-      stats.increment("symlinksSkipped");
+      stats.incrementSymlinkSkipped();
       warnings.recordWarning({
         code: "SYMLINK_SKIPPED",
         message: "Symlink skipped during traversal",
@@ -181,7 +182,7 @@ async function readDirRecursive(dirPath) {
 
     const uri = vscode.Uri.file(current);
     const entries = await vscode.workspace.fs.readDirectory(uri);
-    stats.increment("totalFoldersVisited");
+    stats.incrementFoldersVisited();
 
     for (const [name, type] of entries) {
       const fullPath = path.join(current, name);
@@ -210,6 +211,7 @@ async function readDirRecursive(dirPath) {
       module: "fsUtils",
       stack: err?.stack
     });
+    throw err;
   }
 }
 

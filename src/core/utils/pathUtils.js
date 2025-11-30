@@ -75,6 +75,13 @@ function isInside(parent, child) {
   }
 }
 
+function normalizeRelPath(rootPath, absPath) {
+  // relative path from root → file, always POSIX-style
+  const rel = path.relative(rootPath, absPath);
+  return toPosix(rel);
+}
+
+
 module.exports = {
   join,
   normalize,
@@ -82,5 +89,6 @@ module.exports = {
   basename,
   dirname,
   toPosix,
-  isInside
+  isInside,
+  normalizeRelPath
 };
