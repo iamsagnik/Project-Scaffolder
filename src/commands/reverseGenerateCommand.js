@@ -1,6 +1,6 @@
 const vscode = require("vscode");
 
-const reverseGenerate = require("../core/reverse/reverseGeneratePipeline");
+const reverseGenerate = require("../core/reverse/reverseGenerationPipeline");
 const { wrap } = require("../core/diagnostics/errorHandler");
 const logger = require("../core/diagnostics/logger");
 const stats = require("../core/diagnostics/statsCollector");
@@ -28,6 +28,8 @@ async function reverseGenerateCommand() {
     { module: "ReverseCommand", filePath: rootPath }
   );
 
+  console.log("REPORT:", res?.value?.report);
+  
   if (!res?.ok) {
     logger.error("ReverseCommand", "Reverse generation failed", res?.error);
 

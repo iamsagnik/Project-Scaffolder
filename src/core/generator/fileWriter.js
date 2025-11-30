@@ -21,6 +21,7 @@ async function writeSgmtr(rootPath, sgmtrObject) {
       module: "fileWriter",
       stack: err?.stack
     });
+    throw err;
   }
 
   try {
@@ -48,6 +49,7 @@ async function writeSgmtr(rootPath, sgmtrObject) {
       module: "fileWriter",
       stack: err?.stack
     });
+    throw err;
   }
 }
 
