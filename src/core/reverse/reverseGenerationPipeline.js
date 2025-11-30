@@ -10,6 +10,7 @@ const mergeSgmtr = require("./mergeSgmtr");
 const { writeSgmtr } = require("../generator/fileWriter");
 
 const stats = require("../diagnostics/statsCollector");
+const logger = require("../diagnostics/logger");
 
 async function reverseGenerate(rootPath) {
 
@@ -21,45 +22,56 @@ async function reverseGenerate(rootPath) {
     outputPath: null
   };
 
-  // initiating traversal phase
-  stats.startPhase("traversal");  
 
-  const patterns = await loadSgmtrIgnore(rootPath);
+  stats.startPhase("traversal");  
+  const {processed, patterns} = await loadSgmtrIgnore(rootPath);
+  if(processed) stats.incrementFilesProcessed();
+  else stats.incrementFilesSkipped();
   const ign = buildIgnoreMatchers(patterns);
 
   const folderRes = await readFolder(rootPath, ign);
   const { files, skipped } = folderRes;
   report.skipped = skipped;
-
-  // ending of traversal phase
   stats.endPhase("traversal");
 
-  // iniating content parsing phase
+
+
   stats.startPhase("parsing");
-
   const metas = [];
-
   for (const file of files) {
-    const m = await processFileMetadata(file);
-    if (!m.ok) continue;
-    report.filesProcessed++;
-    metas.push(m.value);
-  }
+    try {
+      logger.info("ReversePipeline", "Processing file", { relPath: file.relPath });
+      const m = await processFileMetadata(file);
+      if (!m.ok){
+        stats.incrementFilesSkipped();
+        if (m.reason === "BINARY_FILE") {
+        stats.incrementBinarySkipped();
+      }
+      continue;
+      }
 
-  // ending of parsing phase
+      report.filesProcessed++;
+      stats.incrementFilesProcessed();
+      metas.push(m.value);
+    } catch (err) {
+      logger.error("ReversePipeline", "File crashed pipeline", {
+        relPath: file.relPath,
+        error: err?.message
+      });
+      throw err;
+    }
+  }
   stats.endPhase("parsing");
 
-  // iniating generation phase
+
+
   stats.startPhase("generation");
-
   const tree = folderToSgmtr(metas);
-
-  // ending of generation phase
   stats.endPhase("generation");
 
-  // initiating validation phase
-  stats.startPhase("validation"); 
 
+
+  stats.startPhase("validation"); 
   const val = await validateSgmtr(tree);
   if (!val.ok) {
     return {
@@ -68,32 +80,27 @@ async function reverseGenerate(rootPath) {
       error: val.error
     };
   }
-
-  // ending of validation phase
   stats.endPhase("validation");
 
-  // iniating merging phase
-  stats.startPhase("merge");
 
+
+  stats.startPhase("merge");
   const mergeRes = mergeSgmtr(null, tree, "preferNewer");
   report.conflicts = mergeRes.conflicts;
   const finalTree = mergeRes.merged;
-
-  // ending merging phase
   stats.endPhase("merge");
 
-  // initiating writing phase
-  stats.startPhase("writing");
 
+
+  stats.startPhase("writing");
   const w = await writeSgmtr(rootPath, finalTree);
   if (!w?.ok) {
     return { ok: false, report, error: { message: "Write failed" } };
   }
   report.outputPath = w.path;
-
   stats.endPhase("writing");
 
-  // done
+
   return { 
     ok: true, 
     report, 

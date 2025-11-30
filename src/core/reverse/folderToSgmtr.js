@@ -1,7 +1,6 @@
 const { toPosix } = require("../utils/pathUtils");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 
 function folderToSgmtr(fileMetas) {

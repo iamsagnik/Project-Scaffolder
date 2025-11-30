@@ -91,9 +91,9 @@ module.exports = {
   incrementFilesProcessed,
   incrementFoldersVisited,
   incrementFilesSkipped,
-  incrementBinarySkipped,
-  incrementSymlinkSkipped,
-  incrementWarnings,
-  incrementCacheEntries,
+  incrementBinarySkipped,  
+  incrementSymlinkSkipped, 
+  incrementWarnings, 
+  incrementCacheEntries, 
   getStats
 };

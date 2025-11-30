@@ -2,7 +2,6 @@ const { Minimatch } = require("minimatch");
 const path = require("path");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 
 function normalize(relPath) {
@@ -87,9 +86,13 @@ function buildIgnoreMatchers(patterns = []) {
       }
     }
 
-    const normalized = normalize(pattern);
+    let normalized = normalize(pattern);
     if (!normalized) continue;
 
+    if (!normalized.includes("*") && !normalized.includes("/") && !normalized.endsWith("/")) {
+      normalized = normalized + "/**";
+    }
+    
     try {
       const mm = new Minimatch(normalized, {
         dot: true,         // match dotfiles

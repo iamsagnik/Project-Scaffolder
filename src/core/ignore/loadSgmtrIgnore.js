@@ -2,7 +2,6 @@ const vscode = require("vscode");
 const path = require("path");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 const successes = require("../diagnostics/successHandler");
 const { throwError } = require("../diagnostics/errorHandler");
@@ -29,7 +28,7 @@ async function loadSgmtrIgnore(rootPath) {
       );
 
       warnings.recordWarning(warning);
-      return [];
+      return {processed:false, patterns: []};
     }
 
     const rawBytes = await vscode.workspace.fs.readFile(ignoreUri);
@@ -57,12 +56,12 @@ async function loadSgmtrIgnore(rootPath) {
 
     successes.recordSuccessEvents(success);
 
-    return patterns;
+    return {processed:true, patterns: patterns};
 
   } catch (err) {
     if (err && (err.code === "FileNotFound" || err.name === "EntryNotFound")) {
       logger.debug("ignore", "No .sgmtrignore file found", { rootPath });
-      return [];
+      return {processed: false, patterns:[]};
     }
 
     throwError({

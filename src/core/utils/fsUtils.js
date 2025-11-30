@@ -29,7 +29,6 @@ async function safeStat(filePath) {
     const uri = vscode.Uri.file(filePath);
     return await vscode.workspace.fs.stat(uri);
   } catch (err) {
-    stats.incrementFilesSkipped();
     const warning = warnings.createWarningResponse(
       "fsUtils",
       "STAT_FAILED",
@@ -52,7 +51,6 @@ async function readFile(filePath) {
   }
 
   if (content.size > MAX_FILE_SIZE_BYTES) {
-    stats.incrementFilesSkipped();
     const warning = warnings.createWarningResponse(
       "fsUtils",
       "FILE_TOO_LARGE",
@@ -72,7 +70,6 @@ async function readFile(filePath) {
     const data = await vscode.workspace.fs.readFile(uri);
 
     if (looksBinary(data)) {
-      stats.incrementBinarySkipped();
       const warning = warnings.createWarningResponse(
         "fsUtils module",
         "BINARY_FILE",
@@ -85,19 +82,21 @@ async function readFile(filePath) {
       warnings.recordWarning(warning);
       return { ok: false, reason: "BINARY_FILE" };
     }
-
-    stats.incrementFilesProcessed();
     return { ok: true, content: uint8ToString(data) };
 
   } catch (err) {
-    throwError({
-      code: "READ_FILE_FAILED",
-      message: "Failed to read file",
-      severity: "error",
-      filePath,
-      module: "fsUtils",
-      stack: err?.stack
-    });
+      warnings.recordWarning(
+        warnings.createWarningResponse(
+          "fsUtils",
+          "READ_FILE_FAILED",
+          "Failed to read file",
+          {
+            severity: "warn",
+            filePath,
+            meta: { stack: err?.stack }
+          }
+        )
+      );
     return { ok: false, reason: "READ_FAILED" };
   }
 }
@@ -156,71 +155,11 @@ async function writeFile(filePath, text) {
   }
 }
 
-async function readDirRecursive(dirPath) {
-  const results = new Set();
-  const visited = new Set();
-
-  async function walk(current) {
-    const real = path.resolve(current);
-    if (visited.has(real)) return;
-    visited.add(real);
-
-    const currentStat = await safeStat(current);
-    if (!currentStat) return;
-
-    if ((currentStat.type & vscode.FileType.SymbolicLink) !== 0) {
-      stats.incrementSymlinkSkipped();
-      warnings.recordWarning({
-        code: "SYMLINK_SKIPPED",
-        message: "Symlink skipped during traversal",
-        severity: "info",
-        filePath: current,
-        module: "fsUtils"
-      });
-      return;
-    }
-
-    const uri = vscode.Uri.file(current);
-    const entries = await vscode.workspace.fs.readDirectory(uri);
-    stats.incrementFoldersVisited();
-
-    for (const [name, type] of entries) {
-      const fullPath = path.join(current, name);
-
-      if (type === vscode.FileType.File) {
-        results.add(fullPath);
-      } else if (type === vscode.FileType.Directory) {
-        await walk(fullPath);
-      }
-    }
-  }
-
-  try {
-    await walk(dirPath);
-    logger.debug("fsUtils", "Recursive directory scan complete", {
-      root: dirPath,
-      fileCount: results.size
-    });
-    return Array.from(results);
-  } catch (err) {
-    throwError({
-      code: "RECURSIVE_READ_FAILED",
-      message: "Recursive directory traversal failed",
-      severity: "critical",
-      filePath: dirPath,
-      module: "fsUtils",
-      stack: err?.stack
-    });
-    throw err;
-  }
-}
-
 module.exports = {
   readFile,
   readDir,
   isFile,
   isDirectory,
   writeFile,
-  readDirRecursive,
   safeStat
 };

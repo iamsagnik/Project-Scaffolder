@@ -3,7 +3,6 @@ const path = require("path");
 const Ajv = require("ajv");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const { throwError } = require("../diagnostics/errorHandler");
 
 const ajv = new Ajv({ allErrors: true, strict: false });

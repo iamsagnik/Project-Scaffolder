@@ -2,12 +2,12 @@ const path = require("path");
 const { writeFile } = require("../utils/fsUtils");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const successes = require("../diagnostics/successHandler");
 const { throwError } = require("../diagnostics/errorHandler");
 
 async function writeSgmtr(rootPath, sgmtrObject) {
-  const targetPath = path.join(rootPath, ".sgmtr");
+  const rootFolderName = path.basename(rootPath);
+  const targetPath = path.join(rootPath, `${rootFolderName}.sgmtr`);
 
   let serialized;
   try {
@@ -27,12 +27,16 @@ async function writeSgmtr(rootPath, sgmtrObject) {
   try {
     await writeFile(targetPath, serialized);
 
-    successes.recordSuccess({
-      code: "SGMTR_WRITTEN",
-      message: "SGMTR file written successfully",
-      filePath: targetPath,
-      module: "fileWriter"
-    });
+    successes.recordSuccessEvents(
+      successes.createSuccessResponse(
+        "fileWriter",
+        "SGMTR_WRITTEN",
+        "SGMTR file written successfully",
+        {
+          filePath: targetPath,
+        }
+      )
+    );
 
     logger.info("fileWriter", "SGMTR file written", {
       outputPath: targetPath
