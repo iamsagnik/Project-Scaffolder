@@ -122,7 +122,7 @@ function buildIgnoreMatchers(patterns = []) {
   }
 
   function shouldIgnore(relPath) {
-    const norm = normalizeRelPath(relPath);
+    const norm = normalize(relPath);
 
     let ignored = false;
     let rule = null;

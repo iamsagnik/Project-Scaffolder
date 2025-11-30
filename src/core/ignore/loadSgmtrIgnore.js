@@ -22,7 +22,7 @@ async function loadSgmtrIgnore(rootPath) {
         "IGNORE_FILE_TOO_LARGE",
         ".sgmtrignore exceeds size limit",
         {
-          severity: "warning",
+          severity: "warn",
           filePath: ignorePath,
           meta: { size: ignoreFileStat.size }
         }
@@ -34,8 +34,6 @@ async function loadSgmtrIgnore(rootPath) {
 
     const rawBytes = await vscode.workspace.fs.readFile(ignoreUri);
     const raw = Buffer.from(rawBytes).toString("utf8");
-
-    stats.incrementFilesProcessed();
 
     const patterns = raw
       .split(/\r?\n/)
