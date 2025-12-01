@@ -1,9 +1,7 @@
 const js = require("./javascriptParser");
 
-function parse(content) {
-  return js.parse(content);
+function parseContent(content) {
+  return js.parseContent(content);
 }
 
-module.exports = {
-  parse
-};
+module.exports = parseContent;

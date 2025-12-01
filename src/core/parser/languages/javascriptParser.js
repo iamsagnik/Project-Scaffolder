@@ -1,39 +1,133 @@
-const logger = require("../../diagnostics/logger");
-const warnings = require("../../diagnostics/warningsCollector");
+const { parse } = require("@babel/parser");
+const traverse = require("@babel/traverse").default;
 
-function parse(content) {
+function parseContent(content) {
   const imports = [];
   const exports = [];
 
-  if (typeof content !== "string") {
-    warnings.recordWarning({
-      code: "JS_INVALID_CONTENT",
-      message: "Non-string content passed to JavaScript parser",
-      severity: "warn",
-      filePath: null,
-      module: "javascriptParser"
-    });
-    return { imports, exports };
-  }
+  const ast = parse(content, {
+    sourceType: "module",
+    plugins: ["typescript", "jsx"]
+  });
 
-  const importRegex = /import\s+.*?from\s+['"](.*?)['"]/g;
-  const exportRegex =
-    /export\s+(?:default\s+)?(class|function|const|let|var)?\s*([A-Za-z0-9_\$]*)/g;
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const source = path.node.source.value;
 
-  let m;
-  while ((m = importRegex.exec(content))) imports.push(m[1]);
+      if (path.node.specifiers.length === 0) {
+        imports.push({
+          type: "side-effect",
+          local: null,
+          imported: null,
+          from: source,
+          isType: false
+        });
+        return;
+      }
 
-  while ((m = exportRegex.exec(content))) {
-    if (m[2]) exports.push(m[2]);
-    else exports.push("default");
-  }
+      for (const s of path.node.specifiers) {
+        if (s.type === "ImportDefaultSpecifier") {
+          imports.push({
+            type: "default",
+            local: s.local.name,
+            imported: "default",
+            from: source,
+            isType: path.node.importKind === "type"
+          });
+        }
 
-  logger.debug("javascriptParser", "Parsed JS file", {
-    importCount: imports.length,
-    exportCount: exports.length
+        if (s.type === "ImportSpecifier") {
+          imports.push({
+            type: "named",
+            local: s.local.name,
+            imported: s.imported.name,
+            from: source,
+            isType: s.importKind === "type"
+          });
+        }
+
+        if (s.type === "ImportNamespaceSpecifier") {
+          imports.push({
+            type: "namespace",
+            local: s.local.name,
+            imported: "*",
+            from: source,
+            isType: path.node.importKind === "type"
+          });
+        }
+      }
+    },
+
+    CallExpression(path) {
+      if (
+        path.node.callee.type === "Import" &&
+        path.node.arguments[0]?.type === "StringLiteral"
+      ) {
+        imports.push({
+          type: "dynamic",
+          local: null,
+          imported: null,
+          from: path.node.arguments[0].value,
+          isType: false
+        });
+      }
+    },
+
+    ExportNamedDeclaration(path) {
+      if (path.node.declaration) {
+        const d = path.node.declaration;
+        const name = d.id?.name || d.declarations?.[0]?.id?.name;
+        if (name) {
+          exports.push({
+            type: "named",
+            local: name,
+            exported: name,
+            from: null
+          });
+        }
+      }
+
+      if (path.node.source) {
+        for (const s of path.node.specifiers) {
+          exports.push({
+            type: "re-export",
+            local: s.local.name,
+            exported: s.exported.name,
+            from: path.node.source.value
+          });
+        }
+      } else {
+        for (const s of path.node.specifiers) {
+          exports.push({
+            type: "named",
+            local: s.local.name,
+            exported: s.exported.name,
+            from: null
+          });
+        }
+      }
+    },
+
+    ExportDefaultDeclaration() {
+      exports.push({
+        type: "default",
+        local: null,
+        exported: "default",
+        from: null
+      });
+    },
+
+    ExportAllDeclaration(path) {
+      exports.push({
+        type: "wildcard",
+        local: null,
+        exported: "*",
+        from: path.node.source.value
+      });
+    }
   });
 
   return { imports, exports };
 }
 
-module.exports = { parse };
+module.exports = parseContent ;

@@ -1,8 +1,8 @@
-function parse(content) {
+function parseContent(content) {
   return {
     imports: [],
     exports: []
   };
 }
 
-module.exports = { parse };
+module.exports = parseContent;
