@@ -21,7 +21,8 @@ async function runPreview({ uri, workspaceRootPath, rawTree, showDetails }) {
   const previewRoot = buildPreviewTree(rawTree);
   stats.endPhase("preview_build");
 
-  const patterns = await loadSgmtrIgnore(workspaceRootPath);
+  const raw = await loadSgmtrIgnore(workspaceRootPath);
+  const patterns = Array.isArray(raw?.patterns) ? raw.patterns : [];
   const matchers = buildIgnoreMatchers(patterns);
 
   if (showDetails) {
@@ -67,7 +68,7 @@ async function runPreview({ uri, workspaceRootPath, rawTree, showDetails }) {
   return {
     ok: true,
     report: {
-      nodes: plainTree?.length ?? 0,
+      nodes: Object.keys(plainTree || {}).length,
       detailed: showDetails === true
     }
   }

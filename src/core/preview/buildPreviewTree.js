@@ -11,7 +11,7 @@ function buildPreviewTree(rawTree) {
   const visited = new WeakSet();
 
   function walk(node, name, relPath, depth) {
-    // Depth guard
+
     if (depth > MAX_DEPTH) {
       warnings.recordWarning({
         code: "PREVIEW_DEPTH_LIMIT",
@@ -66,6 +66,18 @@ function buildPreviewTree(rawTree) {
     }
 
     // FILE NODE
+    if (node && typeof node === "object" && node.$meta) {
+      return {
+        name,
+        type: "file",
+        relPath,
+        isIgnored: false,
+        imports: null,
+        exports: null
+      };
+    }
+
+    // Legacy simple file
     if (typeof node === "string") {
       return {
         name,
@@ -74,6 +86,7 @@ function buildPreviewTree(rawTree) {
         isIgnored: false
       };
     }
+
 
     // INVALID LEAF (defensive fallback)
     if (!node || typeof node !== "object") {
@@ -97,6 +110,9 @@ function buildPreviewTree(rawTree) {
     const children = [];
 
     for (const key of Object.keys(node)) {
+      
+      if (key === "$meta") continue;
+
       const child = node[key];
       const childRel = toPosix(
         relPath ? `${relPath}/${key}` : key

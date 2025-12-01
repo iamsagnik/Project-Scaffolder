@@ -130,8 +130,8 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
 
     // Unknown language → no imports/exports
     if (!language || language === "unknown") {
-      node.imports = null;
-      node.exports = null;
+      node.imports = [];
+      node.exports = [];
       return;
     }
 
@@ -157,7 +157,7 @@ async function enhancePreviewTree(previewRoot, workspaceRoot, matchers) {
     node.imports = Array.isArray(meta.imports) ? meta.imports : [];
     node.exports = Array.isArray(meta.exports) ? meta.exports : [];
 
-    stats.increment("totalFilesProcessed");
+    stats.incrementFilesProcessed();
 
     logger.debug("enhancePreviewTree", "File enhanced", {
       relPath,

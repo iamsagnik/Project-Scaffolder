@@ -2,6 +2,43 @@
 // Input shape:
 // - Folder  -> { name: { ... } }
 // - File    -> "(file)" OR { imports: [], exports: [] }
+function formatImport(imp) {
+  if (!imp || typeof imp !== "object") return String(imp);
+
+  const parts = [];
+
+  if (imp.type === "default") {
+    parts.push(`default ${imp.local}`);
+  } else if (imp.type === "named") {
+    parts.push(`${imp.imported} as ${imp.local}`);
+  } else if (imp.type === "namespace") {
+    parts.push(`* as ${imp.local}`);
+  } else if (imp.type === "side-effect") {
+    parts.push(`(side-effect)`);
+  } else if (imp.type === "dynamic") {
+    parts.push(`(dynamic)`);
+  } else if (imp.type === "include") {
+    parts.push(imp.imported);
+  } else {
+    parts.push(imp.local || imp.imported || "*");
+  }
+
+  if (imp.from) parts.push(`from ${imp.from}`);
+  if (imp.isType) parts.push(`[type]`);
+  if (imp.isSystem === true) parts.push(`[system]`);
+
+  return parts.join(" ");
+}
+
+function formatExport(exp) {
+  if (!exp || typeof exp !== "object") return String(exp);
+
+  if (exp.type === "default") return "default";
+  if (exp.type === "wildcard") return "*";
+  if (exp.type === "re-export") return `${exp.exported} from ${exp.from}`;
+
+  return exp.exported || exp.local || "unnamed";
+}
 
 function buildAsciiTree(node, prefix = "") {
   if (!node || typeof node !== "object") return "";
@@ -39,19 +76,31 @@ function buildAsciiTree(node, prefix = "") {
       const imports = Array.isArray(value.imports) ? value.imports : [];
       const exports = Array.isArray(value.exports) ? value.exports : [];
 
+      // ---- IMPORT GROUP ----
       if (imports.length > 0) {
-        imports.forEach((line, i) => {
-          const isLastLine = exports.length === 0 && i === imports.length - 1;
-          const subBranch = isLastLine ? "└── " : "├── ";
-          output += `${nextPrefix}${subBranch}import: ${line}\n`;
+        output += `${nextPrefix}├── import\n`;
+        imports.forEach((imp, i) => {
+          const isLastImport = i === imports.length - 1;
+          const subPrefix = nextPrefix + "│   ";
+          const subBranch = isLastImport ? "└── " : "├── ";
+          output += `${subPrefix}${subBranch}${formatImport(imp)}\n`;
         });
       }
 
+      // ---- EXPORT GROUP ----
       if (exports.length > 0) {
-        exports.forEach((line, i) => {
-          const isLastLine = i === exports.length - 1;
-          const subBranch = isLastLine ? "└── " : "├── ";
-          output += `${nextPrefix}${subBranch}export: ${line}\n`;
+        const exportPrefix =
+          imports.length > 0 ? nextPrefix : nextPrefix;
+
+        const exportBranch = imports.length > 0 ? "└── " : "├── ";
+        output += `${exportPrefix}${exportBranch}export\n`;
+
+        exports.forEach((exp, i) => {
+          const isLastExport = i === exports.length - 1;
+          const subPrefix = exportPrefix + "    ";
+          const subBranch = isLastExport ? "└── " : "├── ";
+
+          output += `${subPrefix}${subBranch}${formatExport(exp)}\n`;
         });
       }
 

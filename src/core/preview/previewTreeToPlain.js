@@ -13,17 +13,12 @@ function previewTreeToPlain(previewRoot) {
   if (!previewRoot || typeof previewRoot !== "object") return {};
 
   function fileToPlain(node) {
-    const hasImports = Array.isArray(node.imports) && node.imports.length > 0;
-    const hasExports = Array.isArray(node.exports) && node.exports.length > 0;
-
-    if (hasImports || hasExports) {
+    if (Array.isArray(node.imports) || Array.isArray(node.exports)) {
       return {
-        imports: hasImports ? node.imports : [],
-        exports: hasExports ? node.exports : []
+        imports: Array.isArray(node.imports) ? node.imports : [],
+        exports: Array.isArray(node.exports) ? node.exports : []
       };
     }
-
-    // No details or ignored/unsupported → simple marker
     return "(file)";
   }
 
