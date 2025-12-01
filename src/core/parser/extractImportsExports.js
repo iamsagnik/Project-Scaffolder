@@ -1,4 +1,4 @@
-const { getParser } = require("./languageRegistry");
+const getParser = require("./languageRegistry");
 
 const logger = require("../diagnostics/logger");
 const warnings = require("../diagnostics/warningsCollector");
@@ -7,7 +7,7 @@ function extractImportsExports(content, lang) {
   const parser = getParser(lang);
 
   try {
-    const result = parser.parse(content);
+    const result = parser(content);
 
     const imports = Array.isArray(result?.imports) ? result.imports : [];
     const exports = Array.isArray(result?.exports) ? result.exports : [];

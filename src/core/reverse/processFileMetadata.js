@@ -19,10 +19,10 @@ async function processFileMetadata(fileObj) {
       logger.debug("processFileMetadata", "Metadata cache hit", { relPath });
       return { ok: true, value: cachedMeta, cached: true };
     }
-    logger.info("processFileMetadata", "CACHE_CHECK_DONE", { relPath });
+    //logger.info("processFileMetadata", "CACHE_CHECK_DONE", { relPath });
 
     const readRes = await readFile(absPath);
-    logger.info("processFileMetadata", "READFILE_DONE", { relPath });
+    //logger.info("processFileMetadata", "READFILE_DONE", { relPath });
     if (!readRes.ok) {
       warnings.recordWarning(
         warnings.createWarningResponse(
@@ -45,7 +45,7 @@ async function processFileMetadata(fileObj) {
     } catch {
       lang = "unknown";
     }
-    logger.info("processFileMetadata", "READFILE_DONE", { relPath });
+    //logger.info("processFileMetadata", "READFILE_DONE", { relPath });
 
     let imports = [];
     let exports = [];
@@ -67,7 +67,7 @@ async function processFileMetadata(fileObj) {
         )
       );
     }
-    logger.info("processFileMetadata", "IMPORT_EXPORT_DONE", { relPath });
+    //logger.info("processFileMetadata", "IMPORT_EXPORT_DONE", { relPath });
 
     const value = {
       path: relPath,
@@ -80,9 +80,9 @@ async function processFileMetadata(fileObj) {
       dir: dirname(relPath)
     };
 
-    logger.info("processFileMetadata", "CACHE_SET_START", { relPath });
+    //logger.info("processFileMetadata", "CACHE_SET_START", { relPath });
     fileCache.set(relPath, mtime, size, value, workspaceRoot);
-    logger.info("processFileMetadata", "CACHE_SET_DONE", { relPath });
+    //logger.info("processFileMetadata", "CACHE_SET_DONE", { relPath });
 
     logger.debug("processFileMetadata", "Metadata generated", {
       relPath,

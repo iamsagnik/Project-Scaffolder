@@ -40,4 +40,4 @@ function getParser(lang) {
   return registry[lang];
 }
 
-module.exports = { getParser };
+module.exports = getParser;
