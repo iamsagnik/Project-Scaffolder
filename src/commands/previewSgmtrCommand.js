@@ -6,19 +6,10 @@ const logger = require("../core/diagnostics/logger");
 const { throwError, wrap } = require("../core/diagnostics/errorHandler");
 const stats = require("../core/diagnostics/statsCollector");
 const success = require("../core/diagnostics/successHandler");
-
-const Ajv = require("ajv");
-const schema = require("../../schema/sgmtr-schema.json");
+const { readFile } = require("../core/utils/fsUtils");
 
 const { extname } = require("../core/utils/pathUtils");
-
-const ajv = new Ajv({ allErrors: true });
-let validate;
-try {
-  validate = ajv.compile(schema);
-} catch (e) {
-  throw new Error("Schema compilation failed at startup");
-}
+const validateForPreview = require("../core/preview/resolveSgmtrMode");
 
 async function previewSgmtrCommand(uri) {   
 
@@ -101,22 +92,20 @@ async function previewSgmtrCommand(uri) {
     
   stats.startPhase("sgmtr_read");
 
-  let rawText;
-  try {
-    const raw = await vscode.workspace.fs.readFile(uri);
-    rawText = Buffer.from(raw).toString("utf8");
-  } catch (err) {
+  const readRes = await readFile(uri.fsPath);
+  if (!readRes.ok) {
+    stats.endPhase("sgmtr_read");
     throwError({
       code: "SGMTR_READ_FAILED",
       message: "Failed to read .sgmtr file",
       severity: "error",
       filePath: uri.fsPath,
-      module: "previewSgmtr",
-      stack: err?.stack
+      module: "previewSgmtr"
     });
     return;
   }
 
+  const rawText = readRes.content;
   let rawTree;
   try {
     rawTree = JSON.parse(rawText);
@@ -132,15 +121,17 @@ async function previewSgmtrCommand(uri) {
     return;
   }
 
-  const valid = validate(rawTree);
-  if (!valid) {
+  const previewValidation = await validateForPreview(rawTree);
+
+  if (!previewValidation.ok) {
+    stats.endPhase("sgmtr_read");
     throwError({
-      code: "SGMTR_SCHEMA_INVALID",
-      message: "SGMTR file failed schema validation",
+      code: "SGMTR_PREVIEW_SCHEMA_INVALID",
+      message: `SGMTR preview schema invalid (${previewValidation.mode})`,
       severity: "error",
       filePath: uri.fsPath,
       module: "previewSgmtr",
-      meta: { errors: validate.errors }
+      meta: { errors: previewValidation.errors }
     });
     return;
   }
@@ -190,7 +181,6 @@ async function previewSgmtrCommand(uri) {
 
   const report = res.value.report;    
 
-  // SUCCESS RECORD
   success.recordSuccessEvents(
     success.createSuccessResponse(
       "previewSgmtr",
