@@ -52,8 +52,17 @@ async function processFileMetadata(fileObj) {
 
     try {
       const extracted = extractImportsExports(content, lang);
-      imports = extracted.imports || [];
-      exports = extracted.exports || [];
+      imports = Array.isArray(extracted.imports) 
+              ? extracted.imports.map(imp => ({
+                name: imp.imported || imp.local || "*",
+                from: imp.from || null,
+                type: imp.isType ? "type" : "value"
+              })) : [];
+      exports = Array.isArray(extracted.exports)
+              ? extracted.exports.map(exp => ({
+                  name: exp.exported || exp.local || "default",
+                  type: exp.type || "value"
+                })) : [];
     } catch (err) {
       warnings.recordWarning(
         warnings.createWarningResponse(

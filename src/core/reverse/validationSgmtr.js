@@ -15,13 +15,13 @@ function getDefaultSchemaUri() {
       return vscode.Uri.joinPath(
         ext.extensionUri,
         "schema",
-        "sgmtr-schema.json"
+        "sgmtr-schema-rev.json"
       );
     }
   } catch {}
 
   return vscode.Uri.file(
-    path.join(__dirname, "../../../../schema/sgmtr-schema.json")
+    path.join(__dirname, "../../../../schema/sgmtr-schema-rev.json")
   );
 }
 
@@ -32,6 +32,11 @@ async function validateSgmtr(sgmtrObject, schemaUriOverride = null) {
   try {
     schemaBytes = await vscode.workspace.fs.readFile(schemaUri);
   } catch (err) {
+    console.log(
+      "SCHEMA ERRORS:",
+      JSON.stringify(validateFn.errors, null, 2)
+    );
+
     throwError({
       code: "SCHEMA_READ_FAILED",
       message: "Failed to read schema",
