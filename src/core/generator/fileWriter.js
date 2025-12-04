@@ -1,6 +1,8 @@
 const path = require("path");
+const vscode = require("vscode");
 const { writeFile } = require("../utils/fsUtils");
 
+const stats = require("../diagnostics/statsCollector");
 const logger = require("../diagnostics/logger");
 const successes = require("../diagnostics/successHandler");
 const { throwError } = require("../diagnostics/errorHandler");
@@ -57,4 +59,59 @@ async function writeSgmtr(rootPath, sgmtrObject) {
   }
 }
 
-module.exports = { writeSgmtr };
+async function execute(plan) {
+  const errors = [];
+  const { folders = [], files = [] } = plan;
+
+  // Folders
+  for (const folder of folders) {
+    try {
+      const uri = vscode.Uri.file(folder.absPath);
+      await vscode.workspace.fs.createDirectory(uri);
+      stats.incrementFoldersVisited();
+    } catch (err) {
+      errors.push({
+        code: "FOLDER_CREATE_FAILED",
+        message: "Failed to create folder",
+        severity: "critical",
+        filePath: folder.absPath,
+        module: "fileWriter",
+        stack: err?.stack
+      });
+    }
+  }
+
+  // Files
+  for (const file of files) {
+    try {
+      await writeFile(file.absPath, file.content);
+      stats.incrementFilesProcessed();
+
+      successes.recordSuccessEvents(
+        successes.createSuccessResponse(
+          "fileWriter",
+          "FILE_WRITTEN",
+          "File written successfully",
+          { filePath: file.absPath }
+        )
+      );
+    } catch (err) {
+      errors.push({
+        code: "FILE_WRITE_FAILED",
+        message: "Failed to write file",
+        severity: "critical",
+        filePath: file.absPath,
+        module: "fileWriter",
+        stack: err?.stack
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    return { ok: false, errors };
+  }
+
+  return { ok: true };
+}
+
+module.exports = { writeSgmtr, execute };
