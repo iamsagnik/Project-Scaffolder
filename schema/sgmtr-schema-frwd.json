@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SGMTR Forward V1 Schema",
+  "description": "Generator-driven SGMTR schema for forward project generation",
+  "type": "object",
+
+  "definitions": {
+    "meta": {
+      "type": "object",
+      "required": ["generator"],
+      "properties": {
+        "generator": { "type": "string" },
+        "variant": { "type": "string" },
+        "options": { "type": "object" },
+        "standard": { "type": "string" },
+        "overwrite": { "type": "boolean" },
+        "encoding": { "type": "string" },
+        "permissions": { "type": "string", "pattern": "^[0-7]{3,4}$" }
+      },
+      "additionalProperties": false
+    },
+
+    "fileNodeGenerated": {
+      "type": "object",
+      "required": ["$meta"],
+      "properties": {
+        "$meta": { "$ref": "#/definitions/meta" }
+      },
+      "additionalProperties": false
+    },
+
+    "fileNodeEmpty": {
+      "type": "null"
+    },
+
+    "fileNode": {
+      "oneOf": [
+        { "$ref": "#/definitions/fileNodeGenerated" },
+        { "$ref": "#/definitions/fileNodeEmpty" }
+      ]
+    },
+
+    "folderNode": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/definitions/fileNode" },
+          { "$ref": "#/definitions/folderNode" }
+        ]
+      }
+    }
+  },
+
+  "additionalProperties": {
+    "oneOf": [
+      { "$ref": "#/definitions/fileNode" },
+      { "$ref": "#/definitions/folderNode" }
+    ]
+  }
+}
