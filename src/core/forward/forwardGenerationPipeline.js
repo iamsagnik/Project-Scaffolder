@@ -42,7 +42,7 @@ async function runForwardPipeline({ uri, workspaceRootPath, rawTree }) {
 
 
   stats.startPhase("generation");
-  const generatedTree = applyGenerators(rawTree);
+  const generatedTree = await applyGenerators(rawTree);
 
   const normalizedTree = normalizeTree(generatedTree, {
     workspaceRootPath
