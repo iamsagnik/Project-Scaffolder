@@ -1,0 +1,1753 @@
+{
+  "webext": {
+    "package": {
+      "react-mv3": {
+        "index.js": null
+      }
+    },
+    "tsconfig": {
+      "base": {
+        "index.js": null
+      },
+      "node": {
+        "index.js": null
+      }
+    },
+    "vite": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "manifest": {
+      "v3": {
+        "index.js": null
+      }
+    },
+    "env": {
+      "example": {
+        "index.js": null
+      }
+    },
+    "icon": {
+      "index.js": null
+    },
+    "background": {
+      "service-worker": {
+        "index.js": null
+      },
+      "listeners": {
+        "index.js": null
+      },
+      "messaging": {
+        "index.js": null
+      }
+    },
+    "content": {
+      "entry": {
+        "index.js": null
+      },
+      "dom-observer": {
+        "index.js": null
+      },
+      "messaging": {
+        "index.js": null
+      }
+    },
+    "popup": {
+      "main": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      }
+    },
+    "options": {
+      "main": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      }
+    },
+    "component": {
+      "header": {
+        "index.js": null
+      }
+    },
+    "store": {
+      "settings": {
+        "index.js": null
+      },
+      "session": {
+        "index.js": null
+      }
+    },
+    "service": {
+      "storage": {
+        "index.js": null
+      },
+      "messaging": {
+        "index.js": null
+      }
+    },
+    "util": {
+      "logger": {
+        "index.js": null
+      },
+      "runtime": {
+        "index.js": null
+      }
+    },
+    "types": {
+      "messages": {
+        "index.js": null
+      },
+      "settings": {
+        "index.js": null
+      }
+    },
+    "test": {
+      "setup": {
+        "index.js": null
+      },
+      "background": {
+        "index.js": null
+      },
+      "content": {
+        "index.js": null
+      }
+    }
+  },
+  "python": {
+    "poetry": {
+      "base": {
+        "index.js": null
+      }
+    },
+    "env": {
+      "example": {
+        "index.js": null
+      }
+    },
+    "pytest": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "mypy": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "precommit": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "main": {
+      "cli": {
+        "index.js": null
+      }
+    },
+    "cli": {
+      "commands": {
+        "index.js": null
+      }
+    },
+    "config": {
+      "settings": {
+        "index.js": null
+      },
+      "logging": {
+        "index.js": null
+      }
+    },
+    "core": {
+      "base-task": {
+        "index.js": null
+      },
+      "scheduler": {
+        "index.js": null
+      },
+      "cron": {
+        "index.js": null
+      }
+    },
+    "task": {
+      "sample": {
+        "index.js": null
+      },
+      "file-cleanup": {
+        "index.js": null
+      },
+      "api-poll": {
+        "index.js": null
+      }
+    },
+    "service": {
+      "http": {
+        "index.js": null
+      },
+      "filesystem": {
+        "index.js": null
+      }
+    },
+    "util": {
+      "logger": {
+        "index.js": null
+      },
+      "retry": {
+        "index.js": null
+      },
+      "paths": {
+        "index.js": null
+      }
+    },
+    "test": {
+      "conftest": {
+        "index.js": null
+      },
+      "task": {
+        "sample": {
+          "index.js": null
+        },
+        "api-poll": {
+          "index.js": null
+        }
+      },
+      "unit": {
+        "index.js": null
+      },
+      "integration": {
+        "index.js": null
+      },
+      "fixtures": {
+        "index.js": null
+      }
+    },
+    "script": {
+      "run": {
+        "index.js": null
+      },
+      "lint": {
+        "index.js": null
+      },
+      "debug": {
+        "index.js": null
+      }
+    }
+  },
+  "django": {
+    "manage": {
+      "index.js": null
+    },
+    "asgi": {
+      "index.js": null
+    },
+    "wsgi": {
+      "index.js": null
+    },
+    "urls": {
+      "root": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      }
+    },
+    "settings": {
+      "base": {
+        "index.js": null
+      },
+      "dev": {
+        "index.js": null
+      },
+      "prod": {
+        "index.js": null
+      }
+    },
+    "celery": {
+      "bootstrap": {
+        "index.js": null
+      }
+    },
+    "app": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "model": {
+      "user": {
+        "index.js": null
+      }
+    },
+    "view": {
+      "user": {
+        "index.js": null
+      },
+      "auth": {
+        "index.js": null
+      }
+    },
+    "serializer": {
+      "user": {
+        "index.js": null
+      },
+      "auth": {
+        "index.js": null
+      }
+    },
+    "service": {
+      "user": {
+        "index.js": null
+      },
+      "auth": {
+        "index.js": null
+      }
+    },
+    "signals": {
+      "user": {
+        "index.js": null
+      }
+    },
+    "test": {
+      "conftest": {
+        "index.js": null
+      },
+      "model": {
+        "user": {
+          "index.js": null
+        }
+      },
+      "view": {
+        "user": {
+          "index.js": null
+        }
+      },
+      "health": {
+        "index.js": null
+      },
+      "auth": {
+        "index.js": null
+      }
+    },
+    "common": {
+      "pagination": {
+        "index.js": null
+      },
+      "permissions": {
+        "index.js": null
+      },
+      "exceptions": {
+        "index.js": null
+      }
+    },
+    "middleware": {
+      "cors": {
+        "index.js": null
+      }
+    },
+    "api": {
+      "router": {
+        "index.js": null
+      }
+    }
+  },
+  "node": {
+    "package": {
+      "react-vite": {
+        "index.js": null
+      }
+    },
+    "env": {
+      "example": {
+        "index.js": null
+      }
+    },
+    "nodemon": {
+      "config": {
+        "index.js": null
+      }
+    }
+  },
+  "mern": {
+    "backend": {
+      "index": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      },
+      "config": {
+        "env": {
+          "index.js": null
+        }
+      },
+      "routes": {
+        "index": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "controllers": {
+        "health": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "models": {
+        "user": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "services": {
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "middlewares": {
+        "error": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "validate": {
+          "index.js": null
+        },
+        "cors": {
+          "index.js": null
+        }
+      },
+      "utils": {
+        "constants": {
+          "index.js": null
+        },
+        "response": {
+          "index.js": null
+        },
+        "logger": {
+          "index.js": null
+        },
+        "jwt": {
+          "index.js": null
+        }
+      }
+    },
+    "frontend": {
+      "main": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      },
+      "config": {
+        "env": {
+          "index.js": null
+        },
+        "api": {
+          "index.js": null
+        }
+      },
+      "routes": {
+        "index": {
+          "index.js": null
+        },
+        "protected": {
+          "index.js": null
+        }
+      },
+      "pages": {
+        "home": {
+          "index.js": null
+        },
+        "login": {
+          "index.js": null
+        },
+        "dashboard": {
+          "index.js": null
+        }
+      },
+      "components": {
+        "layout": {
+          "index.js": null
+        },
+        "ui": {
+          "button": {
+            "index.js": null
+          },
+          "input": {
+            "index.js": null
+          }
+        },
+        "todos": {
+          "list": {
+            "index.js": null
+          },
+          "item": {
+            "index.js": null
+          }
+        }
+      },
+      "store": {
+        "auth": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "services": {
+        "http": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "hooks": {
+        "use-auth": {
+          "index.js": null
+        },
+        "use-todos": {
+          "index.js": null
+        }
+      },
+      "utils": {
+        "storage": {
+          "index.js": null
+        },
+        "logger": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "micro": {
+    "env": {
+      "example": {
+        "root": {
+          "index.js": null
+        }
+      },
+      "service": {
+        "index.js": null
+      }
+    },
+    "infra": {
+      "k8s": {
+        "namespace": {
+          "index.js": null
+        },
+        "gateway-deployment": {
+          "index.js": null
+        },
+        "gateway-service": {
+          "index.js": null
+        },
+        "service-deployment": {
+          "users": {
+            "index.js": null
+          },
+          "orders": {
+            "index.js": null
+          }
+        }
+      }
+    },
+    "shared": {
+      "package": {
+        "index.js": null
+      },
+      "tsconfig": {
+        "index.js": null
+      },
+      "index": {
+        "index.js": null
+      },
+      "config": {
+        "env": {
+          "index.js": null
+        }
+      },
+      "logger": {
+        "index.js": null
+      },
+      "events": {
+        "event-bus": {
+          "index.js": null
+        },
+        "event-types": {
+          "index.js": null
+        }
+      }
+    },
+    "service": {
+      "package": {
+        "gateway": {
+          "index.js": null
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "tsconfig": {
+        "gateway": {
+          "index.js": null
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "index": {
+        "gateway": {
+          "index.js": null
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "app": {
+        "gateway": {
+          "index.js": null
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "config": {
+        "routes-config": {
+          "index.js": null
+        },
+        "db": {
+          "users": {
+            "index.js": null
+          },
+          "orders": {
+            "index.js": null
+          }
+        }
+      },
+      "routes": {
+        "proxy": {
+          "index.js": null
+        },
+        "health": {
+          "index.js": null
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "controllers": {
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "models": {
+        "user": {
+          "index.js": null
+        },
+        "order": {
+          "index.js": null
+        }
+      },
+      "services": {
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      },
+      "events": {
+        "handlers": {
+          "users": {
+            "index.js": null
+          },
+          "orders": {
+            "index.js": null
+          }
+        }
+      },
+      "middlewares": {
+        "request-logger": {
+          "index.js": null
+        }
+      },
+      "tests": {
+        "gateway": {
+          "health": {
+            "index.js": null
+          }
+        },
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "monorepo": {
+    "root": {
+      "package": {
+        "index.js": null
+      }
+    },
+    "pnpm": {
+      "workspace": {
+        "index.js": null
+      }
+    },
+    "tsconfig": {
+      "base": {
+        "index.js": null
+      }
+    },
+    "env": {
+      "example": {
+        "index.js": null
+      }
+    },
+    "package": {
+      "shared-types": {
+        "index.js": null
+      },
+      "shared-utils": {
+        "index.js": null
+      }
+    },
+    "packages": {
+      "tsconfig": {
+        "index.js": null
+      }
+    },
+    "shared": {
+      "types": {
+        "index.js": null
+      },
+      "utils": {
+        "logger": {
+          "index.js": null
+        },
+        "http": {
+          "index.js": null
+        }
+      }
+    },
+    "readme": {
+      "enterprise": {
+        "index.js": null
+      }
+    }
+  },
+  "next": {
+    "config": {
+      "enterprise": {
+        "index.js": null
+      }
+    },
+    "middleware": {
+      "auth": {
+        "index.js": null
+      }
+    },
+    "app": {
+      "layout": {
+        "index.js": null
+      },
+      "page": {
+        "home": {
+          "index.js": null
+        },
+        "dashboard": {
+          "index.js": null
+        }
+      },
+      "loading": {
+        "index.js": null
+      },
+      "error": {
+        "index.js": null
+      },
+      "login": {
+        "page": {
+          "index.js": null
+        }
+      }
+    },
+    "api": {
+      "auth": {
+        "index.js": null
+      },
+      "users": {
+        "index.js": null
+      }
+    },
+    "component": {
+      "layout": {
+        "shell": {
+          "index.js": null
+        }
+      },
+      "ui": {
+        "button": {
+          "index.js": null
+        },
+        "input": {
+          "index.js": null
+        }
+      }
+    },
+    "lib": {
+      "db": {
+        "index.js": null
+      },
+      "auth": {
+        "index.js": null
+      },
+      "env": {
+        "index.js": null
+      }
+    },
+    "hook": {
+      "use-auth": {
+        "index.js": null
+      }
+    },
+    "util": {
+      "logger": {
+        "index.js": null
+      },
+      "storage": {
+        "index.js": null
+      }
+    },
+    "types": {
+      "user": {
+        "index.js": null
+      }
+    },
+    "prisma": {
+      "schema": {
+        "index.js": null
+      },
+      "seed": {
+        "index.js": null
+      }
+    },
+    "dockerfile": {
+      "nextjs": {
+        "index.js": null
+      }
+    },
+    "docker": {
+      "compose": {
+        "nextjs": {
+          "index.js": null
+        }
+      }
+    },
+    "ci": {
+      "github": {
+        "nextjs": {
+          "index.js": null
+        }
+      }
+    },
+    "test": {
+      "setup": {
+        "index.js": null
+      },
+      "api": {
+        "auth": {
+          "index.js": null
+        }
+      },
+      "unit": {
+        "index.js": null
+      },
+      "integration": {
+        "index.js": null
+      }
+    },
+    "git": {
+      "ignore": {
+        "node": {
+          "index.js": null
+        }
+      }
+    },
+    "editorconfig": {
+      "base": {
+        "index.js": null
+      }
+    },
+    "prettier": {
+      "config": {
+        "json": {
+          "index.js": null
+        }
+      }
+    },
+    "eslint": {
+      "config": {
+        "nextjs": {
+          "index.js": null
+        }
+      }
+    },
+    "doc": {
+      "readme": {
+        "nextjs": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "express-mvc": {
+    "package": {
+      "index.js": null
+    },
+    "express": {
+      "server": {
+        "index.js": null
+      },
+      "app": {
+        "index.js": null
+      },
+      "index": {
+        "index.js": null
+      },
+      "routes": {
+        "index": {
+          "index.js": null
+        },
+        "health": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        }
+      },
+      "middleware": {
+        "error": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "validate": {
+          "index.js": null
+        },
+        "request-logger": {
+          "index.js": null
+        }
+      },
+      "config": {
+        "env": {
+          "index.js": null
+        },
+        "logger": {
+          "index.js": null
+        },
+        "db": {
+          "index.js": null
+        },
+        "express": {
+          "index.js": null
+        }
+      },
+      "loaders": {
+        "index": {
+          "index.js": null
+        },
+        "express": {
+          "index.js": null
+        },
+        "db": {
+          "index.js": null
+        }
+      },
+      "validator": {
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        }
+      },
+      "util": {
+        "logger": {
+          "index.js": null
+        },
+        "response": {
+          "index.js": null
+        },
+        "constants": {
+          "index.js": null
+        },
+        "http-status": {
+          "index.js": null
+        }
+      },
+      "model": {
+        "user": {
+          "index.js": null
+        },
+        "session": {
+          "index.js": null
+        }
+      },
+      "controller": {
+        "index": {
+          "index.js": null
+        },
+        "health": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        }
+      },
+      "repository": {
+        "user": {
+          "index.js": null
+        }
+      },
+      "service": {
+        "auth": {
+          "index.js": null
+        },
+        "user": {
+          "index.js": null
+        }
+      },
+      "nvmrc": {
+        "index.js": null
+      }
+    },
+    "nodemon": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "config": {
+      "express": {
+        "index.js": null
+      }
+    },
+    "scripts": {
+      "dev": {
+        "index.js": null
+      },
+      "start": {
+        "index.js": null
+      },
+      "migrate": {
+        "index.js": null
+      }
+    },
+    "test": {
+      "jest": {
+        "config": {
+          "index.js": null
+        }
+      },
+      "integration": {
+        "health": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        }
+      },
+      "unit": {
+        "user-service": {
+          "index.js": null
+        },
+        "auth-service": {
+          "index.js": null
+        }
+      },
+      "setup": {
+        "index.js": null
+      },
+      "mocks": {
+        "index.js": null
+      }
+    },
+    "dockerfile": {
+      "node-express": {
+        "enterprise": {
+          "index.js": null
+        }
+      }
+    },
+    "docker": {
+      "compose": {
+        "node-express": {
+          "index.js": null
+        }
+      }
+    },
+    "makefile": {
+      "node": {
+        "express": {
+          "index.js": null
+        }
+      }
+    },
+    "ci": {
+      "github": {
+        "node": {
+          "index.js": null
+        }
+      }
+    },
+    "doc": {
+      "readme": {
+        "node-express-mvc": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "react-vite": {
+    "node": {
+      "package": {
+        "react-vite": {
+          "index.js": null
+        }
+      }
+    },
+    "vite": {
+      "config": {
+        "react": {
+          "index.js": null
+        }
+      }
+    },
+    "typescript": {
+      "config": {
+        "react": {
+          "index.js": null
+        },
+        "node": {
+          "index.js": null
+        }
+      },
+      "tsconfig": {
+        "index.js": null
+      }
+    },
+    "env": {
+      "example": {
+        "react": {
+          "index.js": null
+        }
+      }
+    },
+    "react": {
+      "vite": {
+        "main": {
+          "index.js": null
+        }
+      },
+      "app": {
+        "root": {
+          "index.js": null
+        }
+      },
+      "router": {
+        "index": {
+          "index.js": null
+        },
+        "protected": {
+          "index.js": null
+        }
+      },
+      "page": {
+        "home": {
+          "index.js": null
+        },
+        "login": {
+          "index.js": null
+        },
+        "dashboard": {
+          "index.js": null
+        }
+      },
+      "component": {
+        "layout": {
+          "app": {
+            "index.js": null
+          }
+        },
+        "ui": {
+          "button": {
+            "index.js": null
+          },
+          "input": {
+            "index.js": null
+          }
+        }
+      },
+      "store": {
+        "zustand": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "service": {
+        "http": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        },
+        "todo": {
+          "index.js": null
+        }
+      },
+      "hook": {
+        "use-auth": {
+          "index.js": null
+        },
+        "use-mounted": {
+          "index.js": null
+        }
+      },
+      "util": {
+        "logger": {
+          "index.js": null
+        },
+        "storage": {
+          "index.js": null
+        }
+      },
+      "config": {
+        "env": {
+          "index.js": null
+        },
+        "api": {
+          "index.js": null
+        }
+      },
+      "types": {
+        "api": {
+          "index.js": null
+        },
+        "auth": {
+          "index.js": null
+        }
+      }
+    },
+    "tailwind": {
+      "globals.css": {
+        "index.js": null
+      }
+    },
+    "test": {
+      "setup": {
+        "index.js": null
+      },
+      "page": {
+        "home": {
+          "index.js": null
+        }
+      },
+      "unit": {
+        "index.js": null
+      },
+      "integration": {
+        "index.js": null
+      }
+    },
+    "dockerfile": {
+      "react-vite": {
+        "index.js": null
+      }
+    },
+    "docker": {
+      "compose": {
+        "react-vite": {
+          "index.js": null
+        }
+      }
+    },
+    "git": {
+      "ignore": {
+        "node": {
+          "index.js": null
+        }
+      }
+    },
+    "editorconfig": {
+      "base": {
+        "index.js": null
+      }
+    },
+    "prettier": {
+      "config": {
+        "json": {
+          "index.js": null
+        }
+      }
+    },
+    "eslint": {
+      "config": {
+        "react": {
+          "index.js": null
+        }
+      }
+    },
+    "doc": {
+      "readme": {
+        "react-vite": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "typescript-lib": {
+    "node": {
+      "package": {
+        "typescript-lib": {
+          "index.js": null
+        }
+      }
+    },
+    "typescript": {
+      "config": {
+        "library": {
+          "index.js": null
+        },
+        "build": {
+          "index.js": null
+        }
+      },
+      "tsup": {
+        "config": {
+          "index.js": null
+        }
+      }
+    },
+    "env": {
+      "example": {
+        "library": {
+          "index.js": null
+        }
+      }
+    },
+    "typedoc": {
+      "config": {
+        "index.js": null
+      }
+    },
+    "eslint": {
+      "config": {
+        "typescript": {
+          "index.js": null
+        }
+      }
+    },
+    "test": {
+      "jest": {
+        "config": {
+          "index.js": null
+        }
+      },
+      "setup": {
+        "index.js": null
+      },
+      "core": {
+        "client": {
+          "index.js": null
+        }
+      },
+      "unit": {
+        "index.js": null
+      },
+      "integration": {
+        "index.js": null
+      },
+      "fixtures": {
+        "index.js": null
+      }
+    },
+    "ts": {
+      "lib": {
+        "entry": {
+          "index.js": null
+        },
+        "core": {
+          "client": {
+            "index.js": null
+          },
+          "errors": {
+            "index.js": null
+          }
+        },
+        "util": {
+          "logger": {
+            "index.js": null
+          },
+          "assert": {
+            "index.js": null
+          }
+        },
+        "types": {
+          "index": {
+            "index.js": null
+          }
+        },
+        "common": {
+          "constants": {
+            "index.js": null
+          },
+          "errors": {
+            "index.js": null
+          }
+        },
+        "internal": {
+          "index.js": null
+        }
+      }
+    },
+    "example": {
+      "basic": {
+        "index.js": null
+      },
+      "advanced": {
+        "index.js": null
+      }
+    },
+    "git": {
+      "ignore": {
+        "node": {
+          "index.js": null
+        }
+      }
+    },
+    "editorconfig": {
+      "base": {
+        "index.js": null
+      }
+    },
+    "prettier": {
+      "config": {
+        "json": {
+          "index.js": null
+        }
+      }
+    },
+    "license": {
+      "mit": {
+        "index.js": null
+      }
+    },
+    "ci": {
+      "github": {
+        "typescript": {
+          "index.js": null
+        },
+        "npm-release": {
+          "semantic-release": {
+            "index.js": null
+          }
+        }
+      }
+    },
+    "doc": {
+      "readme": {
+        "typescript-lib": {
+          "index.js": null
+        }
+      }
+    }
+  },
+  "git": {
+    "ignore": {
+      "node": {
+        "index.js": null
+      },
+      "python": {
+        "index.js": null
+      },
+      "mern": {
+        "index.js": null
+      },
+      "microservices": {
+        "index.js": null
+      }
+    }
+  },
+  "editorconfig": {
+    "base": {
+      "index.js": null
+    }
+  },
+  "prettier": {
+    "config": {
+      "json": {
+        "index.js": null
+      }
+    }
+  },
+  "eslint": {
+    "config": {
+      "react": {
+        "index.js": null
+      },
+      "nextjs": {
+        "index.js": null
+      },
+      "monorepo": {
+        "index.js": null
+      },
+      "node": {
+        "index.js": null
+      },
+      "typescript": {
+        "index.js": null
+      }
+    }
+  },
+  "test": {
+    "jest": {
+      "config": {
+        "webext": {
+          "index.js": null
+        },
+        "node": {
+          "index.js": null
+        }
+      }
+    },
+    "mern": {
+      "backend": {
+        "setup": {
+          "index.js": null
+        },
+        "integration": {
+          "auth": {
+            "index.js": null
+          },
+          "todo": {
+            "index.js": null
+          }
+        },
+        "unit": {
+          "user-service": {
+            "index.js": null
+          }
+        }
+      },
+      "frontend": {
+        "setup": {
+          "index.js": null
+        },
+        "pages": {
+          "login": {
+            "index.js": null
+          }
+        }
+      }
+    }
+  },
+  "makefile": {
+    "django": {
+      "index.js": null
+    },
+    "microservices": {
+      "index.js": null
+    },
+    "node": {
+      "express": {
+        "index.js": null
+      }
+    }
+  },
+  "dockerfile": {
+    "django": {
+      "index.js": null
+    },
+    "node-express": {
+      "mern-backend": {
+        "index.js": null
+      },
+      "enterprise": {
+        "index.js": null
+      }
+    },
+    "react-vite": {
+      "index.js": null
+    },
+    "micro": {
+      "gateway": {
+        "index.js": null
+      },
+      "service": {
+        "users": {
+          "index.js": null
+        },
+        "orders": {
+          "index.js": null
+        }
+      }
+    },
+    "nextjs": {
+      "index.js": null
+    }
+  },
+  "docker": {
+    "compose": {
+      "django": {
+        "index.js": null
+      },
+      "mern": {
+        "index.js": null
+      },
+      "microservices": {
+        "index.js": null
+      },
+      "node-express": {
+        "index.js": null
+      },
+      "react-vite": {
+        "index.js": null
+      },
+      "nextjs": {
+        "index.js": null
+      }
+    }
+  },
+  "ci": {
+    "github": {
+      "webext": {
+        "index.js": null
+      },
+      "python": {
+        "index.js": null
+      },
+      "mern": {
+        "index.js": null
+      },
+      "microservices": {
+        "index.js": null
+      },
+      "monorepo": {
+        "index.js": null
+      },
+      "nextjs": {
+        "index.js": null
+      },
+      "node": {
+        "index.js": null
+      },
+      "typescript": {
+        "index.js": null
+      }
+    }
+  },
+  "doc": {
+    "readme": {
+      "webext": {
+        "index.js": null
+      },
+      "django": {
+        "index.js": null
+      },
+      "mern": {
+        "index.js": null
+      },
+      "microservices": {
+        "index.js": null
+      },
+      "react-vite": {
+        "index.js": null
+      },
+      "nextjs": {
+        "index.js": null
+      },
+      "typescript-lib": {
+        "index.js": null
+      },
+      "enterprise": {
+        "index.js": null
+      }
+    }
+  },
+  "scripts": {
+    "django": {
+      "start": {
+        "index.js": null
+      }
+    },
+    "celery": {
+      "worker": {
+        "index.js": null
+      },
+      "beat": {
+        "index.js": null
+      }
+    }
+  }
+}
