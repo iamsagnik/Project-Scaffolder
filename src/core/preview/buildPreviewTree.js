@@ -3,8 +3,8 @@ const logger = require("../diagnostics/logger");
 const warnings = require("../diagnostics/warningsCollector");
 const { throwError } = require("../diagnostics/errorHandler");
 
-const MAX_DEPTH = 30;
-const MAX_NODES = 35;
+const MAX_DEPTH = 10;
+const MAX_NODES = 1500;
 
 function buildPreviewTree(rawTree) {
   let nodeCount = 0;
