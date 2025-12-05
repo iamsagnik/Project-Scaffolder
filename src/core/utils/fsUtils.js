@@ -1,8 +1,6 @@
 const vscode = require("vscode");
-const path = require("path");
 
 const logger = require("../diagnostics/logger");
-const stats = require("../diagnostics/statsCollector");
 const warnings = require("../diagnostics/warningsCollector");
 const { throwError } = require("../diagnostics/errorHandler");
 
