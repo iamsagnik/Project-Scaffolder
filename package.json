@@ -17,7 +17,10 @@
     "workspace templates",
     "react",
     "generator",
-    "dsl"
+    "dsl",
+    "boilerplate",
+    "project-template",
+    "code-generator"
   ],
   "categories": [
     "Other",
@@ -32,6 +35,7 @@
     "onCommand:sgmtr.reverseGenerate",
     "onCommand:sgmtr.preview",
     "onCommand:sgmtr.forwardGenerate",
+    "onCommand:sgmtr.createFromTemplate",
     "onLanguage:sgmtr",
     "workspaceContains:**/*.sgmtr"
   ],
@@ -68,6 +72,10 @@
       {
         "command": "sgmtr.forwardGenerate",
         "title": "SGMTR: Generate Directory"
+      },
+      { 
+        "command": "sgmtr.createFromTemplate", 
+        "title": "SGMTR: Create Project from Template" 
       }
     ],
     "menus": {
@@ -85,6 +93,11 @@
         {
           "command": "sgmtr.forwardGenerate",
           "when": "resourceExtname == '.sgmtr'",
+          "group": "navigation"
+        },
+        {
+          "command": "sgmtr.createFromTemplate",
+          "when": "explorerResourceIsFolder",
           "group": "navigation"
         }
       ]

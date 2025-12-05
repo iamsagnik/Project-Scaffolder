@@ -3,6 +3,7 @@ const vscode = require("vscode");
 const reverseGenerateCommand = require("./src/commands/reverseGenerateCommand");
 const previewSgmtrCommand = require("./src/commands/previewSgmtrCommand");
 const generateFromSgmtrCommand = require("./src/commands/generateFromSgmtrCommand");
+const createFromTemplateCommand = require("./src/commands/createFromTemplateCommand");
 
 const logger  = require("./src/core/diagnostics/logger");
 const { throwError } = require("./src/core/diagnostics/errorHandler");
@@ -29,7 +30,20 @@ function activate(context) {
       generateFromSgmtrCommand
     )
 
-    context.subscriptions.push(reverseDisposable, previewDisposable, forwardDisposable);
+    // Template Selection Command
+    const templateDisposable = vscode.commands.registerCommand(
+      "sgmtr.createFromTemplate",
+      createFromTemplateCommand
+    )
+
+    context
+    .subscriptions
+    .push(
+      reverseDisposable, 
+      previewDisposable, 
+      forwardDisposable, 
+      templateDisposable
+    );
 
     logger.info("extension", "Commands registered", {
       commands: ["sgmtr.reverseGenerate", "sgmtr.preview"]
