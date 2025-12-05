@@ -1,0 +1,393 @@
+{
+  "templateMeta": {
+    "id": "node-express-mvc",
+    "name": "Node.js + Express MVC Backend (Enterprise)",
+    "description": "Enterprise Express MVC backend with layered architecture, environment/config management, logging, testing, Docker, CI, and developer tooling.",
+    "defaultProjectName": "express-enterprise-backend",
+    "category": "backend",
+    "author": "Mitra",
+    "tags": ["node", "express", "mvc", "clean-architecture", "enterprise", "docker", "ci"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "node.package.express-mvc",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "server.js": {
+      "$meta": {
+        "generator": "node.express.server",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "node.env.example",
+        "variant": "express-mvc",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.node",
+        "overwrite": true
+      }
+    },
+
+    ".nvmrc": {
+      "$meta": {
+        "generator": "node.nvmrc",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.node",
+        "variant": "express-mvc",
+        "overwrite": true
+      }
+    },
+
+    "jest.config.cjs": {
+      "$meta": {
+        "generator": "test.jest.config.node",
+        "overwrite": true
+      }
+    },
+
+    "nodemon.json": {
+      "$meta": {
+        "generator": "node.nodemon.config",
+        "overwrite": true
+      }
+    },
+
+    "Dockerfile": {
+      "$meta": {
+        "generator": "dockerfile.node-express",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.node-express",
+        "variant": "dev",
+        "overwrite": true
+      }
+    },
+
+    "Makefile": {
+      "$meta": {
+        "generator": "makefile.node.express",
+        "overwrite": true
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.node-express-mvc",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.node",
+            "variant": "jest-docker",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "scripts": {
+      "dev.sh": {
+        "$meta": {
+          "generator": "scripts.node.dev",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "start.sh": {
+        "$meta": {
+          "generator": "scripts.node.start",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "migrate.sh": {
+        "$meta": {
+          "generator": "scripts.node.migrate",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      }
+    },
+
+    "src": {
+      "app.js": {
+        "$meta": {
+          "generator": "node.express.app",
+          "variant": "mvc-layered"
+        }
+      },
+
+      "index.js": {
+        "$meta": {
+          "generator": "node.express.index",
+          "variant": "bootstrap"
+        }
+      },
+
+      "config": {
+        "env.js": {
+          "$meta": { "generator": "node.config.env" }
+        },
+        "logger.js": {
+          "$meta": {
+            "generator": "node.config.logger",
+            "standard": "winston"
+          }
+        },
+        "db.js": {
+          "$meta": {
+            "generator": "node.config.db",
+            "variant": "mongodb"
+          }
+        },
+        "express.js": {
+          "$meta": {
+            "generator": "node.config.express"
+          }
+        }
+      },
+
+      "loaders": {
+        "index.js": {
+          "$meta": {
+            "generator": "node.loaders.index"
+          }
+        },
+        "express.loader.js": {
+          "$meta": { "generator": "node.loaders.express" }
+        },
+        "db.loader.js": {
+          "$meta": { "generator": "node.loaders.db" }
+        }
+      },
+
+      "routes": {
+        "index.routes.js": {
+          "$meta": {
+            "generator": "node.express.routes.index"
+          }
+        },
+        "health.routes.js": {
+          "$meta": {
+            "generator": "node.express.routes.health"
+          }
+        },
+        "v1": {
+          "auth.routes.js": {
+            "$meta": {
+              "generator": "node.express.routes.auth",
+              "variant": "v1"
+            }
+          },
+          "user.routes.js": {
+            "$meta": {
+              "generator": "node.express.routes.user",
+              "variant": "v1"
+            }
+          }
+        }
+      },
+
+      "controllers": {
+        "index.controller.js": {
+          "$meta": {
+            "generator": "node.mvc.controller.index"
+          }
+        },
+        "health.controller.js": {
+          "$meta": {
+            "generator": "node.mvc.controller.health"
+          }
+        },
+        "auth.controller.js": {
+          "$meta": {
+            "generator": "node.mvc.controller.auth"
+          }
+        },
+        "user.controller.js": {
+          "$meta": {
+            "generator": "node.mvc.controller.user"
+          }
+        }
+      },
+
+      "models": {
+        "user.model.js": {
+          "$meta": {
+            "generator": "node.mvc.model.user",
+            "variant": "mongoose"
+          }
+        },
+        "session.model.js": {
+          "$meta": {
+            "generator": "node.mvc.model.session",
+            "variant": "mongoose"
+          }
+        }
+      },
+
+      "repositories": {
+        "user.repository.js": {
+          "$meta": {
+            "generator": "node.mvc.repository.user"
+          }
+        }
+      },
+
+      "services": {
+        "auth.service.js": {
+          "$meta": {
+            "generator": "node.mvc.service.auth"
+          }
+        },
+        "user.service.js": {
+          "$meta": {
+            "generator": "node.mvc.service.user"
+          }
+        }
+      },
+
+      "middlewares": {
+        "error.middleware.js": {
+          "$meta": {
+            "generator": "node.express.middleware.error"
+          }
+        },
+        "auth.middleware.js": {
+          "$meta": {
+            "generator": "node.express.middleware.auth"
+          }
+        },
+        "validate.middleware.js": {
+          "$meta": {
+            "generator": "node.express.middleware.validate"
+          }
+        },
+        "request-logger.middleware.js": {
+          "$meta": {
+            "generator": "node.express.middleware.request-logger"
+          }
+        }
+      },
+
+      "validators": {
+        "auth.validator.js": {
+          "$meta": {
+            "generator": "node.validator.auth",
+            "standard": "joi"
+          }
+        },
+        "user.validator.js": {
+          "$meta": {
+            "generator": "node.validator.user",
+            "standard": "joi"
+          }
+        }
+      },
+
+      "utils": {
+        "logger.js": {
+          "$meta": {
+            "generator": "node.util.logger",
+            "standard": "winston"
+          }
+        },
+        "response.js": {
+          "$meta": { "generator": "node.util.response" }
+        },
+        "constants.js": {
+          "$meta": { "generator": "node.util.constants" }
+        },
+        "httpStatus.js": {
+          "$meta": { "generator": "node.util.http-status" }
+        }
+      },
+
+      "docs": {
+        "openapi.yaml": {
+          "$meta": {
+            "generator": "doc.openapi.express",
+            "variant": "skeleton"
+          }
+        }
+      }
+    },
+
+    "tests": {
+      "setup.js": {
+        "$meta": {
+          "generator": "node.test.setup",
+          "variant": "jest-supertest"
+        }
+      },
+
+      "integration": {
+        "health.int.test.js": {
+          "$meta": { "generator": "node.test.integration.health" }
+        },
+        "auth.int.test.js": {
+          "$meta": { "generator": "node.test.integration.auth" }
+        }
+      },
+
+      "unit": {
+        "user.service.test.js": {
+          "$meta": { "generator": "node.test.unit.user-service" }
+        },
+        "auth.service.test.js": {
+          "$meta": { "generator": "node.test.unit.auth-service" }
+        }
+      },
+
+      "mocks": {},
+      "factories": {}
+    }
+  }
+}

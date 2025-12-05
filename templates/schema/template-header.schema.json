@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "defaultProjectName"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique machine-readable template identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable template name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short description shown in the picker"
+    },
+    "category": {
+      "type": "string",
+      "description": "Optional template category (frontend, backend, fullstack, etc.)"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Optional search tags"
+    },
+    "defaultProjectName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Suggested default folder name"
+    },
+    "version": {
+      "type": "string",
+      "description": "Optional template version"
+    },
+    "author": {
+      "type": "string",
+      "description": "Optional template author"
+    },
+    "minSgmtrVersion": {
+      "type": "string",
+      "description": "Minimum SGMTR extension version required"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,337 @@
+{
+  "templateMeta": {
+    "id": "chrome-web-extension-enterprise",
+    "name": "Chrome / Web Extension (MV3, Enterprise)",
+    "description": "Enterprise-grade Chrome/Browser extension using Manifest V3 with React + Vite UI, TypeScript, testing, CI, and scalable folder structure.",
+    "defaultProjectName": "web-extension-enterprise",
+    "category": "frontend",
+    "author": "Mitra",
+    "tags": ["chrome", "web-extension", "mv3", "react", "vite", "typescript", "enterprise", "ci"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "webext.package.react-mv3",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "tsconfig.json": {
+      "$meta": {
+        "generator": "webext.tsconfig.base",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "tsconfig.node.json": {
+      "$meta": {
+        "generator": "webext.tsconfig.node",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "vite.config.ts": {
+      "$meta": {
+        "generator": "webext.vite.config",
+        "variant": "react-mv3-multi-entry",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "manifest.json": {
+      "$meta": {
+        "generator": "webext.manifest.v3",
+        "variant": "react-popup-options-content",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "webext.env.example",
+        "variant": "mv3",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.node",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.react",
+        "variant": "webext-ts",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "jest.config.cjs": {
+      "$meta": {
+        "generator": "test.jest.config.webext",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.webext",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.webext",
+            "variant": "build-test-zip",
+            "overwrite": true,
+            "encoding": "utf8"
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "public": {
+      "icon-16.png": {
+        "$meta": {
+          "generator": "webext.icon",
+          "variant": "16"
+        }
+      },
+      "icon-48.png": {
+        "$meta": {
+          "generator": "webext.icon",
+          "variant": "48"
+        }
+      },
+      "icon-128.png": {
+        "$meta": {
+          "generator": "webext.icon",
+          "variant": "128"
+        }
+      }
+    },
+
+    "src": {
+      "assets": {},
+      "hooks": {},
+      "context": {},
+      "constants": {},
+      "lib": {},
+
+      "config": {
+        "env.ts": {
+          "$meta": {
+            "generator": "webext.config.env",
+            "overwrite": true
+          }
+        }
+      },
+
+      "background": {
+        "index.ts": {
+          "$meta": {
+            "generator": "webext.background.service-worker",
+            "variant": "mv3"
+          }
+        },
+        "listeners.ts": {
+          "$meta": {
+            "generator": "webext.background.listeners"
+          }
+        },
+        "messaging.ts": {
+          "$meta": {
+            "generator": "webext.background.messaging"
+          }
+        }
+      },
+
+      "content": {
+        "index.ts": {
+          "$meta": {
+            "generator": "webext.content.entry"
+          }
+        },
+        "dom-observer.ts": {
+          "$meta": {
+            "generator": "webext.content.dom-observer"
+          }
+        },
+        "messaging.ts": {
+          "$meta": {
+            "generator": "webext.content.messaging"
+          }
+        }
+      },
+
+      "popup": {
+        "main.tsx": {
+          "$meta": {
+            "generator": "webext.popup.main",
+            "variant": "react",
+            "overwrite": true
+          }
+        },
+        "PopupApp.tsx": {
+          "$meta": {
+            "generator": "webext.popup.app",
+            "variant": "dashboard",
+            "overwrite": true
+          }
+        }
+      },
+
+      "options": {
+        "main.tsx": {
+          "$meta": {
+            "generator": "webext.options.main",
+            "variant": "react",
+            "overwrite": true
+          }
+        },
+        "OptionsApp.tsx": {
+          "$meta": {
+            "generator": "webext.options.app",
+            "variant": "settings",
+            "overwrite": true
+          }
+        }
+      },
+
+      "components": {
+        "ui": {
+          "Button.tsx": {
+            "$meta": {
+              "generator": "react.component.ui.button"
+            }
+          },
+          "Toggle.tsx": {
+            "$meta": {
+              "generator": "react.component.ui.toggle"
+            }
+          }
+        },
+        "common": {
+          "Header.tsx": {
+            "$meta": {
+              "generator": "webext.component.header"
+            }
+          }
+        }
+      },
+
+      "store": {
+        "settings.store.ts": {
+          "$meta": {
+            "generator": "webext.store.settings",
+            "standard": "zustand"
+          }
+        },
+        "session.store.ts": {
+          "$meta": {
+            "generator": "webext.store.session",
+            "standard": "zustand"
+          }
+        }
+      },
+
+      "services": {
+        "storage.service.ts": {
+          "$meta": {
+            "generator": "webext.service.storage",
+            "variant": "chrome-storage-sync"
+          }
+        },
+        "messaging.service.ts": {
+          "$meta": {
+            "generator": "webext.service.messaging"
+          }
+        }
+      },
+
+      "utils": {
+        "logger.ts": {
+          "$meta": {
+            "generator": "webext.util.logger"
+          }
+        },
+        "runtime.ts": {
+          "$meta": {
+            "generator": "webext.util.runtime"
+          }
+        }
+      },
+
+      "types": {
+        "messages.types.ts": {
+          "$meta": {
+            "generator": "webext.types.messages"
+          }
+        },
+        "settings.types.ts": {
+          "$meta": {
+            "generator": "webext.types.settings"
+          }
+        }
+      },
+
+      "tests": {
+        "setup.ts": {
+          "$meta": {
+            "generator": "webext.test.setup",
+            "variant": "jest"
+          }
+        },
+        "background.test.ts": {
+          "$meta": {
+            "generator": "webext.test.background"
+          }
+        },
+        "content.test.ts": {
+          "$meta": {
+            "generator": "webext.test.content"
+          }
+        }
+      }
+    }
+  }
+}

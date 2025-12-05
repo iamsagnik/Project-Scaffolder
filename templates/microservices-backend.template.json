@@ -1,0 +1,339 @@
+{
+  "templateMeta": {
+    "id": "microservices-backend-skeleton",
+    "name": "Microservices Backend Skeleton (Enterprise)",
+    "description": "Enterprise Node.js microservices backend with API Gateway, service isolation, shared workspace, Docker, k8s manifests, CI, and modular architecture.",
+    "defaultProjectName": "microservices-backend",
+    "category": "backend",
+    "tags": ["microservices", "express", "node", "docker", "k8s", "enterprise", "ci"]
+  },
+
+  "forwardTree": {
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.microservices",
+        "variant": "enterprise-skeleton",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.microservices",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "micro.env.example.root",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.microservices",
+        "variant": "gateway-and-services",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "Makefile": {
+      "$meta": {
+        "generator": "makefile.microservices",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.microservices",
+            "variant": "gateway-and-services",
+            "overwrite": true,
+            "encoding": "utf8"
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "infra": {
+      "k8s": {
+        "namespace.yaml": {
+          "$meta": { "generator": "micro.infra.k8s.namespace" }
+        },
+        "gateway-deployment.yaml": {
+          "$meta": { "generator": "micro.infra.k8s.gateway-deployment" }
+        },
+        "gateway-service.yaml": {
+          "$meta": { "generator": "micro.infra.k8s.gateway-service" }
+        },
+        "users-deployment.yaml": {
+          "$meta": {
+            "generator": "micro.infra.k8s.service-deployment",
+            "variant": "users"
+          }
+        },
+        "orders-deployment.yaml": {
+          "$meta": {
+            "generator": "micro.infra.k8s.service-deployment",
+            "variant": "orders"
+          }
+        }
+      },
+      "configmaps": {},
+      "secrets": {},
+      "ingress": {}
+    },
+
+    "shared": {
+      "package.json": {
+        "$meta": { "generator": "micro.shared.package", "variant": "typescript", "overwrite": true }
+      },
+      "tsconfig.json": {
+        "$meta": { "generator": "micro.shared.tsconfig", "overwrite": true }
+      },
+
+      "src": {
+        "index.ts": {
+          "$meta": { "generator": "micro.shared.index" }
+        },
+
+        "types": {},
+        "validators": {},
+        "utils": {},
+
+        "config": {
+          "env.ts": { "$meta": { "generator": "micro.shared.config.env" } }
+        },
+
+        "logger": {
+          "logger.ts": {
+            "$meta": { "generator": "micro.shared.logger", "standard": "winston" }
+          }
+        },
+
+        "events": {
+          "eventBus.ts": {
+            "$meta": { "generator": "micro.shared.event-bus" }
+          },
+          "types.ts": {
+            "$meta": { "generator": "micro.shared.event-types" }
+          },
+          "handlers": {}
+        }
+      }
+    },
+
+    "services": {
+      "gateway": {
+        "package.json": {
+          "$meta": { "generator": "micro.service.package", "variant": "gateway", "overwrite": true }
+        },
+        "tsconfig.json": {
+          "$meta": { "generator": "micro.service.tsconfig", "variant": "gateway", "overwrite": true }
+        },
+        "Dockerfile": {
+          "$meta": { "generator": "dockerfile.micro.gateway", "overwrite": true }
+        },
+        ".env": null,
+        ".env.example": {
+          "$meta": { "generator": "micro.env.example.service", "variant": "gateway" }
+        },
+
+        "src": {
+          "index.ts": { "$meta": { "generator": "micro.gateway.index" } },
+          "app.ts": {
+            "$meta": { "generator": "micro.gateway.app", "standard": "express" }
+          },
+
+          "config": {
+            "routes.config.ts": {
+              "$meta": { "generator": "micro.gateway.routes-config" }
+            }
+          },
+
+          "routes": {
+            "proxy.routes.ts": {
+              "$meta": { "generator": "micro.gateway.routes.proxy" }
+            },
+            "health.routes.ts": {
+              "$meta": { "generator": "micro.gateway.routes.health" }
+            }
+          },
+
+          "middlewares": {
+            "request-logger.middleware.ts": {
+              "$meta": { "generator": "micro.gateway.middleware.request-logger" }
+            }
+          },
+
+          "validators": {},
+          "repositories": {},
+          "helpers": {}
+        },
+
+        "tests": {
+          "gateway.health.test.ts": {
+            "$meta": { "generator": "micro.gateway.test.health" }
+          },
+          "unit": {},
+          "integration": {}
+        }
+      },
+
+      "users-service": {
+        "package.json": {
+          "$meta": { "generator": "micro.service.package", "variant": "users", "overwrite": true }
+        },
+        "tsconfig.json": {
+          "$meta": { "generator": "micro.service.tsconfig", "variant": "users", "overwrite": true }
+        },
+        "Dockerfile": {
+          "$meta": { "generator": "dockerfile.micro.service", "variant": "users", "overwrite": true }
+        },
+        ".env": null,
+        ".env.example": {
+          "$meta": { "generator": "micro.env.example.service", "variant": "users" }
+        },
+
+        "src": {
+          "index.ts": { "$meta": { "generator": "micro.service.index", "variant": "users" } },
+          "app.ts": {
+            "$meta": { "generator": "micro.service.app", "standard": "express" }
+          },
+
+          "config": {
+            "db.ts": {
+              "$meta": { "generator": "micro.service.config.db", "variant": "users" }
+            }
+          },
+
+          "routes": {
+            "users.routes.ts": {
+              "$meta": { "generator": "micro.service.routes.users" }
+            }
+          },
+
+          "controllers": {
+            "users.controller.ts": {
+              "$meta": { "generator": "micro.service.controller.users" }
+            }
+          },
+
+          "models": {
+            "user.model.ts": {
+              "$meta": { "generator": "micro.service.model.user", "variant": "mongoose" }
+            }
+          },
+
+          "services": {
+            "users.service.ts": {
+              "$meta": { "generator": "micro.service.service.users" }
+            }
+          },
+
+          "events": {
+            "handlers.ts": {
+              "$meta": { "generator": "micro.service.events.handlers", "variant": "users" }
+            }
+          },
+
+          "validators": {},
+          "repositories": {},
+          "helpers": {}
+        },
+
+        "tests": {
+          "users.service.test.ts": {
+            "$meta": { "generator": "micro.service.test.users" }
+          },
+          "unit": {},
+          "integration": {},
+          "contract": {}
+        }
+      },
+
+      "orders-service": {
+        "package.json": {
+          "$meta": { "generator": "micro.service.package", "variant": "orders", "overwrite": true }
+        },
+        "tsconfig.json": {
+          "$meta": { "generator": "micro.service.tsconfig", "variant": "orders", "overwrite": true }
+        },
+        "Dockerfile": {
+          "$meta": { "generator": "dockerfile.micro.service", "variant": "orders", "overwrite": true }
+        },
+        ".env": null,
+        ".env.example": {
+          "$meta": { "generator": "micro.env.example.service", "variant": "orders" }
+        },
+
+        "src": {
+          "index.ts": { "$meta": { "generator": "micro.service.index", "variant": "orders" } },
+          "app.ts": {
+            "$meta": { "generator": "micro.service.app", "standard": "express" }
+          },
+
+          "config": {
+            "db.ts": {
+              "$meta": { "generator": "micro.service.config.db", "variant": "orders" }
+            }
+          },
+
+          "routes": {
+            "orders.routes.ts": {
+              "$meta": { "generator": "micro.service.routes.orders" }
+            }
+          },
+
+          "controllers": {
+            "orders.controller.ts": {
+              "$meta": { "generator": "micro.service.controller.orders" }
+            }
+          },
+
+          "models": {
+            "order.model.ts": {
+              "$meta": { "generator": "micro.service.model.order", "variant": "mongoose" }
+            }
+          },
+
+          "services": {
+            "orders.service.ts": {
+              "$meta": { "generator": "micro.service.service.orders" }
+            }
+          },
+
+          "events": {
+            "handlers.ts": {
+              "$meta": { "generator": "micro.service.events.handlers", "variant": "orders" }
+            }
+          },
+
+          "validators": {},
+          "repositories": {},
+          "helpers": {}
+        },
+
+        "tests": {
+          "orders.service.test.ts": {
+            "$meta": { "generator": "micro.service.test.orders" }
+          },
+          "unit": {},
+          "integration": {},
+          "contract": {}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "templateMeta": {
+    "id": "monorepo-enterprise",
+    "name": "Monorepo (Frontend + Backend + Shared Packages) (Enterprise)",
+    "description": "Enterprise PNPM monorepo with React frontend, Node backend, shared TypeScript packages, unified tooling, CI, Docker, and workspace-based dev pipelines.",
+    "defaultProjectName": "enterprise-monorepo",
+    "category": "fullstack",
+    "tags": ["monorepo", "pnpm", "typescript", "react", "node", "workspace", "docker", "enterprise"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "monorepo.root.package",
+        "variant": "pnpm-workspaces",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "pnpm-workspace.yaml": {
+      "$meta": {
+        "generator": "monorepo.pnpm.workspace",
+        "overwrite": true
+      }
+    },
+
+    "tsconfig.base.json": {
+      "$meta": {
+        "generator": "monorepo.tsconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "monorepo.env.example",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.monorepo",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.monorepo",
+        "variant": "ts-react-node",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.monorepo",
+        "variant": "frontend-backend",
+        "overwrite": true
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.monorepo",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.monorepo",
+            "variant": "workspace-build-test",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "tools": {},
+    "scripts": {},
+    "docs": {},
+
+    "apps": {
+      "frontend": {
+        "package.json": {
+          "$meta": {
+            "generator": "node.package.react-vite",
+            "variant": "monorepo",
+            "overwrite": true
+          }
+        },
+        "vite.config.ts": {
+          "$meta": {
+            "generator": "vite.config.react",
+            "variant": "monorepo",
+            "overwrite": true
+          }
+        },
+        "tsconfig.json": {
+          "$meta": {
+            "generator": "typescript.config.react",
+            "variant": "references",
+            "overwrite": true
+          }
+        },
+        ".env": null,
+        "Dockerfile": {
+          "$meta": {
+            "generator": "dockerfile.react-vite",
+            "variant": "nginx-prod",
+            "overwrite": true
+          }
+        },
+
+        "src": {
+          "lib": {},
+          "context": {},
+          "constants": {},
+          "hooks": {},
+          "styles": {},
+
+          "main.tsx": {
+            "$meta": { "generator": "react.vite.main" }
+          },
+          "App.tsx": {
+            "$meta": {
+              "generator": "react.app.root",
+              "variant": "monorepo-shell"
+            }
+          },
+
+          "config": {
+            "api.ts": {
+              "$meta": {
+                "generator": "react.config.api",
+                "variant": "monorepo-backend"
+              }
+            }
+          },
+
+          "pages": {
+            "Home.page.tsx": {
+              "$meta": { "generator": "react.page.home" }
+            }
+          }
+        }
+      },
+
+      "backend": {
+        "package.json": {
+          "$meta": {
+            "generator": "node.package.express-mvc",
+            "variant": "monorepo",
+            "overwrite": true
+          }
+        },
+        "tsconfig.json": {
+          "$meta": {
+            "generator": "typescript.config.node",
+            "variant": "references",
+            "overwrite": true
+          }
+        },
+        ".env": null,
+        "Dockerfile": {
+          "$meta": {
+            "generator": "dockerfile.node-express",
+            "variant": "monorepo-backend",
+            "overwrite": true
+          }
+        },
+
+        "src": {
+          "index.ts": {
+            "$meta": {
+              "generator": "node.express.index",
+              "variant": "monorepo-bootstrap"
+            }
+          },
+          "app.ts": {
+            "$meta": {
+              "generator": "node.express.app",
+              "variant": "monorepo"
+            }
+          },
+
+          "routes": {
+            "health.routes.ts": {
+              "$meta": { "generator": "node.express.routes.health" }
+            }
+          }
+        }
+      }
+    },
+
+    "packages": {
+      "shared-types": {
+        "package.json": {
+          "$meta": {
+            "generator": "monorepo.package.shared-types",
+            "overwrite": true
+          }
+        },
+        "tsconfig.json": {
+          "$meta": {
+            "generator": "monorepo.package.tsconfig",
+            "overwrite": true
+          }
+        },
+        "src": {
+          "index.ts": {
+            "$meta": { "generator": "monorepo.shared.types.index" }
+          }
+        }
+      },
+
+      "shared-utils": {
+        "package.json": {
+          "$meta": {
+            "generator": "monorepo.package.shared-utils",
+            "overwrite": true
+          }
+        },
+        "tsconfig.json": {
+          "$meta": {
+            "generator": "monorepo.package.tsconfig",
+            "overwrite": true
+          }
+        },
+        "src": {
+          "logger.ts": {
+            "$meta": { "generator": "monorepo.shared.utils.logger" }
+          },
+          "http.ts": {
+            "$meta": { "generator": "monorepo.shared.utils.http" }
+          },
+          "index.ts": {
+            "$meta": { "generator": "monorepo.shared.utils.index" }
+          }
+        }
+      }
+    }
+  }
+}

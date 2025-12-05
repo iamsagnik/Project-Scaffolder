@@ -1,0 +1,432 @@
+{
+  "templateMeta": {
+    "id": "mern-fullstack-enterprise",
+    "name": "MERN Full-Stack App (Enterprise)",
+    "description": "Enterprise MERN application with MVC backend, modular React frontend, Docker, CI, testing, environment separation, and scalable architecture.",
+    "defaultProjectName": "mern-enterprise-app",
+    "category": "fullstack",
+    "author": "Mitra",
+    "tags": ["mern", "mongo", "express", "react", "node", "docker", "ci", "enterprise"]
+  },
+
+  "forwardTree": {
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.mern",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.mern",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "mern.env.example",
+        "variant": "root",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.mern",
+        "variant": "mongo-backend-frontend",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.mern",
+            "variant": "backend-frontend-docker",
+            "overwrite": true,
+            "encoding": "utf8"
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "backend": {
+      "package.json": {
+        "$meta": {
+          "generator": "node.package.mern-backend",
+          "variant": "express-mongo",
+          "overwrite": true,
+          "encoding": "utf8"
+        }
+      },
+
+      ".env": null,
+
+      ".env.example": {
+        "$meta": {
+          "generator": "node.env.example",
+          "variant": "express-mongo"
+        }
+      },
+
+      ".gitignore": {
+        "$meta": {
+          "generator": "git.ignore.node",
+          "overwrite": true
+        }
+      },
+
+      "jest.config.cjs": {
+        "$meta": {
+          "generator": "test.jest.config.node",
+          "variant": "express",
+          "overwrite": true
+        }
+      },
+
+      "nodemon.json": {
+        "$meta": {
+          "generator": "node.nodemon.config",
+          "overwrite": true
+        }
+      },
+
+      "Dockerfile": {
+        "$meta": {
+          "generator": "dockerfile.node-express",
+          "variant": "mern-backend",
+          "overwrite": true
+        }
+      },
+
+      "src": {
+        "index.js": {
+          "$meta": {
+            "generator": "mern.backend.index",
+            "variant": "bootstrap"
+          }
+        },
+        "app.js": {
+          "$meta": {
+            "generator": "mern.backend.app",
+            "variant": "mvc-layered"
+          }
+        },
+
+        "config": {
+          "env.js": {
+            "$meta": {
+              "generator": "mern.backend.config.env"
+            }
+          },
+          "db.js": {
+            "$meta": {
+              "generator": "mern.backend.config.db",
+              "variant": "mongodb"
+            }
+          },
+          "logger.js": {
+            "$meta": {
+              "generator": "mern.backend.config.logger",
+              "standard": "winston"
+            }
+          }
+        },
+
+        "routes": {
+          "index.routes.js": {
+            "$meta": { "generator": "mern.backend.routes.index" }
+          },
+          "auth.routes.js": {
+            "$meta": { "generator": "mern.backend.routes.auth" }
+          },
+          "user.routes.js": {
+            "$meta": { "generator": "mern.backend.routes.user" }
+          },
+          "todo.routes.js": {
+            "$meta": { "generator": "mern.backend.routes.todo" }
+          }
+        },
+
+        "controllers": {
+          "health.controller.js": {
+            "$meta": { "generator": "mern.backend.controller.health" }
+          },
+          "auth.controller.js": {
+            "$meta": { "generator": "mern.backend.controller.auth" }
+          },
+          "user.controller.js": {
+            "$meta": { "generator": "mern.backend.controller.user" }
+          },
+          "todo.controller.js": {
+            "$meta": { "generator": "mern.backend.controller.todo" }
+          }
+        },
+
+        "models": {
+          "user.model.js": {
+            "$meta": {
+              "generator": "mern.backend.model.user",
+              "variant": "mongoose"
+            }
+          },
+          "todo.model.js": {
+            "$meta": {
+              "generator": "mern.backend.model.todo",
+              "variant": "mongoose"
+            }
+          }
+        },
+
+        "services": {
+          "auth.service.js": {
+            "$meta": { "generator": "mern.backend.service.auth" }
+          },
+          "user.service.js": {
+            "$meta": { "generator": "mern.backend.service.user" }
+          },
+          "todo.service.js": {
+            "$meta": { "generator": "mern.backend.service.todo" }
+          }
+        },
+
+        "middlewares": {
+          "error.middleware.js": {
+            "$meta": { "generator": "mern.backend.middleware.error" }
+          },
+          "auth.middleware.js": {
+            "$meta": {
+              "generator": "mern.backend.middleware.auth",
+              "standard": "jwt"
+            }
+          },
+          "validate.middleware.js": {
+            "$meta": { "generator": "mern.backend.middleware.validate" }
+          },
+          "cors.middleware.js": {
+            "$meta": { "generator": "mern.backend.middleware.cors" }
+          }
+        },
+
+        "validators": {},
+        "repositories": {},
+        "helpers": {},
+
+        "utils": {
+          "constants.js": { "$meta": { "generator": "mern.backend.util.constants" } },
+          "response.js": { "$meta": { "generator": "mern.backend.util.response" } },
+          "logger.js": {
+            "$meta": { "generator": "mern.backend.util.logger", "standard": "winston" }
+          },
+          "jwt.js": { "$meta": { "generator": "mern.backend.util.jwt" } }
+        },
+
+        "tests": {
+          "setup.js": {
+            "$meta": {
+              "generator": "mern.backend.test.setup",
+              "variant": "jest-supertest"
+            }
+          },
+
+          "integration": {
+            "auth.int.test.js": {
+              "$meta": { "generator": "mern.backend.test.integration.auth" }
+            },
+            "todo.int.test.js": {
+              "$meta": { "generator": "mern.backend.test.integration.todo" }
+            }
+          },
+
+          "unit": {
+            "user.service.test.js": {
+              "$meta": { "generator": "mern.backend.test.unit.user-service" }
+            }
+          }
+        }
+      }
+    },
+
+    "frontend": {
+      "package.json": {
+        "$meta": {
+          "generator": "node.package.mern-frontend",
+          "variant": "react-vite",
+          "overwrite": true
+        }
+      },
+
+      "vite.config.ts": {
+        "$meta": {
+          "generator": "vite.config.react",
+          "variant": "mern-proxy",
+          "overwrite": true
+        }
+      },
+
+      "tsconfig.json": {
+        "$meta": {
+          "generator": "typescript.config.react",
+          "overwrite": true
+        }
+      },
+
+      "index.html": {
+        "$meta": { "generator": "vite.index.html.react" }
+      },
+
+      ".env": null,
+
+      ".env.example": {
+        "$meta": {
+          "generator": "mern.env.example",
+          "variant": "frontend"
+        }
+      },
+
+      ".gitignore": {
+        "$meta": { "generator": "git.ignore.node" }
+      },
+
+      "Dockerfile": {
+        "$meta": {
+          "generator": "dockerfile.react-vite",
+          "variant": "nginx-prod",
+          "overwrite": true
+        }
+      },
+
+      "README.md": {
+        "$meta": { "generator": "doc.readme.mern-frontend" }
+      },
+
+      "src": {
+        "assets": {},
+        "constants": {},
+        "lib": {},
+        "context": {},
+        "styles": {},
+
+        "main.tsx": {
+          "$meta": { "generator": "mern.frontend.main" }
+        },
+
+        "App.tsx": {
+          "$meta": {
+            "generator": "mern.frontend.app",
+            "variant": "auth-dashboard-shell"
+          }
+        },
+
+        "config": {
+          "env.ts": { "$meta": { "generator": "mern.frontend.config.env" } },
+          "api.ts": {
+            "$meta": {
+              "generator": "mern.frontend.config.api",
+              "variant": "backend-base-url"
+            }
+          }
+        },
+
+        "routes": {
+          "index.tsx": {
+            "$meta": {
+              "generator": "react.router.index",
+              "variant": "v6"
+            }
+          },
+          "protected.routes.tsx": {
+            "$meta": { "generator": "react.router.protected" }
+          }
+        },
+
+        "pages": {
+          "Home.page.tsx": { "$meta": { "generator": "mern.frontend.page.home" } },
+          "Login.page.tsx": { "$meta": { "generator": "mern.frontend.page.login" } },
+          "Register.page.tsx": { "$meta": { "generator": "mern.frontend.page.register" } },
+          "Dashboard.page.tsx": { "$meta": { "generator": "mern.frontend.page.dashboard" } },
+          "Todos.page.tsx": { "$meta": { "generator": "mern.frontend.page.todos" } }
+        },
+
+        "components": {
+          "layout": {
+            "AppLayout.tsx": {
+              "$meta": { "generator": "mern.frontend.component.layout.app" }
+            }
+          },
+          "ui": {
+            "Button.tsx": { "$meta": { "generator": "react.component.ui.button" } },
+            "Input.tsx": { "$meta": { "generator": "react.component.ui.input" } }
+          },
+          "todos": {
+            "TodoList.tsx": {
+              "$meta": { "generator": "mern.frontend.component.todos.list" }
+            },
+            "TodoItem.tsx": {
+              "$meta": { "generator": "mern.frontend.component.todos.item" }
+            }
+          }
+        },
+
+        "store": {
+          "auth.store.ts": {
+            "$meta": { "generator": "react.store.auth", "standard": "zustand" }
+          },
+          "todo.store.ts": {
+            "$meta": { "generator": "mern.frontend.store.todo", "standard": "zustand" }
+          }
+        },
+
+        "services": {
+          "http.service.ts": {
+            "$meta": { "generator": "react.service.http", "standard": "axios" }
+          },
+          "auth.service.ts": {
+            "$meta": { "generator": "mern.frontend.service.auth" }
+          },
+          "todo.service.ts": {
+            "$meta": { "generator": "mern.frontend.service.todo" }
+          }
+        },
+
+        "hooks": {
+          "useAuth.ts": {
+            "$meta": { "generator": "react.hook.use-auth" }
+          },
+          "useTodos.ts": {
+            "$meta": { "generator": "mern.frontend.hook.use-todos" }
+          }
+        },
+
+        "utils": {
+          "storage.ts": {
+            "$meta": { "generator": "react.util.storage" }
+          }
+        },
+
+        "tests": {
+          "setup.ts": {
+            "$meta": { "generator": "react.test.setup", "variant": "vitest" }
+          },
+          "pages": {
+            "login.page.test.tsx": {
+              "$meta": { "generator": "mern.frontend.test.page.login" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

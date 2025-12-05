@@ -1,0 +1,251 @@
+{
+  "templateMeta": {
+    "id": "react-vite-enterprise",
+    "name": "React + Vite Frontend App (Enterprise)",
+    "description": "Enterprise React + Vite setup with TypeScript, Tailwind, Zustand, API layer, component architecture, tests, CI, and Docker.",
+    "defaultProjectName": "react-vite-enterprise",
+    "category": "frontend",
+    "author": "Mitra",
+    "tags": ["react", "vite", "typescript", "tailwind", "zustand", "enterprise", "docker", "ci"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "node.package.react-vite",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "vite.config.ts": {
+      "$meta": {
+        "generator": "vite.config.react",
+        "variant": "ts-enterprise",
+        "overwrite": true
+      }
+    },
+
+    "tsconfig.json": {
+      "$meta": {
+        "generator": "typescript.config.react",
+        "overwrite": true
+      }
+    },
+
+    "tsconfig.node.json": {
+      "$meta": {
+        "generator": "typescript.config.node",
+        "overwrite": true
+      }
+    },
+
+    "index.html": {
+      "$meta": {
+        "generator": "vite.index.html.react",
+        "overwrite": true
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "node.env.example",
+        "variant": "react",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.node",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.react",
+        "variant": "ts",
+        "overwrite": true
+      }
+    },
+
+    "Dockerfile": {
+      "$meta": {
+        "generator": "dockerfile.react-vite",
+        "variant": "nginx-prod",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.react-vite",
+        "overwrite": true
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.react-vite",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.react",
+            "variant": "vite-vitest-docker",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "public": {
+      "favicon.svg": {
+        "$meta": {
+          "generator": "react.public.favicon"
+        }
+      }
+    },
+
+    "src": {
+      "lib": {},
+      "context": {},
+      "constants": {},
+      "styles": {
+        "index.css": {
+          "$meta": {
+            "generator": "tailwind.index.css"
+          }
+        },
+        "components": {}
+      },
+
+      "main.tsx": {
+        "$meta": { "generator": "react.vite.main" }
+      },
+
+      "App.tsx": {
+        "$meta": {
+          "generator": "react.app.root",
+          "variant": "enterprise-layout"
+        }
+      },
+
+      "assets": {},
+
+      "config": {
+        "env.ts": { "$meta": { "generator": "react.config.env" } },
+        "api.ts": { "$meta": { "generator": "react.config.api" } }
+      },
+
+      "routes": {
+        "index.tsx": {
+          "$meta": {
+            "generator": "react.router.index",
+            "variant": "v6"
+          }
+        },
+        "protected.routes.tsx": {
+          "$meta": { "generator": "react.router.protected" }
+        }
+      },
+
+      "pages": {
+        "Home.page.tsx": { "$meta": { "generator": "react.page.home" } },
+        "Login.page.tsx": { "$meta": { "generator": "react.page.login" } },
+        "Dashboard.page.tsx": { "$meta": { "generator": "react.page.dashboard" } }
+      },
+
+      "components": {
+        "layout": {
+          "AppLayout.tsx": {
+            "$meta": {
+              "generator": "react.component.layout.app"
+            }
+          }
+        },
+        "ui": {
+          "Button.tsx": { "$meta": { "generator": "react.component.ui.button" } },
+          "Input.tsx": { "$meta": { "generator": "react.component.ui.input" } }
+        }
+      },
+
+      "store": {
+        "index.ts": {
+          "$meta": {
+            "generator": "react.store.zustand"
+          }
+        },
+        "auth.store.ts": {
+          "$meta": { "generator": "react.store.auth" }
+        }
+      },
+
+      "services": {
+        "http.service.ts": {
+          "$meta": {
+            "generator": "react.service.http",
+            "standard": "axios"
+          }
+        },
+        "auth.service.ts": {
+          "$meta": { "generator": "react.service.auth" }
+        }
+      },
+
+      "hooks": {
+        "useAuth.ts": { "$meta": { "generator": "react.hook.use-auth" } },
+        "useMounted.ts": { "$meta": { "generator": "react.hook.use-mounted" } }
+      },
+
+      "utils": {
+        "logger.ts": { "$meta": { "generator": "react.util.logger" } },
+        "storage.ts": { "$meta": { "generator": "react.util.storage" } }
+      },
+
+      "types": {
+        "api.types.ts": { "$meta": { "generator": "react.types.api" } },
+        "auth.types.ts": { "$meta": { "generator": "react.types.auth" } }
+      },
+
+      "tests": {
+        "setup.ts": {
+          "$meta": {
+            "generator": "react.test.setup",
+            "variant": "vitest"
+          }
+        },
+        "home.page.test.tsx": {
+          "$meta": { "generator": "react.test.page.home" }
+        },
+        "unit": {},
+        "integration": {}
+      }
+    }
+  }
+}
