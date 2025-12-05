@@ -9,12 +9,12 @@
       "type": "object",
       "required": ["generator"],
       "properties": {
-        "generator": { "type": "string" },
-        "variant": { "type": "string" },
+        "generator": { "type": "string", "minLength": 1 },
+        "variant": { "type": "string", "minLength": 1 },
         "options": { "type": "object" },
-        "standard": { "type": "string" },
+        "standard": { "type": "string", "minLength": 1 },
         "overwrite": { "type": "boolean" },
-        "encoding": { "type": "string" },
+        "encoding": { "type": "string", "minLength": 1 },
         "permissions": { "type": "string", "pattern": "^[0-7]{3,4}$" }
       },
       "additionalProperties": false
