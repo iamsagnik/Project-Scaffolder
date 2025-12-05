@@ -1,0 +1,375 @@
+{
+  "templateMeta": {
+    "id": "django-mvc-enterprise",
+    "name": "Django MVC Web Application (Enterprise)",
+    "description": "Enterprise-ready Django web application with layered apps, DRF, PostgreSQL, Redis, Celery, Docker, CI, robust settings, services, selectors, repositories, and complete testing setup.",
+    "defaultProjectName": "django-enterprise-app",
+    "category": "backend",
+    "author": "Mitra",
+    "tags": ["django", "python", "mvc", "enterprise", "docker", "celery", "postgres", "drf"]
+  },
+
+  "forwardTree": {
+    "pyproject.toml": {
+      "$meta": {
+        "generator": "python.poetry.base",
+        "variant": "django-enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "manage.py": {
+      "$meta": {
+        "generator": "django.manage",
+        "permissions": "0755",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "python.env.example",
+        "variant": "django",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.python",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "pytest.ini": {
+      "$meta": {
+        "generator": "python.pytest.config",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "mypy.ini": {
+      "$meta": {
+        "generator": "python.mypy.config",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "Dockerfile": {
+      "$meta": {
+        "generator": "dockerfile.django",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.django",
+        "variant": "postgres-redis-celery",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "Makefile": {
+      "$meta": {
+        "generator": "makefile.django",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.django",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.python",
+            "variant": "django-pytest-docker",
+            "overwrite": true,
+            "encoding": "utf8"
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "scripts": {
+      "start.sh": {
+        "$meta": {
+          "generator": "scripts.django.start",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "worker.sh": {
+        "$meta": {
+          "generator": "scripts.celery.worker",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "beat.sh": {
+        "$meta": {
+          "generator": "scripts.celery.beat",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      }
+    },
+
+    "config": {
+      "__init__.py": null,
+      "asgi.py": {
+        "$meta": {
+          "generator": "django.asgi",
+          "overwrite": true
+        }
+      },
+      "wsgi.py": {
+        "$meta": {
+          "generator": "django.wsgi",
+          "overwrite": true
+        }
+      },
+      "urls.py": {
+        "$meta": {
+          "generator": "django.urls.root",
+          "overwrite": true
+        }
+      },
+      "settings": {
+        "__init__.py": null,
+        "base.py": {
+          "$meta": {
+            "generator": "django.settings.base",
+            "overwrite": true
+          }
+        },
+        "dev.py": {
+          "$meta": {
+            "generator": "django.settings.dev",
+            "overwrite": true
+          }
+        },
+        "prod.py": {
+          "$meta": {
+            "generator": "django.settings.prod",
+            "overwrite": true
+          }
+        }
+      },
+      "celery.py": {
+        "$meta": {
+          "generator": "django.celery.bootstrap",
+          "overwrite": true
+        }
+      }
+    },
+
+    "apps": {
+      "users": {
+        "__init__.py": null,
+        "apps.py": {
+          "$meta": {
+            "generator": "django.app.config",
+            "variant": "users"
+          }
+        },
+        "models.py": {
+          "$meta": {
+            "generator": "django.model.user"
+          }
+        },
+        "views.py": {
+          "$meta": {
+            "generator": "django.view.user"
+          }
+        },
+        "urls.py": {
+          "$meta": {
+            "generator": "django.urls.app",
+            "variant": "users"
+          }
+        },
+        "serializers.py": {
+          "$meta": {
+            "generator": "django.serializer.user",
+            "standard": "drf"
+          }
+        },
+        "services.py": {
+          "$meta": {
+            "generator": "django.service.user"
+          }
+        },
+        "selectors.py": null,
+        "repositories.py": null,
+        "forms.py": null,
+        "admin.py": null,
+        "signals.py": {
+          "$meta": {
+            "generator": "django.signals.user"
+          }
+        },
+        "tests": {
+          "test_models.py": {
+            "$meta": {
+              "generator": "django.test.model.user"
+            }
+          },
+          "test_views.py": {
+            "$meta": {
+              "generator": "django.test.view.user"
+            }
+          },
+          "factories.py": null
+        },
+        "migrations": {}
+      },
+
+      "authn": {
+        "__init__.py": null,
+        "apps.py": {
+          "$meta": {
+            "generator": "django.app.config",
+            "variant": "authn"
+          }
+        },
+        "views.py": {
+          "$meta": {
+            "generator": "django.view.auth"
+          }
+        },
+        "urls.py": {
+          "$meta": {
+            "generator": "django.urls.app",
+            "variant": "auth"
+          }
+        },
+        "serializers.py": {
+          "$meta": {
+            "generator": "django.serializer.auth",
+            "standard": "drf"
+          }
+        },
+        "services.py": {
+          "$meta": {
+            "generator": "django.service.auth"
+          }
+        },
+        "repositories.py": null,
+        "selectors.py": null,
+        "forms.py": null,
+        "admin.py": null,
+        "tests": {
+          "test_auth.py": {
+            "$meta": {
+              "generator": "django.test.auth"
+            }
+          }
+        },
+        "migrations": {}
+      }
+    },
+
+    "api": {
+      "__init__.py": null,
+      "router.py": {
+        "$meta": {
+          "generator": "django.api.router",
+          "variant": "drf"
+        }
+      },
+      "views.py": null
+    },
+
+    "middleware": {
+      "__init__.py": null,
+      "cors.py": {
+        "$meta": {
+          "generator": "django.middleware.cors"
+        }
+      }
+    },
+
+    "common": {
+      "__init__.py": null,
+      "pagination.py": {
+        "$meta": {
+          "generator": "django.common.pagination"
+        }
+      },
+      "permissions.py": {
+        "$meta": {
+          "generator": "django.common.permissions"
+        }
+      },
+      "exceptions.py": {
+        "$meta": {
+          "generator": "django.common.exceptions"
+        }
+      }
+    },
+
+    "templates": {},
+
+    "fixtures": {},
+
+    "management": {
+      "commands": {}
+    },
+
+    "docs": {},
+
+    "logs": {},
+
+    "static": {
+      "css": {},
+      "js": {}
+    },
+
+    "media": {},
+
+    "tests": {
+      "conftest.py": {
+        "$meta": {
+          "generator": "django.test.conftest"
+        }
+      },
+      "test_health.py": {
+        "$meta": {
+          "generator": "django.test.health"
+        }
+      },
+      "utils.py": null
+    }
+  }
+}

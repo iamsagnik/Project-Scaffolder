@@ -1,0 +1,271 @@
+{
+  "templateMeta": {
+    "id": "nextjs-fullstack-enterprise",
+    "name": "Next.js Full-Stack Web App (Enterprise)",
+    "description": "Enterprise Next.js 14 full-stack App Router project with Prisma, PostgreSQL, modular API routes, advanced auth, CI, Docker, and unified tooling.",
+    "defaultProjectName": "nextjs-enterprise-app",
+    "category": "fullstack",
+    "author": "Mitra",
+    "tags": ["nextjs", "react", "fullstack", "prisma", "postgres", "enterprise", "docker", "ci"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "node.package.nextjs",
+        "variant": "app-router-enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "next.config.mjs": {
+      "$meta": {
+        "generator": "next.config",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    "tsconfig.json": {
+      "$meta": {
+        "generator": "typescript.config.nextjs",
+        "overwrite": true
+      }
+    },
+
+    "middleware.ts": {
+      "$meta": {
+        "generator": "next.middleware.auth",
+        "overwrite": true
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "node.env.example",
+        "variant": "nextjs",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.node",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.nextjs",
+        "variant": "ts",
+        "overwrite": true
+      }
+    },
+
+    "jest.config.cjs": {
+      "$meta": {
+        "generator": "test.jest.config.nextjs",
+        "overwrite": true
+      }
+    },
+
+    "Dockerfile": {
+      "$meta": {
+        "generator": "dockerfile.nextjs",
+        "variant": "standalone-prod",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.nextjs",
+        "variant": "postgres",
+        "overwrite": true
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.nextjs",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.nextjs",
+            "variant": "jest-docker",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "prisma": {
+      "schema.prisma": {
+        "$meta": {
+          "generator": "prisma.schema",
+          "variant": "postgres-user-auth",
+          "overwrite": true
+        }
+      },
+      "seed.ts": {
+        "$meta": {
+          "generator": "prisma.seed",
+          "overwrite": true
+        }
+      }
+    },
+
+    "public": {
+      "favicon.ico": {
+        "$meta": {
+          "generator": "next.public.favicon"
+        }
+      }
+    },
+
+    "src": {
+      "app": {
+        "layout.tsx": {
+          "$meta": {
+            "generator": "next.app.layout",
+            "variant": "root"
+          }
+        },
+        "page.tsx": {
+          "$meta": {
+            "generator": "next.app.page",
+            "variant": "home"
+          }
+        },
+        "loading.tsx": {
+          "$meta": { "generator": "next.app.loading" }
+        },
+        "error.tsx": {
+          "$meta": { "generator": "next.app.error" }
+        },
+
+        "api": {
+          "auth": {
+            "route.ts": {
+              "$meta": {
+                "generator": "next.api.auth",
+                "variant": "credentials-jwt"
+              }
+            }
+          },
+          "users": {
+            "route.ts": {
+              "$meta": { "generator": "next.api.users" }
+            }
+          }
+        },
+
+        "dashboard": {
+          "page.tsx": {
+            "$meta": {
+              "generator": "next.app.page",
+              "variant": "dashboard"
+            }
+          }
+        },
+
+        "login": {
+          "page.tsx": {
+            "$meta": {
+              "generator": "next.app.page",
+              "variant": "login"
+            }
+          }
+        }
+      },
+
+      "components": {
+        "layout": {
+          "AppShell.tsx": {
+            "$meta": {
+              "generator": "next.component.layout.shell"
+            }
+          }
+        },
+        "ui": {
+          "Button.tsx": {
+            "$meta": { "generator": "next.component.ui.button" }
+          },
+          "Input.tsx": {
+            "$meta": { "generator": "next.component.ui.input" }
+          }
+        }
+      },
+
+      "lib": {
+        "db.ts": {
+          "$meta": { "generator": "next.lib.db", "standard": "prisma" }
+        },
+        "auth.ts": {
+          "$meta": { "generator": "next.lib.auth", "standard": "jwt" }
+        },
+        "env.ts": {
+          "$meta": { "generator": "next.lib.env" }
+        }
+      },
+
+      "constants": {},
+      "context": {},
+      "utils": {},
+      "hooks": {
+        "useAuth.ts": {
+          "$meta": { "generator": "next.hook.use-auth" }
+        }
+      },
+
+      "types": {
+        "user.types.ts": {
+          "$meta": { "generator": "next.types.user" }
+        }
+      },
+
+      "styles": {
+        "globals.css": {
+          "$meta": { "generator": "tailwind.globals.css" }
+        }
+      },
+
+      "tests": {
+        "setup.ts": {
+          "$meta": { "generator": "next.test.setup", "variant": "jest" }
+        },
+        "auth.api.test.ts": {
+          "$meta": { "generator": "next.test.api.auth" }
+        },
+        "unit": {},
+        "integration": {}
+      }
+    }
+  }
+}

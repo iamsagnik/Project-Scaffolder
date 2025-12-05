@@ -1,0 +1,190 @@
+{
+  "templateMeta": {
+    "id": "typescript-npm-enterprise",
+    "name": "TypeScript NPM Library / Package (Enterprise)",
+    "description": "Enterprise TS library with ESM/CJS builds, strict linting, dts generation, docs, examples, CI, and semantic-release.",
+    "defaultProjectName": "ts-enterprise-lib",
+    "category": "library",
+    "author": "Mitra",
+    "tags": ["typescript", "npm", "library", "esm", "cjs", "ci", "enterprise"]
+  },
+
+  "forwardTree": {
+    "package.json": {
+      "$meta": {
+        "generator": "node.package.typescript-lib",
+        "variant": "enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "tsconfig.json": {
+      "$meta": {
+        "generator": "typescript.config.library",
+        "overwrite": true
+      }
+    },
+
+    "tsconfig.build.json": {
+      "$meta": {
+        "generator": "typescript.config.build",
+        "overwrite": true
+      }
+    },
+
+    "tsup.config.ts": {
+      "$meta": {
+        "generator": "tsup.config",
+        "variant": "esm-cjs-dts",
+        "overwrite": true
+      }
+    },
+
+    ".env.example": {
+      "$meta": {
+        "generator": "node.env.example",
+        "variant": "library",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.node",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    ".prettierrc": {
+      "$meta": {
+        "generator": "prettier.config.json",
+        "overwrite": true
+      }
+    },
+
+    "eslint.config.cjs": {
+      "$meta": {
+        "generator": "eslint.config.typescript",
+        "variant": "library",
+        "overwrite": true
+      }
+    },
+
+    "jest.config.cjs": {
+      "$meta": {
+        "generator": "test.jest.config.typescript",
+        "overwrite": true
+      }
+    },
+
+    "typedoc.json": {
+      "$meta": {
+        "generator": "typedoc.config",
+        "overwrite": true
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.typescript-lib",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    "LICENSE": {
+      "$meta": {
+        "generator": "license.mit",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.typescript",
+            "variant": "build-test",
+            "overwrite": true
+          }
+        },
+        "release.yml": {
+          "$meta": {
+            "generator": "ci.github.npm-release",
+            "variant": "semantic-release",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "scripts": {},
+
+    "src": {
+      "index.ts": {
+        "$meta": { "generator": "ts.lib.entry" }
+      },
+
+      "core": {
+        "client.ts": {
+          "$meta": { "generator": "ts.lib.core.client" }
+        },
+        "errors.ts": {
+          "$meta": { "generator": "ts.lib.core.errors" }
+        }
+      },
+
+      "internal": {},
+
+      "common": {
+        "constants.ts": null,
+        "errors.ts": null
+      },
+
+      "utils": {
+        "logger.ts": { "$meta": { "generator": "ts.lib.util.logger" } },
+        "assert.ts": { "$meta": { "generator": "ts.lib.util.assert" } }
+      },
+
+      "types": {
+        "index.ts": {
+          "$meta": { "generator": "ts.lib.types.index" }
+        }
+      }
+    },
+
+    "tests": {
+      "setup.ts": {
+        "$meta": {
+          "generator": "ts.test.setup",
+          "variant": "jest"
+        }
+      },
+      "core.client.test.ts": {
+        "$meta": { "generator": "ts.test.core.client" }
+      },
+      "unit": {},
+      "integration": {},
+      "fixtures": {}
+    },
+
+    "examples": {
+      "basic.ts": {
+        "$meta": { "generator": "ts.lib.example.basic" }
+      },
+      "advanced.ts": null
+    },
+
+    "dist": {}
+  }
+}

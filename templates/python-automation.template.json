@@ -1,0 +1,246 @@
+{
+  "templateMeta": {
+    "id": "python-automation-enterprise",
+    "name": "Python Automation / Scripting Project (Enterprise)",
+    "description": "Enterprise Python automation framework with CLI, schedulers, modular tasks, typed configs, Docker, CI, and testing.",
+    "defaultProjectName": "python-automation-suite",
+    "category": "automation",
+    "tags": ["python", "automation", "cli", "scheduler", "enterprise", "docker", "ci"]
+  },
+
+  "forwardTree": {
+    "pyproject.toml": {
+      "$meta": {
+        "generator": "python.poetry.base",
+        "variant": "automation-enterprise",
+        "overwrite": true,
+        "encoding": "utf8"
+      }
+    },
+
+    "README.md": {
+      "$meta": {
+        "generator": "doc.readme.python-automation",
+        "variant": "enterprise",
+        "overwrite": true
+      }
+    },
+
+    "LICENSE": {
+      "$meta": {
+        "generator": "license.mit",
+        "overwrite": true
+      }
+    },
+
+    ".env": null,
+
+    ".env.example": {
+      "$meta": {
+        "generator": "python.env.example",
+        "variant": "automation",
+        "overwrite": true
+      }
+    },
+
+    ".gitignore": {
+      "$meta": {
+        "generator": "git.ignore.python",
+        "overwrite": true
+      }
+    },
+
+    ".editorconfig": {
+      "$meta": {
+        "generator": "editorconfig.base",
+        "overwrite": true
+      }
+    },
+
+    "pytest.ini": {
+      "$meta": {
+        "generator": "python.pytest.config",
+        "overwrite": true
+      }
+    },
+
+    "mypy.ini": {
+      "$meta": {
+        "generator": "python.mypy.config",
+        "overwrite": true
+      }
+    },
+
+    ".pre-commit-config.yaml": {
+      "$meta": {
+        "generator": "python.precommit.config",
+        "overwrite": true
+      }
+    },
+
+    "Dockerfile": {
+      "$meta": {
+        "generator": "dockerfile.python",
+        "variant": "automation",
+        "overwrite": true
+      }
+    },
+
+    "docker-compose.yml": {
+      "$meta": {
+        "generator": "docker.compose.python",
+        "variant": "automation",
+        "overwrite": true
+      }
+    },
+
+    ".github": {
+      "workflows": {
+        "ci.yml": {
+          "$meta": {
+            "generator": "ci.github.python",
+            "variant": "pytest-mypy",
+            "overwrite": true
+          }
+        }
+      },
+      "ISSUE_TEMPLATE": {},
+      "PULL_REQUEST_TEMPLATE.md": null
+    },
+
+    "scripts": {
+      "run.sh": {
+        "$meta": {
+          "generator": "scripts.python.run",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "lint.sh": {
+        "$meta": {
+          "generator": "scripts.python.lint",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      },
+      "debug.sh": {
+        "$meta": {
+          "generator": "scripts.python.debug",
+          "permissions": "0755",
+          "overwrite": true
+        }
+      }
+    },
+
+    "src": {
+      "__init__.py": null,
+
+      "main.py": {
+        "$meta": {
+          "generator": "python.main.cli",
+          "overwrite": true
+        }
+      },
+
+      "cli": {
+        "__init__.py": null,
+        "commands.py": {
+          "$meta": {
+            "generator": "python.cli.commands"
+          }
+        }
+      },
+
+      "config": {
+        "__init__.py": null,
+        "settings.py": {
+          "$meta": {
+            "generator": "python.config.settings"
+          }
+        },
+        "logging.py": {
+          "$meta": {
+            "generator": "python.config.logging"
+          }
+        }
+      },
+
+      "core": {
+        "__init__.py": null,
+        "base_task.py": {
+          "$meta": { "generator": "python.core.base-task" }
+        },
+        "scheduler.py": {
+          "$meta": { "generator": "python.core.scheduler" }
+        },
+        "cron.py": {
+          "$meta": { "generator": "python.core.cron" }
+        }
+      },
+
+      "tasks": {
+        "__init__.py": null,
+        "sample_task.py": {
+          "$meta": { "generator": "python.task.sample" }
+        },
+        "file_cleanup.task.py": {
+          "$meta": { "generator": "python.task.file-cleanup" }
+        },
+        "api_poll.task.py": {
+          "$meta": { "generator": "python.task.api-poll" }
+        }
+      },
+
+      "services": {
+        "__init__.py": null,
+        "http_service.py": {
+          "$meta": { "generator": "python.service.http" }
+        },
+        "filesystem_service.py": {
+          "$meta": { "generator": "python.service.filesystem" }
+        }
+      },
+
+      "common": {
+        "__init__.py": null,
+        "constants.py": null
+      },
+
+      "exceptions": {
+        "__init__.py": null,
+        "base.py": null
+      },
+
+      "utils": {
+        "__init__.py": null,
+        "logger.py": { "$meta": { "generator": "python.util.logger" } },
+        "retry.py": { "$meta": { "generator": "python.util.retry" } },
+        "paths.py": { "$meta": { "generator": "python.util.paths" } }
+      }
+    },
+
+    "logs": {},
+
+    "data": {},
+
+    "tests": {
+      "__init__.py": null,
+
+      "conftest.py": {
+        "$meta": { "generator": "python.test.conftest" }
+      },
+
+      "unit": {},
+      "integration": {},
+      "fixtures": {},
+
+      "test_sample_task.py": {
+        "$meta": { "generator": "python.test.task.sample" }
+      },
+
+      "test_api_poll_task.py": {
+        "$meta": { "generator": "python.test.task.api-poll" }
+      }
+    }
+  }
+}
