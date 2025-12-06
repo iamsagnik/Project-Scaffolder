@@ -85,9 +85,7 @@ async function runForwardPipeline({ uri, workspaceRootPath, rawTree }) {
 
   stats.startPhase("verify");
 
-  const verifyResult = await verifyGeneration(plan, {
-    workspaceRootPath
-  });
+  const verifyResult = await verifyGeneration(plan);
 
   if (!verifyResult.ok) {
     throwError({

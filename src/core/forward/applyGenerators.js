@@ -1,13 +1,6 @@
 // applyGenerators.js
 const { resolveGenerator } = require("../../../generators");  // adjust relative path if needed
 
-/**
- * Applies all generators inside the forwardTree and produces a "generatedTree":
- * - File nodes become: { __type: "file", content: "string", meta: {...} }
- * - Folder nodes remain plain objects with recursively generated children
- *
- * IMPORTANT: one $meta node -> EXACTLY ONE FILE.
- */
 async function applyGenerators(rawTree) {
 
   /*

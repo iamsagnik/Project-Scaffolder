@@ -2,7 +2,7 @@ const logger = require("../diagnostics/logger");
 const { isFile, isDirectory, readFile } = require("../utils/fsUtils");
 
 
-async function verifyGeneration(plan, context = {}) {
+async function verifyGeneration(plan) {
   const errors = [];
 
   const { folders = [], files = [] } = plan;
