@@ -1,21 +1,18 @@
 async function standard(ctx = {}) {
   const content = `
-// Message types shared across background/content/popup
-
-export const MESSAGE_TYPES = {
-  PING: "PING",
-  UPDATE_SETTINGS: "UPDATE_SETTINGS"
+module.exports = {
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/src/tests/setup.ts"],
+  transform: {
+    "^.+\\\\.(ts|tsx)$": "ts-jest"
+  }
 };
-
-/**
- * @typedef {{ type: string, payload?: any }} Message
- */
 `;
   return { type: "single", content };
 }
 
 async function minimal(ctx = {}) {
-  const content = `export const MESSAGE_TYPES = {};`;
+  const content = `module.exports = { testEnvironment: "jsdom" };`;
   return { type: "single", content };
 }
 

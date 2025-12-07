@@ -1,21 +1,15 @@
 async function standard(ctx = {}) {
   const content = `
-// Message types shared across background/content/popup
-
-export const MESSAGE_TYPES = {
-  PING: "PING",
-  UPDATE_SETTINGS: "UPDATE_SETTINGS"
+export const ENV = {
+  MODE: import.meta.env.MODE,
+  API_URL: import.meta.env.VITE_API_URL
 };
-
-/**
- * @typedef {{ type: string, payload?: any }} Message
- */
 `;
   return { type: "single", content };
 }
 
 async function minimal(ctx = {}) {
-  const content = `export const MESSAGE_TYPES = {};`;
+  const content = `export const ENV = {};`;
   return { type: "single", content };
 }
 
