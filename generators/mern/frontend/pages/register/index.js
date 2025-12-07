@@ -1,25 +1,23 @@
-// generators/mern/frontend/page/login.js
+// generators/mern/frontend/page/register.js
 
 async function defaultVariant(ctx = {}) {
-  const content = `// src/pages/Login.page.tsx
+  const content = `// src/pages/Register.page.tsx
 import React, { useState } from 'react';
 import { api } from '../config/api';
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    const res = await api.post("/auth/login", { email, password });
-
-    localStorage.setItem("token", res.data.token);
-    window.location.href = "/dashboard";
+    await api.post("/auth/register", { email, password });
+    window.location.href = "/login";
   }
 
   return (
     <form onSubmit={submit}>
-      <h2>Login</h2>
+      <h2>Register</h2>
       <input
         placeholder="email"
         value={email}
@@ -31,7 +29,7 @@ export default function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button>Login</button>
+      <button>Register</button>
     </form>
   );
 }
