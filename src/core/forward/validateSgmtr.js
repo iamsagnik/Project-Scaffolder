@@ -73,7 +73,7 @@ async function validateSgmtr(rawTree, context = {}) {
       } catch (e) {
         errors.push({
           code: "GENERATOR_NOT_FOUND",
-          message: `Generator "${generatorName}" not found at ${pathStr}`
+          message: `Generator "${generatorName}" not found at ${e.message}`
         });
         return;
       }
@@ -81,7 +81,7 @@ async function validateSgmtr(rawTree, context = {}) {
       if (!info.exists) {
         errors.push({
           code: "GENERATOR_NOT_FOUND",
-          message: `Generator "${generatorName}" not found at ${pathStr}`
+          message: `Generator "${generatorName}" not found at ${e.message}`
         });
         return;
       }

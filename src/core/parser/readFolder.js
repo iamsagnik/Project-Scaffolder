@@ -2,9 +2,11 @@ const path = require("path");
 const vscode = require("vscode");
 
 const { readDir, safeStat, isDirectory } = require("../utils/fsUtils");
+const { toPosix } = require("../utils/pathUtils");
 
 const logger = require("../diagnostics/logger");
 const stats = require("../diagnostics/statsCollector");
+const warnings = require("../diagnostics/warningsCollector");
 const { throwError } = require("../diagnostics/errorHandler");
 
 async function readFolder(rootPath, ignoreMatchers) {
@@ -13,7 +15,7 @@ async function readFolder(rootPath, ignoreMatchers) {
 
   async function walk(currentAbsPath) {
 
-    if(isDirectory(currentAbsPath)) stats.incrementFoldersVisited();
+    if(await isDirectory(currentAbsPath)) stats.incrementFoldersVisited();
 
     let entries = await readDir(currentAbsPath);
 
@@ -21,7 +23,11 @@ async function readFolder(rootPath, ignoreMatchers) {
  
     for (const [name, type] of entries) {
       const abs = path.join(currentAbsPath, name);
-      const rel = path.relative(rootPath, abs);
+      let rel = toPosix(path.relative(rootPath, abs));
+      if (path.basename(abs).startsWith(".") && !rel.startsWith(".")) {
+          rel = "." + rel;
+      }
+      logger.info("DEBUG_REL", "Computed relative path", { rel });
 
       if ((type & vscode.FileType.SymbolicLink) !== 0) {
         skipped.push({ path: rel, rule: "SYMLINK" });
@@ -33,7 +39,7 @@ async function readFolder(rootPath, ignoreMatchers) {
             "Symlink skipped during traversal",
             {
               severity: "info",
-              filePath: current,
+              filePath: abs,
             }
           )
         );
@@ -103,7 +109,7 @@ async function readFolder(rootPath, ignoreMatchers) {
         code: "RECURSIVE_READ_FAILED",
         message: "Recursive directory traversal failed",
         severity: "critical",
-        filePath: dirPath,
+        filePath: rootPath,
         module: "fsUtils",
         stack: err?.stack
       });
