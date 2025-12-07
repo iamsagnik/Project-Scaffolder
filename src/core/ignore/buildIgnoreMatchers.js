@@ -1,150 +1,76 @@
-const { Minimatch } = require("minimatch");
-const path = require("path");
+const minimatch = require("minimatch");
 
-const logger = require("../diagnostics/logger");
-const warnings = require("../diagnostics/warningsCollector");
+/**
+ * Convert gitignore-style pattern into a recursive-friendly minimatch pattern.
+ * Must preserve the original pattern (`raw`) and a clean rule (`rule`).
+ */
+function expandPattern(p) {
+  p = (p || "").trim();
+  if (!p || p.startsWith("#")) return null;
 
-function normalize(relPath) {
-  if (!relPath) return "";
+  const isNeg = p.startsWith("!");
+  const core = isNeg ? p.slice(1) : p;
 
-  let norm = relPath.split(path.sep).join("/");
+  let rule = core;
+  let expanded;
 
-  if (norm.startsWith("./")) norm = norm.slice(2);
-  if (norm.startsWith("/")) norm = norm.slice(1);
+  // folder/
+  if (core.endsWith("/")) {
+    const folder = core.slice(0, -1);
+    expanded = `**/${folder}/**`;
+    return { neg: isNeg, raw: p, rule, expanded };
+  }
 
-  norm = norm.replace(/\/+/g, "/");
-  return norm;
+  // *.ext, .env, .gitignore
+  if (!core.includes("/")) {
+    expanded = `**/${core}`;
+    return { neg: isNeg, raw: p, rule, expanded };
+  }
+
+  // nested path
+  expanded = `**/${core}`;
+  return { neg: isNeg, raw: p, rule, expanded };
 }
 
-function buildIgnoreMatchers(patterns = []) {
-  const rules = [];
+function buildIgnoreMatchers(patterns) {
+  const matchers = [];
 
-  logger.debug("ignore", "Building git-accurate ignore matchers", {
-    patternCount: Array.isArray(patterns) ? patterns.length : 0
-  });
+  for (const p of patterns) {
+    const exp = expandPattern(p);
+    if (!exp) continue;
 
-  if (!Array.isArray(patterns)) {
-    warnings.recordWarning(
-      warnings.createWarningResponse(
-        "ignore",
-        "INVALID_IGNORE_PATTERN_ARRAY",
-        "Ignore patterns must be an array",
-        {
-          severity: "warn",
-          filePath: null,
-          meta: { receivedType: typeof patterns }
-        }
-      )
-    );
-    patterns = [];
+    const matcher = new minimatch.Minimatch(exp.expanded, {
+      dot: true,
+      nocomment: false,
+      noglobstar: false,
+    });
+
+    matchers.push({
+      raw: exp.raw,
+      rule: exp.rule,
+      negated: exp.neg,
+      matcher,
+    });
   }
 
-  for (let i = 0; i < patterns.length; i++) {
-    const raw = patterns[i];
-
-    if (typeof raw !== "string") {
-      warnings.recordWarning(
-        warnings.createWarningResponse(
-          "ignore",
-          "INVALID_IGNORE_PATTERN",
-          "Non-string ignore pattern skipped",
-          {
-            severity: "info",
-            filePath: null,
-            meta: { index: i, type: typeof raw }
-          }
-        )
-      );
-      continue;
-    }
-
-    const trimmed = raw.trim();
-    if (!trimmed) continue;           // blank
-    if (trimmed.startsWith("#")) continue; // comment
-
-    let pattern = trimmed;
-    let isNegation = false;
-
-    if (pattern.startsWith("!")) {
-      isNegation = true;
-      pattern = pattern.slice(1);
-
-      if (!pattern) {
-        warnings.recordWarning(
-          warnings.createWarningResponse(
-            "ignore",
-            "INVALID_NEGATION_PATTERN",
-            "Bare '!' negation skipped",
-            {
-              severity: "info",
-              filePath: null,
-              meta: { index: i }
-            }
-          )
-        );
-        continue;
-      }
-    }
-
-    let normalized = normalize(pattern);
-    if (!normalized) continue;
-
-    if (!normalized.includes("*") && !normalized.includes("/") && !normalized.endsWith("/")) {
-      normalized = normalized + "/**";
-    }
-    
-    try {
-      const mm = new Minimatch(normalized, {
-        dot: true,         // match dotfiles
-        matchBase: false,  // full relative-path only
-        nocomment: true,
-        nobrace: false,
-        noglobstar: false
-      });
-
-      rules.push({
-        raw,
-        pattern: normalized,
-        isNegation,
-        mm
-      });
-    } catch (err) {
-      warnings.recordWarning(
-        warnings.createWarningResponse(
-          "ignore",
-          "INVALID_MINIMATCH_PATTERN",
-          "Failed to compile ignore pattern",
-          {
-            severity: "warn",
-            filePath: null,
-            meta: { pattern: raw, error: err?.message }
-          }
-        )
-      );
-    }
-  }
-
-  function shouldIgnore(relPath) {
-    const norm = normalize(relPath);
-
+  function shouldIgnore(rel) {
     let ignored = false;
-    let rule = null;
+    let lastRule = null;
 
-    // Git semantics: last matching rule wins
-    for (const r of rules) {
-      try {
-        if (!r.mm.match(norm)) continue;
-        ignored = !r.isNegation;
-        rule = r.raw;
-      } catch {
-        continue;
+    for (const m of matchers) {
+      if (m.matcher.match(rel)) {
+        ignored = !m.negated;
+        lastRule = m.rule;     // pipeline needs this
       }
     }
 
-    return { ignored, rule, relPath: norm };
+    return {
+      ignored,
+      rule: lastRule,
+    };
   }
 
-  return { rules, shouldIgnore};
+  return { shouldIgnore };
 }
 
 module.exports = buildIgnoreMatchers;

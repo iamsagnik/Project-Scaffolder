@@ -35,7 +35,7 @@ async function loadSgmtrIgnore(rootPath) {
     const raw = Buffer.from(rawBytes).toString("utf8");
 
     const patterns = raw
-      .split(/\r?\n/)
+      .split(/\r?\n/g)
       .map(line => line.trim())
       .filter(line => line && !line.startsWith("#"));
 
