@@ -1,202 +1,113 @@
-# Project Scaffolder
+# Project Scaffolder (SGMTR)
 
-Project Scaffolder is a VS Code extension that generates entire folder and file structures from declarative `.sgmtr` template files. It supports static and dynamic generation, live previews, reusable workspace templates, React snippet expansion, ignore rules, grammar-based validation, and reverse generation.
+Project Scaffolder is a VS Code extension that helps you understand, visualize, and generate project structures.  
+It works in both directions:
 
-This extension enables consistent and reusable project scaffolding for individuals and teams.
+1. Generate a structure file (.sgmtr) from an existing project.  
+2. Generate folders and files from a .sgmtr structure file.
+
+It is available in the VS Code Marketplace under the name Project Scaffolder.
 
 ---
 
 ## Features
 
-### 1. Generate From `.sgmtr` Files
-A `.sgmtr` file defines a folder structure using nested JSON.  
-Keys represent folders or filenames; string values represent file contents.
+### 1. Reverse Generation (Code to Structure)
+Create a `.sgmtr` file from any folder.  
+The file includes:
 
-Example:
-```
-{
-  "src": {
-    "index.js": "",
-    "components": {
-      "${ask:Name}.jsx": "rafc"
-    }
-  },
-  "README.md": "# Project"
-}
-```
-Running "Generate from .sgmtr file" builds the full structure.
+- Complete folder and file hierarchy  
+- Language-based detection  
+- Import and export mappings for JavaScript, TypeScript, Python, Java, C and C++  
+- File metadata
 
-### 2. Dynamic Variable Injection
+Use this to understand and document any codebase quickly.
 
-Variables can be used inside filenames and file contents.
+---
 
-Supported variables:
-- ${ask:Var} – prompts user during generation
-- ${workspaceName} – workspace folder name
-- ${date} – ISO date
-- ${time} – time in HH:MM:SS
-- ${Custom} – resolved if defined in template
+### 2. Structural Preview (Read-Only)
+Preview your `.sgmtr` file before writing anything to disk.
 
-Dynamic filenames:
-```
-"${ask:Page}.jsx"
-"Config-${ask:Env}.js"
-"README-${date}.md"
-```
+Two preview modes are supported:
 
-## 3. Webview-Based Previews
+- Structure-only view  
+- Structure with import/export information
 
-All previews use a VS Code Webview.
-Types of previews:
-- Static preview (raw structure as ASCII tree)
-- Dynamic preview (injects placeholder values)
-- Detailed preview (imports/exports for .jsx and .tsx files)
-- Snippet keywords and detected components are shown when applicable.
+Previewing is safe and does not modify your workspace.
 
-### 4. Workspace-Level Template Library
+---
 
-If a workspace contains:
-```
-.sgmtr/templates/*.sgmtr
-```
+### 3. Forward Generation (Structure to Code)
+Use a `.sgmtr` file to generate folders and files automatically.  
+This is useful for scaffolding new projects or reusing existing layouts.
 
-The extension will:
+---
 
-- scan all template files  
-- list them in a QuickPick menu  
-- generate the selected template anywhere in the workspace  
+### 4. Workspace Templates
+The extension includes ready-to-use enterprise templates:
 
-This is useful for team-shared boilerplates and reusable scaffolding patterns.
+- Chrome / Web Extension (MV3)  
+- MERN Full-Stack App  
+- Microservices Backend Skeleton  
+- Monorepo (Frontend, Backend, Shared Packages)
 
-Example structure:
-```
-.sgmtr/templates
-├── default.sgmtr
-├── react.sgmtr
-└── vue.sgmtr
-```
-### 5. Reverse Generation
+Selecting a template generates a complete project structure.
 
-Select any folder → **Create .sgmtr from Folder**
+---
 
-This converts existing folders back into `.sgmtr` templates, applying:
+### 5. .sgmtrignore Support
+You can generate a `.sgmtrignore` from your `.gitignore`.  
+This keeps your structural maps clean by excluding build folders, dependencies, system files, and other ignored paths.
 
-- snippet detection  
-- structure extraction  
-- ignore rules  
+---
 
-Useful for documenting or reusing existing component patterns.
+### 6. Round-Trip Workflow
+SGMTR supports a full two-way workflow:
 
-### 6. `.sgmtrignore` Support
+- Reverse generate an `.sgmtr` file from an existing project  
+- Edit or refine the structure  
+- Forward generate a new scaffold  
+- Continue coding and reverse generate again when needed
 
-Patterns similar to `.gitignore`.
+Your project structure stays consistent and documented.
 
-Supports:
-
-- wildcard patterns  
-- folder rules  
-- negations (`!pattern`)  
-- auto-expand patterns (`folder/**`)  
-
-Affects both preview and reverse generation.
-
-### 7. Snippet Expansion for React
-
-Expands snippet keywords in `.jsx` and `.tsx` files:
-
-- `rafc`  
-- `rafce`  
-- `rfc`  
-- `rsc`  
-- `rcc`  
-
-Each keyword is replaced with its corresponding React component scaffold.
-
-### 8. Syntax Highlighting, Grammar, and Schema Validation
-
-`.sgmtr` files include:
-
-- custom syntax highlighting  
-- TextMate grammar rules  
-- JSON schema validation  
-
-Validation errors appear directly in the editor.
+---
 
 ## Commands
 
-| Command | Description |
-|--------|-------------|
-| **SGMTR: Preview Structure** | Preview a `.sgmtr` file (static or detailed). |
-| **SGMTR: Generate from .sgmtr file** | Create the folder structure defined in the file. |
-| **SGMTR: Create .sgmtr from Folder** | Reverse-generate a `.sgmtr` from a folder. |
-| **SGMTR: Generate From Workspace Template** | Choose a reusable template from `.sgmtr/templates/`. |
+All commands are available in the Command Palette and the Explorer context menu.
 
-Commands are also available from the Explorer context menu.
+- SGMTR: Create .sgmtr from Folder  
+- SGMTR: Generate Preview  
+- SGMTR: Generate Directory  
+- SGMTR: Create Project from Template  
+- Generate .sgmtrignore from .gitignore  
+- Flow Preview (experimental)
 
-## Template Examples
+Flow Preview is under development and may not be stable yet.
 
-### Basic Template
-```
-{
-  "src": {
-    "App.jsx": "rafc",
-    "styles": {
-      "global.css": ""
-    }
-  }
-}
-```
 ---
-### Dynamic Template
 
-```
-{
-  "feature-${ask:Name}": {
-    "${ask:Name}.jsx": "rafc",
-    "${ask:Name}.css": ""
-  }
-}
-```
+## How to Use
+
+### Reverse Generate
+Right-click any folder and choose **SGMTR: Create .sgmtr from Folder**.  
+A `.sgmtr` file will be created at the workspace root.
+
+### Preview
+Right-click a `.sgmtr` file and select **SGMTR: Generate Preview**.  
+Inspect the structure before generating anything.
+
+### Forward Generate
+Right-click a `.sgmtr` file and choose **SGMTR: Generate Directory**.  
+A full project structure will be created.
+
+### Templates
+Run **SGMTR: Create Project from Template** and select one of the available templates.
+
 ---
-### Workspace Template Example
 
-#### Location:
-`.sgmtr/templates/react-component.sgmtr`
+## Bug Reports and Feedback
+If you find any issues or have suggestions, please report them using the GitHub Issues page linked in the extension listing.  
+Feedback is welcomed and helps improve the tool.
 
-#### Template:
-```
-{
-  "${ask:Component}.jsx": "rafce",
-  "${ask:Component}.css": ""
-}
-```
----
-### Reverse Generation Example
-
-#### Folder:
-
-```
-components/
-    Button.jsx
-    Button.css
-```
-
-#### Generated .sgmtr:
-
-```
-{
-  "Button.jsx": "rafc",
-  "Button.css": ""
-}
-```
----
-### Ignore Rules Example
-
-`.sgmtrignore:`
-```
-dist/
-node_modules/
-*.log
-!src/keep.log
-```
----
