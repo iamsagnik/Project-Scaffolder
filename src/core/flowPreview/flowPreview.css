@@ -1,0 +1,67 @@
+/* flowPreview.css */
+/* Modern dark theme for node and edge rendering */
+
+.node-style rect,
+.node-style polygon,
+.node-style ellipse,
+.node-style circle {
+    stroke: #999;
+    stroke-width: 1.2px;
+    fill: #2d2d30;
+}
+
+.node-style:hover rect,
+.node-style:hover polygon,
+.node-style:hover ellipse,
+.node-style:hover circle {
+    stroke: #ffffff;
+    stroke-width: 1.6px;
+    fill: #3c3c40;
+}
+
+.node-style text {
+    fill: #e0e0e0;
+    font-size: 12px;
+}
+
+/* IF diamond has unique tone */
+.node-style.polygon {
+    fill: #35373a;
+}
+
+/* RETURN ellipse */
+.node-style ellipse {
+    fill: #3c3333;
+}
+
+/* MERGE circle */
+.node-style circle {
+    fill: #2d3a3c;
+}
+
+/* Edges */
+.edge-style path {
+    stroke: #888;
+    stroke-width: 1.4px;
+    fill: none;
+}
+
+.edge-style:hover path {
+    stroke: #fff;
+}
+
+.edge-style text {
+    fill: #ccc;
+    font-size: 11px;
+}
+
+/* Arrowheads */
+.edge-style marker path {
+    fill: #bbb;
+}
+
+/* Selected or active edge highlight */
+.edge-active path {
+    stroke: #ffd700 !important;
+    stroke-width: 2px !important;
+}
