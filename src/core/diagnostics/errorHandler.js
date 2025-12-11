@@ -79,6 +79,10 @@ function normalizeErrorResponse(rawError, context = {}) {
 async function wrap(fn, context = {}) {
   try {
     const value = await fn();
+
+    if (value?.ok === false) {
+      return { ok: false, value };
+    }
     return { ok: true, value };
   } catch (err) {
     const structured = normalizeErrorResponse(err, context);
