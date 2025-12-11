@@ -1,9 +1,9 @@
 async function realistic(ctx = {}) {
   const content = `{
-  "name": "@shared/types",
+  "name": "@shared/utils",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/index.d.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p ."
@@ -17,7 +17,7 @@ async function minimal(ctx = {}) {
   return {
     type: "single",
     content: `{
-  "name": "@shared/types",
+  "name": "@shared/utils",
   "private": true
 }`
   };
@@ -25,10 +25,10 @@ async function minimal(ctx = {}) {
 
 async function enterprise(ctx = {}) {
   const content = `{
-  "name": "@shared/types",
+  "name": "@shared/utils",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/index.d.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",
