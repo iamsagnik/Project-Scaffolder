@@ -1,3 +1,4 @@
+const vscode = require("vscode");
 const path = require("path");
 
 
@@ -11,7 +12,6 @@ function toPathParts(generatorStr) {
 }
 
 const GENERATORS_ROOT = __dirname;
-
 
 function loadGeneratorModule(generatorStr) {
   const parts = toPathParts(generatorStr);
