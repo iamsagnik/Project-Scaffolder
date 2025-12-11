@@ -1,15 +1,14 @@
 async function realistic(ctx = {}) {
   const nodeVersion = ctx.options?.nodeVersion || "18";
-  const content = `# gateway Dockerfile
-FROM node:${nodeVersion}-alpine
+  const service = ctx.variant || "service";
 
+  const content = `FROM node:${nodeVersion}-alpine
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm ci --production
 
 COPY . .
-RUN npm run build
-
 CMD ["node", "dist/index.js"]
 `;
   return { type: "single", content };
@@ -26,7 +25,9 @@ CMD ["node", "index.js"]
 
 async function enterprise(ctx = {}) {
   const nodeVersion = ctx.options?.nodeVersion || "18";
-  const content = `# enterprise gateway Dockerfile - multi-stage
+  const service = ctx.variant || "service";
+
+  const content = `# Multi-stage optimized Dockerfile
 FROM node:${nodeVersion}-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
@@ -45,9 +46,13 @@ CMD ["node", "dist/index.js"]
   return { type: "single", content };
 }
 
-/* gateway is the only service using this generator */
-async function gateway(ctx = {}) {
-  return realistic(ctx);
+/* Template-specific variants */
+async function users(ctx = {}) {
+  return realistic({ ...ctx, variant: "users" });
+}
+
+async function orders(ctx = {}) {
+  return realistic({ ...ctx, variant: "orders" });
 }
 
 async function defaultVariant(ctx = {}) {
@@ -58,6 +63,7 @@ module.exports = {
   realistic,
   minimal,
   enterprise,
-  gateway,
+  users,
+  orders,
   default: defaultVariant
 };
