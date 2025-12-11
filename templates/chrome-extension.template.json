@@ -99,7 +99,7 @@
 
     "jest.config.cjs": {
       "$meta": {
-        "generator": "test.jest.config.webext",
+        "generator": "test.config.webext",
         "overwrite": true,
         "encoding": "utf8"
       }
@@ -241,12 +241,12 @@
         "ui": {
           "Button.tsx": {
             "$meta": {
-              "generator": "react.component.ui.button"
+              "generator": "react.components.ui.button"
             }
           },
           "Toggle.tsx": {
             "$meta": {
-              "generator": "react.component.ui.toggle"
+              "generator": "react.components.ui.toggle"
             }
           }
         },

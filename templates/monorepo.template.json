@@ -108,7 +108,7 @@
       "frontend": {
         "package.json": {
           "$meta": {
-            "generator": "node.package.react-vite",
+            "generator": "react-vite.node.package.react-vite",
             "variant": "monorepo",
             "overwrite": true
           }
@@ -233,7 +233,7 @@
         },
         "src": {
           "index.ts": {
-            "$meta": { "generator": "monorepo.shared.types.index" }
+            "$meta": { "generator": "monorepo.shared.types" }
           }
         }
       },
@@ -241,7 +241,7 @@
       "shared-utils": {
         "package.json": {
           "$meta": {
-            "generator": "monorepo.package.shared-utils",
+            "generator": "monorepo.package.shared.utils",
             "overwrite": true
           }
         },

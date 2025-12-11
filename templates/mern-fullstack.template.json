@@ -147,7 +147,7 @@
 
         "routes": {
           "index.routes.js": {
-            "$meta": { "generator": "mern.backend.routes.index" }
+            "$meta": { "generator": "mern.backend.routes" }
           },
           "auth.routes.js": {
             "$meta": { "generator": "mern.backend.routes.auth" }
@@ -162,29 +162,29 @@
 
         "controllers": {
           "health.controller.js": {
-            "$meta": { "generator": "mern.backend.controller.health" }
+            "$meta": { "generator": "mern.backend.controllers.health" }
           },
           "auth.controller.js": {
-            "$meta": { "generator": "mern.backend.controller.auth" }
+            "$meta": { "generator": "mern.backend.controllers.auth" }
           },
           "user.controller.js": {
-            "$meta": { "generator": "mern.backend.controller.user" }
+            "$meta": { "generator": "mern.backend.controllers.user" }
           },
           "todo.controller.js": {
-            "$meta": { "generator": "mern.backend.controller.todo" }
+            "$meta": { "generator": "mern.backend.controllers.todo" }
           }
         },
 
         "models": {
           "user.model.js": {
             "$meta": {
-              "generator": "mern.backend.model.user",
+              "generator": "mern.backend.models.user",
               "variant": "mongoose"
             }
           },
           "todo.model.js": {
             "$meta": {
-              "generator": "mern.backend.model.todo",
+              "generator": "mern.backend.models.todo",
               "variant": "mongoose"
             }
           }
@@ -192,31 +192,31 @@
 
         "services": {
           "auth.service.js": {
-            "$meta": { "generator": "mern.backend.service.auth" }
+            "$meta": { "generator": "mern.backend.services.auth" }
           },
           "user.service.js": {
-            "$meta": { "generator": "mern.backend.service.user" }
+            "$meta": { "generator": "mern.backend.services.user" }
           },
           "todo.service.js": {
-            "$meta": { "generator": "mern.backend.service.todo" }
+            "$meta": { "generator": "mern.backend.services.todo" }
           }
         },
 
         "middlewares": {
           "error.middleware.js": {
-            "$meta": { "generator": "mern.backend.middleware.error" }
+            "$meta": { "generator": "mern.backend.middlewares.error" }
           },
           "auth.middleware.js": {
             "$meta": {
-              "generator": "mern.backend.middleware.auth",
+              "generator": "mern.backend.middlewares.auth",
               "standard": "jwt"
             }
           },
           "validate.middleware.js": {
-            "$meta": { "generator": "mern.backend.middleware.validate" }
+            "$meta": { "generator": "mern.backend.middlewares.validate" }
           },
           "cors.middleware.js": {
-            "$meta": { "generator": "mern.backend.middleware.cors" }
+            "$meta": { "generator": "mern.backend.middlewares.cors" }
           }
         },
 
@@ -225,34 +225,34 @@
         "helpers": {},
 
         "utils": {
-          "constants.js": { "$meta": { "generator": "mern.backend.util.constants" } },
-          "response.js": { "$meta": { "generator": "mern.backend.util.response" } },
+          "constants.js": { "$meta": { "generator": "mern.backend.utils.constants" } },
+          "response.js": { "$meta": { "generator": "mern.backend.utils.response" } },
           "logger.js": {
-            "$meta": { "generator": "mern.backend.util.logger", "standard": "winston" }
+            "$meta": { "generator": "mern.backend.utils.logger", "standard": "winston" }
           },
-          "jwt.js": { "$meta": { "generator": "mern.backend.util.jwt" } }
+          "jwt.js": { "$meta": { "generator": "mern.backend.utils.jwt" } }
         },
 
         "tests": {
           "setup.js": {
             "$meta": {
-              "generator": "mern.backend.test.setup",
+              "generator": "test.mern.backend.setup",
               "variant": "jest-supertest"
             }
           },
 
           "integration": {
             "auth.int.test.js": {
-              "$meta": { "generator": "mern.backend.test.integration.auth" }
+              "$meta": { "generator": "test.mern.backend.integration.auth" }
             },
             "todo.int.test.js": {
-              "$meta": { "generator": "mern.backend.test.integration.todo" }
+              "$meta": { "generator": "test.mern.backend.integration.todo" }
             }
           },
 
           "unit": {
             "user.service.test.js": {
-              "$meta": { "generator": "mern.backend.test.unit.user-service" }
+              "$meta": { "generator": "test.mern.backend.unit.user-service" }
             }
           }
         }
@@ -343,39 +343,39 @@
         "routes": {
           "index.tsx": {
             "$meta": {
-              "generator": "react.router.index",
+              "generator": "react.routes.index",
               "variant": "v6"
             }
           },
           "protected.routes.tsx": {
-            "$meta": { "generator": "react.router.protected" }
+            "$meta": { "generator": "react.routes.protected" }
           }
         },
 
         "pages": {
-          "Home.page.tsx": { "$meta": { "generator": "mern.frontend.page.home" } },
-          "Login.page.tsx": { "$meta": { "generator": "mern.frontend.page.login" } },
-          "Register.page.tsx": { "$meta": { "generator": "mern.frontend.page.register" } },
-          "Dashboard.page.tsx": { "$meta": { "generator": "mern.frontend.page.dashboard" } },
-          "Todos.page.tsx": { "$meta": { "generator": "mern.frontend.page.todos" } }
+          "Home.page.tsx": { "$meta": { "generator": "mern.frontend.pages.home" } },
+          "Login.page.tsx": { "$meta": { "generator": "mern.frontend.pages.login" } },
+          "Register.page.tsx": { "$meta": { "generator": "mern.frontend.pages.register" } },
+          "Dashboard.page.tsx": { "$meta": { "generator": "mern.frontend.pages.dashboard" } },
+          "Todos.page.tsx": { "$meta": { "generator": "mern.frontend.pages.todos" } }
         },
 
         "components": {
           "layout": {
             "AppLayout.tsx": {
-              "$meta": { "generator": "mern.frontend.component.layout.app" }
+              "$meta": { "generator": "mern.frontend.components.layout.app" }
             }
           },
           "ui": {
-            "Button.tsx": { "$meta": { "generator": "react.component.ui.button" } },
-            "Input.tsx": { "$meta": { "generator": "react.component.ui.input" } }
+            "Button.tsx": { "$meta": { "generator": "mern.frontend.components.ui.button" } },
+            "Input.tsx": { "$meta": { "generator": "mern.frontend.components.ui.input" } }
           },
           "todos": {
             "TodoList.tsx": {
-              "$meta": { "generator": "mern.frontend.component.todos.list" }
+              "$meta": { "generator": "mern.frontend.components.todos.list" }
             },
             "TodoItem.tsx": {
-              "$meta": { "generator": "mern.frontend.component.todos.item" }
+              "$meta": { "generator": "mern.frontend.components.todos.item" }
             }
           }
         },
@@ -391,28 +391,28 @@
 
         "services": {
           "http.service.ts": {
-            "$meta": { "generator": "react.service.http", "standard": "axios" }
+            "$meta": { "generator": "mern.frontend.services.http", "standard": "axios" }
           },
           "auth.service.ts": {
-            "$meta": { "generator": "mern.frontend.service.auth" }
+            "$meta": { "generator": "mern.frontend.services.auth" }
           },
           "todo.service.ts": {
-            "$meta": { "generator": "mern.frontend.service.todo" }
+            "$meta": { "generator": "mern.frontend.services.todo" }
           }
         },
 
         "hooks": {
           "useAuth.ts": {
-            "$meta": { "generator": "react.hook.use-auth" }
+            "$meta": { "generator": "mern.frontend.hooks.use-auth" }
           },
           "useTodos.ts": {
-            "$meta": { "generator": "mern.frontend.hook.use-todos" }
+            "$meta": { "generator": "mern.frontend.hooks.use-todos" }
           }
         },
 
         "utils": {
           "storage.ts": {
-            "$meta": { "generator": "react.util.storage" }
+            "$meta": { "generator": "mern.frontend.utils.storage" }
           }
         },
 

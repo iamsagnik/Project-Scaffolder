@@ -173,7 +173,7 @@
 
           "middlewares": {
             "request-logger.middleware.ts": {
-              "$meta": { "generator": "micro.gateway.middleware.request-logger" }
+              "$meta": { "generator": "micro.gateway.middlewares.request-logger" }
             }
           },
 
@@ -184,7 +184,7 @@
 
         "tests": {
           "gateway.health.test.ts": {
-            "$meta": { "generator": "micro.gateway.test.health" }
+            "$meta": { "generator": "micro.tests.gateway.health" }
           },
           "unit": {},
           "integration": {}
@@ -232,13 +232,13 @@
 
           "models": {
             "user.model.ts": {
-              "$meta": { "generator": "micro.service.model.user", "variant": "mongoose" }
+              "$meta": { "generator": "micro.service.models.user", "variant": "mongoose" }
             }
           },
 
           "services": {
             "users.service.ts": {
-              "$meta": { "generator": "micro.service.service.users" }
+              "$meta": { "generator": "micro.service.services.users" }
             }
           },
 
@@ -255,7 +255,7 @@
 
         "tests": {
           "users.service.test.ts": {
-            "$meta": { "generator": "micro.service.test.users" }
+            "$meta": { "generator": "micro.service.tests", "variant" : "users"}
           },
           "unit": {},
           "integration": {},
@@ -281,7 +281,7 @@
         "src": {
           "index.ts": { "$meta": { "generator": "micro.service.index", "variant": "orders" } },
           "app.ts": {
-            "$meta": { "generator": "micro.service.app", "standard": "express" }
+            "$meta": { "generator": "micro.service.app", "variant" : "orders","standard": "express" }
           },
 
           "config": {
@@ -304,7 +304,7 @@
 
           "models": {
             "order.model.ts": {
-              "$meta": { "generator": "micro.service.model.order", "variant": "mongoose" }
+              "$meta": { "generator": "micro.service.models.order", "variant": "mongoose" }
             }
           },
 
@@ -327,7 +327,7 @@
 
         "tests": {
           "orders.service.test.ts": {
-            "$meta": { "generator": "micro.service.test.orders" }
+            "$meta": { "generator": "micro.service.tests", "variant" : "orders"}
           },
           "unit": {},
           "integration": {},
