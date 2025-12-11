@@ -1,12 +1,9 @@
 async function realistic(ctx = {}) {
   const content = `import { Router } from "express";
-import { getUsers } from "../services/users.service";
-
 const router = Router();
 
-router.get("/", async (_req, res) => {
-  const users = await getUsers();
-  res.json(users);
+router.get("/", (_req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
 });
 
 export default router;
@@ -15,20 +12,18 @@ export default router;
 }
 
 async function minimal(ctx = {}) {
-  return { type: "single", content: `export default {};` };
+  const content = `export default (req, res) => res.json({ status: "ok" });`;
+  return { type: "single", content };
 }
 
 async function enterprise(ctx = {}) {
   const content = `import { Router } from "express";
-import { getUsers } from "../services/users.service";
-import { logger } from "../../shared/logger/logger";
-
+import { getServiceHealth } from "../../helpers/health"; // optional helper
 const router = Router();
 
 router.get("/", async (_req, res) => {
-  logger.info("Fetching all users");
-  const users = await getUsers();
-  res.json(users);
+  const health = await getServiceHealth();
+  res.json({ status: "ok", details: health });
 });
 
 export default router;
@@ -40,4 +35,9 @@ async function defaultVariant(ctx = {}) {
   return realistic(ctx);
 }
 
-module.exports = { realistic, minimal, enterprise, default: defaultVariant };
+module.exports = {
+  realistic,
+  minimal,
+  enterprise,
+  default: defaultVariant
+};
