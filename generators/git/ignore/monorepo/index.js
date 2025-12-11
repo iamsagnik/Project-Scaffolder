@@ -1,12 +1,10 @@
 async function realistic(ctx = {}) {
   const content = `node_modules/
+.pnpm-store/
 dist/
-build/
 .env
 .env.local
-logs/
-coverage/
-*.log
+.vscode/
 .DS_Store
 `;
   return { type: "single", content };
@@ -15,25 +13,21 @@ coverage/
 async function minimal(ctx = {}) {
   const content = `node_modules/
 dist/
-.env
 `;
   return { type: "single", content };
 }
 
 async function enterprise(ctx = {}) {
   const content = `node_modules/
+.pnpm-store/
 dist/
-build/
 .env
 .env.*
-logs/
-coverage/
 .vscode/
 .idea/
-*.log
-*.pid
+logs/
+coverage/
 .DS_Store
-.cache/
 `;
   return { type: "single", content };
 }
@@ -42,9 +36,4 @@ async function defaultVariant(ctx = {}) {
   return realistic(ctx);
 }
 
-module.exports = {
-  realistic,
-  minimal,
-  enterprise,
-  default: defaultVariant,
-};
+module.exports = { realistic, minimal, enterprise, default: defaultVariant };
