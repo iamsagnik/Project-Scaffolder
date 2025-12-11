@@ -5,14 +5,19 @@ const previewSgmtrCommand = require("./src/commands/previewSgmtrCommand");
 const generateFromSgmtrCommand = require("./src/commands/generateFromSgmtrCommand");
 const createFromTemplateCommand = require("./src/commands/createFromTemplateCommand");
 const generateSgmtrIgnoreCommand = require("./src/commands/generateSgmtrIgnoreCommand");
+const flowPreviewCommand = require("./src/commands/flowPreviewCommand");
+
+const parserEngine = require("./src/core/flow/parserEngine");
 
 const logger  = require("./src/core/diagnostics/logger");
 const { throwError } = require("./src/core/diagnostics/errorHandler");
 
-function activate(context) {
+async function activate(context) {
   logger.info("extension", "SGMTR extension activating");
 
   try {
+    await parserEngine.init(context);
+
     // Reverse Generate Command
     const reverseDisposable = vscode.commands.registerCommand(
       "sgmtr.reverseGenerate",
@@ -43,6 +48,12 @@ function activate(context) {
       generateSgmtrIgnoreCommand
     )
 
+    // flow preview generation
+    const flowPreviewDisposable = vscode.commands.registerCommand(
+      "sgmtr.flowPreview", 
+      (uri) => flowPreviewCommand(uri, context)
+    )
+    
     context
     .subscriptions
     .push(
@@ -50,7 +61,8 @@ function activate(context) {
       previewDisposable, 
       forwardDisposable, 
       templateDisposable,
-      sgmtrignoreisposable
+      sgmtrignoreisposable,
+      flowPreviewDisposable
     );
 
     logger.info("extension", "Commands registered", {

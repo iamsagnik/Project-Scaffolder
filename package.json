@@ -2,7 +2,7 @@
   "name": "project-scaffolder",
   "displayName": "Project Scaffolder",
   "description": "Generate folders & files from a .sgmtr structure file and vice versa.",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "icon": "assets/folder.png",
   "galleryBanner.Color": {
     "color": "#1b1b40",
@@ -37,6 +37,7 @@
     "onCommand:sgmtr.forwardGenerate",
     "onCommand:sgmtr.createFromTemplate",
     "onCommand:sgmtr.generateSgmtrIgnore",
+    "onCommand:sgmtr.flowPreview",
     "onLanguage:sgmtr",
     "workspaceContains:**/*.sgmtr"
   ],
@@ -74,13 +75,17 @@
         "command": "sgmtr.forwardGenerate",
         "title": "SGMTR: Generate Directory"
       },
-      { 
-        "command": "sgmtr.createFromTemplate", 
-        "title": "SGMTR: Create Project from Template" 
+      {
+        "command": "sgmtr.createFromTemplate",
+        "title": "SGMTR: Create Project from Template"
       },
       {
         "command": "sgmtr.generateSgmtrIgnore",
         "title": "Generate .sgmtrignore from .gitignore"
+      },
+      {
+        "command": "sgmtr.flowPreview",
+        "title": "Flow Preview"
       }
     ],
     "menus": {
@@ -109,6 +114,11 @@
           "command": "sgmtr.generateSgmtrIgnore",
           "when": "resourceFilename == .gitignore",
           "group": "navigation"
+        },
+        {
+          "command": "sgmtr.flowPreview",
+          "when": "resourceExtname =~ /\\.(java|cpp|c|h|cc|cxx|js|ts|py)$/",
+          "group": "navigation@5"
         }
       ]
     }
@@ -123,7 +133,9 @@
     "@babel/traverse": "^7.28.5",
     "ajv": "^8.17.1",
     "minimatch": "^10.1.1",
-    "python-parser": "^1.0.3"
+    "python-parser": "^1.0.3",
+    "tree-sitter-wasms": "^0.1.13",
+    "web-tree-sitter": "^0.20.7"
   },
   "repository": {
     "type": "git",
