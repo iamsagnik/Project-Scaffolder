@@ -1,17 +1,17 @@
-const logger = require("../diagnostics/logger");
-const { normalizeErrorResponse } = require("../diagnostics/errorHandler");
-const stats = require("../diagnostics/statsCollector");
-const warnings = require("../diagnostics/warningsCollector");
-const { createSuccessResponse, recordSuccessEvents } = require("../diagnostics/successHandler");
+const logger = require("../../diagnostics/logger");
+const { normalizeErrorResponse } = require("../../diagnostics/errorHandler");
+const stats = require("../../diagnostics/statsCollector");
+const warnings = require("../../diagnostics/warningsCollector");
+const { createSuccessResponse, recordSuccessEvents } = require("../../diagnostics/successHandler");
 
-const parserEngine = require("./parserEngine");
-const parseCPP = require("./parsers/cppParser");
-const parseJava = require("./parsers/javaParser");
-const parseJS = require("./parsers/jsParser");
-const parsePython = require("./parsers/pythonParser");
+const parserEngine = require("../parserEngine");
+const parseCPP = require("../parsers/cppParser");
+const parseJava = require("../parsers/javaParser");
+const parseJS = require("../parsers/jsParser");
+const parsePython = require("../parsers/pythonParser");
 
-const cfgBuilder = require("./cfgBuilder");
-const validateFlowGraph = require("./flowGraphValidator");
+const cfgBuilder = require("../cfgBuilder");
+const validateFlowGraph = require("../flowGraphValidator");
 
 async function flowPreviewPipeline(source, filePath) {
 

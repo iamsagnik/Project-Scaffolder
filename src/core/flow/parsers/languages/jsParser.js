@@ -1,6 +1,6 @@
-const logger = require("../../diagnostics/logger");
-const warnings = require("../../diagnostics/warningsCollector");
-const { createSuccessResponse, recordSuccessEvents } = require("../../diagnostics/successHandler");
+const logger = require("../../../diagnostics/logger");
+const warnings = require("../../../diagnostics/warningsCollector");
+const { createSuccessResponse, recordSuccessEvents } = require("../../../diagnostics/successHandler");
 
 
 function getCode(src, node) {
@@ -33,6 +33,7 @@ function isInitializerBlock(node) {
 
 
   // Statement IR builder (language-agnostic)
+
 
 function buildStatementIR(node, source) {
   const type = node.type;
@@ -135,14 +136,13 @@ function buildStatementIR(node, source) {
 
   // MAIN FUNCTION EXTRACTION
 
-
 function extractFunctions(root, source, filePath) {
   const results = [];
 
   function walk(node, packageStack = [], classStack = []) {
     if (!node) return;
 
-    // PACKAGE 
+    /* ------------------------- PACKAGE ------------------------- */
     if (node.type === "package_declaration") {
       const pkg = node.childForFieldName("name");
       const pkgName = pkg ? getCode(source, pkg) : null;
@@ -189,7 +189,7 @@ function extractFunctions(root, source, filePath) {
       return;
     }
 
-    // CONSTRUCTORS 
+    // CONSTRUCTORS
     if (isConstructor(node)) {
       const nameNode = node.childForFieldName("name");
       const ctorName = nameNode ? getCode(source, nameNode) : "constructor";
@@ -214,7 +214,7 @@ function extractFunctions(root, source, filePath) {
       return;
     }
 
-    // STATIC INITIALIZER BLOCK 
+    // STATIC INITIALIZER BLOCK
     if (isStaticBlock(node)) {
       const block = node.childForFieldName("body") || node;
       const name = "static_block@" + (node.startPosition.row + 1);
@@ -271,12 +271,13 @@ function extractFunctions(root, source, filePath) {
   return results;
 }
 
-function parseJava(tree, source, filePath) {
+
+function parseJS(tree, source, filePath) {
   const root = tree.rootNode;
 
     if (!root) {
       const w = warnings.createWarningResponse(
-        "javaParser",
+        "javaScriptParser",
         "NO_ROOT",
         "Tree-sitter returned no root node",
         { filePath, severity: "warn" }
@@ -288,14 +289,14 @@ function parseJava(tree, source, filePath) {
     const functions = extractFunctions(root, source, filePath);
 
     const success = createSuccessResponse(
-      "javaParser",
-      "JAVA_PARSE_SUCCESS",
+      "jsParser",
+      "JAVASCRIPT_PARSE_SUCCESS",
       `Extracted ${functions.length} methods`,
       { filePath }
     );
     recordSuccessEvents(success);
 
-    logger.debug("javaParser", "Parsed Java successfully", {
+    logger.debug("jsParser", "Parsed JS successfully", {
       count: functions.length,
       filePath
     });
@@ -303,4 +304,4 @@ function parseJava(tree, source, filePath) {
     return { ok: true, functions, topLevel: [] };
 };
 
-module.exports = parseJava;
+module.exports = parseJS;

@@ -1,6 +1,6 @@
-const logger = require("../diagnostics/logger");
-const warnings = require("../diagnostics/warningsCollector");
-const { createSuccessResponse, recordSuccessEvents } = require("../diagnostics/successHandler");
+const logger = require("../../diagnostics/logger");
+const warnings = require("../../diagnostics/warningsCollector");
+const { createSuccessResponse, recordSuccessEvents } = require("../../diagnostics/successHandler");
 
 
 function validateBlock(block, label) {

@@ -1,6 +1,6 @@
-const logger = require("../../diagnostics/logger");
-const warnings = require("../../diagnostics/warningsCollector");
-const { createSuccessResponse, recordSuccessEvents } = require("../../diagnostics/successHandler");
+const logger = require("../../../diagnostics/logger");
+const warnings = require("../../../diagnostics/warningsCollector");
+const { createSuccessResponse, recordSuccessEvents } = require("../../../diagnostics/successHandler");
 
 function slice(src, node) {
   try { return src.slice(node.startIndex, node.endIndex); } catch { return ""; }

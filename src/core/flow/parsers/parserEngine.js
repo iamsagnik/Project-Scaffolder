@@ -1,6 +1,6 @@
 const Parser = require("web-tree-sitter");
-const logger = require("../diagnostics/logger");
-const warnings = require("../diagnostics/warningsCollector");
+const logger = require("../../diagnostics/logger");
+const warnings = require("../../diagnostics/warningsCollector");
 
 let initialized = false;
 
